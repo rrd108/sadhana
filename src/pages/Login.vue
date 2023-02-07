@@ -1,4 +1,8 @@
 <script setup lang="ts">
+  import { ref } from 'vue'
+
+  const email = ref('')
+  const pass = ref('')
   const login = () => {
     console.log('login')
   }
@@ -9,9 +13,9 @@
     <img alt="Sadhana" src="@/assets/logo.png" />
     <form @submit.prevent="login">
       <label for="email">Email</label>
-      <input type="email" />
+      <input type="email" v-model="email" />
       <label for="password">Password</label>
-      <input type="password" />
+      <input type="password" v-model="pass" />
       <input type="submit" value="Belép" />
     </form>
   </section>
