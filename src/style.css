@@ -1,0 +1,34 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --dark-purple: #31003e;
+  --medium-purple: #7e00a0;
+  --pinky: #eaccf2;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  color: #fff;
+}
+
+input {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.25em 0.5em;
+  background-color: var(--pinky);
+  color: var(--dark-purple);
+}
+
+input[type='submit'] {
+  margin: 2em 0 0.25em 0;
+  padding: 0.5em;
+  color: #fff;
+  background-color: var(--dark-purple);
+  font-weight: bold;
+}
