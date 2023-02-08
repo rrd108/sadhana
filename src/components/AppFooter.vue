@@ -3,9 +3,13 @@
 <template>
   <footer>
     <nav>
-      <router-link to="/"><font-awesome-icon icon="gauge-high" /></router-link>
+      <router-link to="/tab"
+        ><font-awesome-icon icon="gauge-high"
+      /></router-link>
       <router-link to="/"><font-awesome-icon icon="circle-plus" /></router-link>
-      <router-link to="/"><font-awesome-icon icon="chart-pie" /></router-link>
+      <router-link to="/stat"
+        ><font-awesome-icon icon="chart-pie"
+      /></router-link>
     </nav>
   </footer>
 </template>

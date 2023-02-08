@@ -7,11 +7,16 @@ const routes = [
     name: 'Day',
     component: Day,
   },
-  // {
-  //   path: '/covid',
-  //   name: 'Covid',
-  //   component: () => import('/src/pages/Covid.vue'),
-  // },
+  {
+    path: '/stat',
+    name: 'Stat',
+    component: () => import('/src/pages/Stat.vue'),
+  },
+  {
+    path: '/tab',
+    name: 'Tab',
+    component: () => import('/src/pages/Tab.vue'),
+  },
 ]
 
 const router = createRouter({
