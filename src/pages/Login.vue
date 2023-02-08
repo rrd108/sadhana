@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import axios from 'axios'
-  import { useStore } from '@/store'
+  import { useStore } from '../store'
 
   const store = useStore()
   const email = ref('')
