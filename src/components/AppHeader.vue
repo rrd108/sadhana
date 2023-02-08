@@ -6,7 +6,7 @@
 <template>
   <header>
     <img alt="Sadhana" src="@/assets/logo.png" />
-    {{ store.user.email.split('@')[0] }}
+    <span> {{ store.user.email.split('@')[0] }}</span>
   </header>
 </template>
 
@@ -22,5 +22,8 @@
   }
   img {
     height: 10vh;
+  }
+  span {
+    transform: translateX(-5vh);
   }
 </style>
