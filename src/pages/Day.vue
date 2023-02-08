@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
 
-  const date = ref(new Date().toISOString().substr(0, 10))
+  const date = ref(new Date().toISOString().substring(0, 10))
   const japa = ref({ early: 0, morning: 0, afternoon: 0, night: 0 })
   const templePresence = ref([])
   const reading = ref(0)
@@ -28,6 +28,8 @@
       study.value * 1 +
       murtiseva.value * 1
   )
+
+  // TODO do a debounce save: https://vueuse.org/core/useIdle/
 </script>
 
 <template>
