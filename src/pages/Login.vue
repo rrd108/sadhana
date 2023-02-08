@@ -37,12 +37,14 @@
 <style scoped>
   section {
     text-align: center;
-    margin-top: -5em;
   }
   img {
-    transform: translateY(7.25em);
+    transform: translateY(2.25em);
+    position: relative;
+    z-index: 1;
   }
   form {
+    transform: translateY(-5em);
     padding: 2em;
     padding-top: 5em;
     background-color: #fff;
@@ -50,6 +52,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 0.5em;
+    margin: 0 1em;
   }
   label {
     margin: 1em 0 0.25em 0;
