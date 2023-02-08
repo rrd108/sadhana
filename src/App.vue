@@ -27,10 +27,10 @@
       var(--dark-purple),
       var(--medium-purple)
     );
-    padding: 1rem;
   }
 
   main {
     height: 80vh;
+    padding: 1em;
   }
 </style>
