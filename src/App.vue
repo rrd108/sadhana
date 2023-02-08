@@ -31,6 +31,6 @@
 
   main {
     height: 80vh;
-    padding: 1em;
+    padding: 0 1em;
   }
 </style>
