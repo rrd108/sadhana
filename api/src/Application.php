@@ -18,17 +18,25 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Policy\RequestPolicy;
 use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
-use Cake\Datasource\FactoryLocator;
-use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
-use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
+use Cake\Core\ContainerInterface;
 use Cake\ORM\Locator\TableLocator;
+use Cake\Datasource\FactoryLocator;
+use Authorization\Policy\MapResolver;
+use Authorization\AuthorizationService;
 use Cake\Routing\Middleware\AssetMiddleware;
+use Cake\Http\ServerRequest;
+use Psr\Http\Message\ServerRequestInterface;
+use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Authorization\AuthorizationServiceInterface;
+use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
 
 /**
  * Application setup class.
@@ -36,7 +44,7 @@ use Cake\Routing\Middleware\RoutingMiddleware;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication
+class Application extends BaseApplication implements AuthorizationServiceProviderInterface
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -70,6 +78,7 @@ class Application extends BaseApplication
 
         // Load more plugins here
         $this->addPlugin('ApiTokenAuthenticator');
+        $this->addPlugin('Authorization');
         $this->addPlugin('JsonApiException');
     }
 
@@ -102,7 +111,9 @@ class Application extends BaseApplication
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
-            ->add(new BodyParserMiddleware());
+            ->add(new BodyParserMiddleware())
+            ->add(new AuthorizationMiddleware($this))
+            ->add(new RequestAuthorizationMiddleware());
 
         return $middlewareQueue;
     }
@@ -133,5 +144,13 @@ class Application extends BaseApplication
         $this->addPlugin('Migrations');
 
         // Load more plugins here
+    }
+
+    public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
+    {
+        $mapResolver = new MapResolver();
+        $mapResolver->map(ServerRequest::class, RequestPolicy::class);
+
+        return new AuthorizationService($mapResolver);
     }
 }

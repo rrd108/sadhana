@@ -31,6 +31,8 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+    public $permissions;
+
     public function viewClasses(): array
     {
         return [JsonView::class];
@@ -51,5 +53,8 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Authentication.Authentication');
+        $this->loadComponent('Authorization.Authorization');
+
+        $this->permissions = ['role' => $this->Authentication->getIdentity()->role];
     }
 }
