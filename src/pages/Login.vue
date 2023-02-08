@@ -1,10 +1,24 @@
 <script setup lang="ts">
   import { ref } from 'vue'
+  import axios from 'axios'
+  import { useStore } from '@/store'
 
+  const store = useStore()
   const email = ref('')
   const pass = ref('')
   const login = () => {
     console.log('login')
+    axios
+      .post(`${import.meta.env.VITE_APP_API_URL}users/login.json`, {
+        email: email.value,
+        password: pass.value,
+      })
+      .then(res => {
+        store.user = res.data
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 </script>
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b57eb4f1ea2dc18553f2e155616d8df",
+    "content-hash": "3b7ba0d3f68b8d05656b1d603c7cb847",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -1150,6 +1150,43 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/2.0.0"
             },
             "time": "2021-10-29T13:22:09+00:00"
+        },
+        {
+            "name": "rabp99/cakephp-cors",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rabp99/cakephp-cors.git",
+                "reference": "18bb7b3cc27dd48bfafdb65df924bfb5a9b039a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rabp99/cakephp-cors/zipball/18bb7b3cc27dd48bfafdb65df924bfb5a9b039a8",
+                "reference": "18bb7b3cc27dd48bfafdb65df924bfb5a9b039a8",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0",
+                "php": ">=7.2.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "phpunit/phpunit": "~8.5.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Cors\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "A CakePHP 4 plugin for activate cors domain in your application",
+            "support": {
+                "source": "https://github.com/rabp99/cakephp-cors/tree/v3.0.2"
+            },
+            "time": "2022-02-27T23:19:32+00:00"
         },
         {
             "name": "robmorgan/phinx",
