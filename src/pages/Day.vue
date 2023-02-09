@@ -49,25 +49,39 @@
       bhakti.value.murtiseva * 1
   )
 
+  const pointsChanged = ref(false)
+  watch(points, () => {
+    pointsChanged.value = true
+  })
+
+  const dateChanged = ref(false)
+  watch(date, () => {
+    dateChanged.value = true
+    // TODO bhakti should be set to empty object if date is changed
+  })
   const toast = useToast()
-  const { idle } = useIdle(5000) // set idle time to 5 seconds
+  const { idle } = useIdle(3000) // set idle time to 3 seconds
   watch(idle, isIdle => {
     if (isIdle) {
-      const method = bhakti.value.id ? 'patch' : 'post'
-      const urlPath = bhakti.value.id ? `/${bhakti.value.id}` : ''
-      axios[method](
-        `${import.meta.env.VITE_APP_API_URL}sadhanas${urlPath}.json`,
-        { date: date.value, ...bhakti.value },
-        store.tokenHeader
-      )
-        .then(res => {
-          bhakti.value = res.data
-          toast.success('Mentve')
-        })
-        .catch(err => {
-          console.error(err)
-          toast.error('Mentési hiba')
-        })
+      if (pointsChanged.value || dateChanged.value) {
+        pointsChanged.value = false
+        dateChanged.value = false
+        const method = bhakti.value.id ? 'patch' : 'post'
+        const id = bhakti.value.id ? `/${bhakti.value.id}` : ''
+        axios[method](
+          `${import.meta.env.VITE_APP_API_URL}sadhanas${id}.json`,
+          { date: date.value, ...bhakti.value },
+          store.tokenHeader
+        )
+          .then(res => {
+            bhakti.value = res.data
+            toast.success('Mentve')
+          })
+          .catch(err => {
+            console.error(err)
+            toast.error('Mentési hiba')
+          })
+      }
     }
   })
 </script>
