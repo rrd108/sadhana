@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch } from 'vue'
+  import { useIdle } from '@vueuse/core'
 
   const date = ref(new Date().toISOString().substring(0, 10))
   const bhakti = ref({
@@ -39,7 +40,12 @@
       bhakti.value.brahman.murtiseva * 1
   )
 
-  // TODO do a debounce save: https://vueuse.org/core/useIdle/
+  const { idle } = useIdle(5000) // set idle time to 5 seconds
+  watch(idle, isIdle => {
+    if (isIdle) {
+      console.log('idle')
+    }
+  })
 </script>
 
 <template>
