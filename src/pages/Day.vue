@@ -2,31 +2,41 @@
   import { computed, ref } from 'vue'
 
   const date = ref(new Date().toISOString().substring(0, 10))
-  const japa = ref({ early: 0, morning: 0, afternoon: 0, night: 0 })
-  const templePresence = ref([])
-  const reading = ref(0)
-  const study = ref(0)
-  const murtiseva = ref(0)
+  const bhakti = ref({
+    japa: { early: 0, morning: 0, afternoon: 0, night: 0 },
+    templeProgram: {
+      mangala: false,
+      japa: false,
+      kirtana: false,
+      class: false,
+      gauraarati: false,
+    },
+    brahman: { reading: 0, study: 0, murtiseva: 0 },
+  })
 
   const totalJapa = computed(() => {
     return (
-      japa.value.early +
-      japa.value.morning +
-      japa.value.afternoon +
-      japa.value.night
+      bhakti.value.japa.early +
+      bhakti.value.japa.morning +
+      bhakti.value.japa.afternoon +
+      bhakti.value.japa.night
     )
   })
 
   const points = computed(
     () =>
-      japa.value.early * 3 +
-      japa.value.morning * 2 +
-      japa.value.afternoon * 1 +
-      japa.value.night * 0.5 +
-      templePresence.value.length * 2 +
-      reading.value * 1 +
-      study.value * 1 +
-      murtiseva.value * 1
+      bhakti.value.japa.early * 3 +
+      bhakti.value.japa.morning * 2 +
+      bhakti.value.japa.afternoon * 1 +
+      bhakti.value.japa.night * 0.75 +
+      +bhakti.value.templeProgram.mangala * 10 +
+      +bhakti.value.templeProgram.japa * 10 +
+      +bhakti.value.templeProgram.kirtana * 5 +
+      +bhakti.value.templeProgram.class * 10 +
+      +bhakti.value.templeProgram.gauraarati * 4 +
+      bhakti.value.brahman.reading * 0.5 +
+      bhakti.value.brahman.study * 1 +
+      bhakti.value.brahman.murtiseva * 1
   )
 
   // TODO do a debounce save: https://vueuse.org/core/useIdle/
@@ -47,16 +57,16 @@
       <h2 class="center">{{ totalJapa }}</h2>
 
       <p>7 óra előtt</p>
-      <input type="number" v-model="japa.early" />
+      <input type="number" v-model="bhakti.japa.early" />
 
-      <p>12 óra előtt</p>
-      <input type="number" v-model="japa.morning" />
+      <p>14 óra előtt</p>
+      <input type="number" v-model="bhakti.japa.morning" />
 
-      <p>21 óra előtt</p>
-      <input type="number" v-model="japa.afternoon" />
+      <p>20 óra előtt</p>
+      <input type="number" v-model="bhakti.japa.afternoon" />
 
-      <p>21 óra után</p>
-      <input type="number" v-model="japa.night" />
+      <p>20 óra után</p>
+      <input type="number" v-model="bhakti.japa.night" />
     </div>
 
     <div class="rows">
@@ -64,26 +74,19 @@
         <input
           type="checkbox"
           id="mangala"
-          value="mangala"
-          v-model="templePresence"
+          v-model="bhakti.templeProgram.mangala"
         />
         <label for="mangala">Mangala-arati</label>
       </div>
       <div class="radio">
-        <input
-          type="checkbox"
-          id="japa"
-          value="japa"
-          v-model="templePresence"
-        />
+        <input type="checkbox" id="japa" v-model="bhakti.templeProgram.japa" />
         <label for="japa">Japa (templom)</label>
       </div>
       <div class="radio">
         <input
           type="checkbox"
           id="kirtana"
-          value="kirtana"
-          v-model="templePresence"
+          v-model="bhakti.templeProgram.kirtana"
         />
         <label for="kirtana">Kirtana</label>
       </div>
@@ -91,8 +94,7 @@
         <input
           type="checkbox"
           id="class"
-          value="class"
-          v-model="templePresence"
+          v-model="bhakti.templeProgram.class"
         />
         <label for="class">Lecke</label>
       </div>
@@ -100,8 +102,7 @@
         <input
           type="checkbox"
           id="gauraarati"
-          value="gauraarati"
-          v-model="templePresence"
+          v-model="bhakti.templeProgram.gauraarati"
         />
         <label for="gauraarati">Gaura-arati</label>
       </div>
@@ -109,13 +110,13 @@
 
     <div class="rows">
       <h2>Olvasás (perc)</h2>
-      <input type="number" v-model="reading" />
+      <input type="number" v-model="bhakti.brahman.reading" />
 
       <h2>Tanulás (perc)</h2>
-      <input type="number" v-model="study" />
+      <input type="number" v-model="bhakti.brahman.study" />
 
       <h2>Murti-seva (perc)</h2>
-      <input type="number" v-model="murtiseva" />
+      <input type="number" v-model="bhakti.brahman.murtiseva" />
     </div>
   </section>
 </template>
