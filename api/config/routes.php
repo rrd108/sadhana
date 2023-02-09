@@ -75,6 +75,7 @@ return static function (RouteBuilder $routes) {
          */
 
         $builder->resources('Users');
+        $builder->resources('Sadhanas');
 
         $builder->fallbacks();
     });

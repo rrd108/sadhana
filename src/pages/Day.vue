@@ -1,49 +1,73 @@
 <script setup lang="ts">
   import { computed, ref, watch } from 'vue'
   import { useIdle } from '@vueuse/core'
+  import axios from 'axios'
+  import { useToast } from 'vue-toastification'
+  import { useStore } from '../store'
+
+  const store = useStore()
 
   const date = ref(new Date().toISOString().substring(0, 10))
   const bhakti = ref({
-    japa: { early: 0, morning: 0, afternoon: 0, night: 0 },
-    templeProgram: {
-      mangala: false,
-      japa: false,
-      kirtana: false,
-      class: false,
-      gauraarati: false,
-    },
-    brahman: { reading: 0, study: 0, murtiseva: 0 },
+    id: 0,
+    japaEarly: 0,
+    japaMorning: 0,
+    japaAfternoon: 0,
+    japaNight: 0,
+    mangala: false,
+    japa: false,
+    kirtana: false,
+    class: false,
+    gauraarati: false,
+    reading: 0,
+    study: 0,
+    murtiseva: 0,
   })
 
   const totalJapa = computed(() => {
     return (
-      bhakti.value.japa.early +
-      bhakti.value.japa.morning +
-      bhakti.value.japa.afternoon +
-      bhakti.value.japa.night
+      bhakti.value.japaEarly +
+      bhakti.value.japaMorning +
+      bhakti.value.japaAfternoon +
+      bhakti.value.japaNight
     )
   })
 
   const points = computed(
     () =>
-      bhakti.value.japa.early * 3 +
-      bhakti.value.japa.morning * 2 +
-      bhakti.value.japa.afternoon * 1 +
-      bhakti.value.japa.night * 0.75 +
-      +bhakti.value.templeProgram.mangala * 10 +
-      +bhakti.value.templeProgram.japa * 10 +
-      +bhakti.value.templeProgram.kirtana * 5 +
-      +bhakti.value.templeProgram.class * 10 +
-      +bhakti.value.templeProgram.gauraarati * 4 +
-      bhakti.value.brahman.reading * 0.5 +
-      bhakti.value.brahman.study * 1 +
-      bhakti.value.brahman.murtiseva * 1
+      bhakti.value.japaEarly * 3 +
+      bhakti.value.japaMorning * 2 +
+      bhakti.value.japaAfternoon * 1 +
+      bhakti.value.japaNight * 0.75 +
+      +bhakti.value.mangala * 10 +
+      +bhakti.value.japa * 10 +
+      +bhakti.value.kirtana * 5 +
+      +bhakti.value.class * 10 +
+      +bhakti.value.gauraarati * 4 +
+      bhakti.value.reading * 0.5 +
+      bhakti.value.study * 1 +
+      bhakti.value.murtiseva * 1
   )
 
+  const toast = useToast()
   const { idle } = useIdle(5000) // set idle time to 5 seconds
   watch(idle, isIdle => {
     if (isIdle) {
-      console.log('idle')
+      const method = bhakti.value.id ? 'patch' : 'post'
+      const urlPath = bhakti.value.id ? `/${bhakti.value.id}` : ''
+      axios[method](
+        `${import.meta.env.VITE_APP_API_URL}sadhanas${urlPath}.json`,
+        { date: date.value, ...bhakti.value },
+        store.tokenHeader
+      )
+        .then(res => {
+          bhakti.value = res.data
+          toast.success('Mentve')
+        })
+        .catch(err => {
+          console.error(err)
+          toast.error('Mentési hiba')
+        })
     }
   })
 </script>
@@ -63,66 +87,50 @@
       <h2 class="center">{{ totalJapa }}</h2>
 
       <p>7 óra előtt</p>
-      <input type="number" v-model="bhakti.japa.early" />
+      <input type="number" v-model="bhakti.japaEarly" />
 
       <p>14 óra előtt</p>
-      <input type="number" v-model="bhakti.japa.morning" />
+      <input type="number" v-model="bhakti.japaMorning" />
 
       <p>20 óra előtt</p>
-      <input type="number" v-model="bhakti.japa.afternoon" />
+      <input type="number" v-model="bhakti.japaAfternoon" />
 
       <p>20 óra után</p>
-      <input type="number" v-model="bhakti.japa.night" />
+      <input type="number" v-model="bhakti.japaNight" />
     </div>
 
     <div class="rows">
       <div class="radio">
-        <input
-          type="checkbox"
-          id="mangala"
-          v-model="bhakti.templeProgram.mangala"
-        />
+        <input type="checkbox" id="mangala" v-model="bhakti.mangala" />
         <label for="mangala">Mangala-arati</label>
       </div>
       <div class="radio">
-        <input type="checkbox" id="japa" v-model="bhakti.templeProgram.japa" />
+        <input type="checkbox" id="japa" v-model="bhakti.japa" />
         <label for="japa">Japa (templom)</label>
       </div>
       <div class="radio">
-        <input
-          type="checkbox"
-          id="kirtana"
-          v-model="bhakti.templeProgram.kirtana"
-        />
+        <input type="checkbox" id="kirtana" v-model="bhakti.kirtana" />
         <label for="kirtana">Kirtana</label>
       </div>
       <div class="radio">
-        <input
-          type="checkbox"
-          id="class"
-          v-model="bhakti.templeProgram.class"
-        />
+        <input type="checkbox" id="class" v-model="bhakti.class" />
         <label for="class">Lecke</label>
       </div>
       <div class="radio">
-        <input
-          type="checkbox"
-          id="gauraarati"
-          v-model="bhakti.templeProgram.gauraarati"
-        />
+        <input type="checkbox" id="gauraarati" v-model="bhakti.gauraarati" />
         <label for="gauraarati">Gaura-arati</label>
       </div>
     </div>
 
     <div class="rows">
       <h2>Olvasás (perc)</h2>
-      <input type="number" v-model="bhakti.brahman.reading" />
+      <input type="number" v-model="bhakti.reading" />
 
       <h2>Tanulás (perc)</h2>
-      <input type="number" v-model="bhakti.brahman.study" />
+      <input type="number" v-model="bhakti.study" />
 
       <h2>Murti-seva (perc)</h2>
-      <input type="number" v-model="bhakti.brahman.murtiseva" />
+      <input type="number" v-model="bhakti.murtiseva" />
     </div>
   </section>
 </template>
