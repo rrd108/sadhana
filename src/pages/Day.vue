@@ -8,7 +8,7 @@
   const store = useStore()
 
   const date = ref(new Date().toISOString().substring(0, 10))
-  const bhakti = ref({
+  const emptyBhakti = {
     id: 0,
     japaEarly: 0,
     japaMorning: 0,
@@ -22,7 +22,28 @@
     reading: 0,
     study: 0,
     murtiseva: 0,
-  })
+  }
+  const bhakti = ref(emptyBhakti)
+
+  const dateChanged = ref(false)
+  let initialData = true
+  const getSadhana = () =>
+    axios
+      .get(
+        `${import.meta.env.VITE_APP_API_URL}sadhanas/${date.value.replace(
+          /\-/g,
+          ''
+        )}.json`,
+        store.tokenHeader
+      )
+      .then(res => {
+        bhakti.value = res.data ? res.data : emptyBhakti
+        dateChanged.value = true
+        initialData = true
+      })
+      .catch(err => console.error(err))
+
+  getSadhana()
 
   const totalJapa = computed(() => {
     return (
@@ -54,14 +75,13 @@
     pointsChanged.value = true
   })
 
-  const dateChanged = ref(false)
-  watch(date, () => {
-    dateChanged.value = true
-    // TODO bhakti should be set to empty object if date is changed
-  })
   const toast = useToast()
   const { idle } = useIdle(3000) // set idle time to 3 seconds
   watch(idle, isIdle => {
+    if (initialData == true) {
+      initialData = false
+      return
+    }
     if (isIdle) {
       if (pointsChanged.value || dateChanged.value) {
         pointsChanged.value = false
@@ -92,7 +112,7 @@
       <h1>{{ points }}</h1>
       <div>
         <label for="date">Dátum</label>
-        <input type="date" v-model="date" />
+        <input type="date" v-model="date" @change="getSadhana" />
       </div>
     </div>
 

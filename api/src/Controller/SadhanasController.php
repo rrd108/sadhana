@@ -36,13 +36,15 @@ class SadhanasController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(string $date)
     {
-        $sadhana = $this->Sadhanas->get($id, [
-            'contain' => ['Users'],
-        ]);
+        $sadhana = $this->Sadhanas->find()
+            ->where(['user_id' => $this->Authentication->getIdentity()->id, 'date' => $date])
+            ->first();
 
+        unset($sadhana->user_id);
         $this->set(compact('sadhana'));
+        $this->viewBuilder()->setOption('serialize', 'sadhana');
     }
 
     /**
@@ -87,25 +89,5 @@ class SadhanasController extends AppController
             $this->set(compact('sadhana'));
             $this->viewBuilder()->setOption('serialize', 'sadhana');
         }
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Sadhana id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $sadhana = $this->Sadhanas->get($id);
-        if ($this->Sadhanas->delete($sadhana)) {
-            $this->Flash->success(__('The sadhana has been deleted.'));
-        } else {
-            $this->Flash->error(__('The sadhana could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
     }
 }
