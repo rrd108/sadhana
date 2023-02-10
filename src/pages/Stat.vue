@@ -28,7 +28,7 @@
   const getStat = () =>
     axios
       .get(
-        `${import.meta.env.VITE_APP_API_URL}sadhanas/stat/${week.value}.json`,
+        `${import.meta.env.VITE_APP_API_URL}sadhanas/mystat/${week.value}.json`,
         store.tokenHeader
       )
       .then(res => {
