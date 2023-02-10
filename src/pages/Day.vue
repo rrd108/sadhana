@@ -82,7 +82,7 @@
       initialData = false
       return
     }
-    if (isIdle) {
+    if (isIdle && points.value) {
       if (pointsChanged.value || dateChanged.value) {
         pointsChanged.value = false
         dateChanged.value = false
