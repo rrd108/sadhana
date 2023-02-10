@@ -16,6 +16,9 @@
 
 <style scoped>
   footer {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
     height: 10vh;
     font-size: 3rem;
   }

@@ -20,7 +20,7 @@
 
 <style scoped>
   .app {
-    height: 100vh;
+    min-height: 100vh;
     background-color: var(--dark-purple);
     background-image: linear-gradient(
       135deg,
@@ -30,7 +30,7 @@
   }
 
   main {
-    height: 80vh;
-    padding: 0 1em;
+    min-height: 80vh;
+    padding: 10vh 1em;
   }
 </style>

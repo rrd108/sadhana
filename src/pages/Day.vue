@@ -56,6 +56,7 @@
 
   const points = computed(
     () =>
+      // TODO get these numbers from the API
       bhakti.value.japaEarly * 3 +
       bhakti.value.japaMorning * 2 +
       bhakti.value.japaAfternoon * 1 +

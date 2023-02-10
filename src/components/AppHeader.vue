@@ -12,6 +12,8 @@
 
 <style scoped>
   header {
+    position: fixed;
+    top: 0;
     height: 10vh;
     display: grid;
     grid-template-columns: 1fr 5fr;
@@ -19,6 +21,8 @@
     justify-items: center;
     font-size: 2rem;
     font-weight: bold;
+    background-color: var(--dark-purple);
+    z-index: 1;
   }
   img {
     height: 10vh;
