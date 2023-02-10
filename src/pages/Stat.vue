@@ -1,44 +1,66 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import axios from 'axios'
   import { useStore } from '../store'
   import { GChart } from 'vue-google-charts'
+  import dayjs from 'dayjs'
+  import weekOfYear from 'dayjs/plugin/weekOfYear'
+
+  dayjs.extend(weekOfYear)
 
   const store = useStore()
 
+  const emptyData = ['Date', 'Points']
   const sadhanaData = ref({
-    japa: [['Date', 'Points']],
-    templeProgram: [['Date', 'Points']],
-    brahmana: [['Date', 'Points']],
+    japa: [[...emptyData]],
+    templeProgram: [[...emptyData]],
+    brahmana: [[...emptyData]],
   })
-  axios
-    .get(
-      `${import.meta.env.VITE_APP_API_URL}sadhanas/stat/20230206-20230212.json`, // TODO hardcoded
-      store.tokenHeader
-    )
-    .then(res => {
-      sadhanaData.value.japa.push(
-        ...res.data.map((d: { date: string; japa: number }) => [
-          d.date.substring(5),
-          d.japa,
-        ])
-      )
 
-      sadhanaData.value.templeProgram.push(
-        ...res.data.map((d: { date: string; templeProgram: number }) => [
-          d.date.substring(5),
-          d.templeProgram,
-        ])
-      )
+  const currentDate = dayjs()
+  const weekNumber = currentDate.week()
+  const week = ref(
+    `${currentDate.format('YYYY')}-W${
+      weekNumber < 10 ? `0${weekNumber}` : weekNumber
+    }`
+  )
 
-      sadhanaData.value.brahmana.push(
-        ...res.data.map((d: { date: string; brahmana: number }) => [
-          d.date.substring(5),
-          d.brahmana,
-        ])
+  const getStat = () =>
+    axios
+      .get(
+        `${import.meta.env.VITE_APP_API_URL}sadhanas/stat/${week.value}.json`,
+        store.tokenHeader
       )
-    })
-    .catch(err => console.error(err))
+      .then(res => {
+        sadhanaData.value = {
+          japa: [[...emptyData]],
+          templeProgram: [[...emptyData]],
+          brahmana: [[...emptyData]],
+        }
+        sadhanaData.value.japa.push(
+          ...res.data.map((d: { date: string; japa: number }) => [
+            d.date.substring(5),
+            d.japa,
+          ])
+        )
+
+        sadhanaData.value.templeProgram.push(
+          ...res.data.map((d: { date: string; templeProgram: number }) => [
+            d.date.substring(5),
+            d.templeProgram,
+          ])
+        )
+
+        sadhanaData.value.brahmana.push(
+          ...res.data.map((d: { date: string; brahmana: number }) => [
+            d.date.substring(5),
+            d.brahmana,
+          ])
+        )
+      })
+      .catch(err => console.error(err))
+
+  getStat()
 
   const options = {
     legend: 'none',
@@ -50,26 +72,150 @@
       title: 'Pontszám',
     },
   }
+
+  const info = computed(() => ({
+    avg: {
+      japa:
+        sadhanaData.value.japa.reduce(
+          (a, b) => (isNaN(parseInt(b[1])) ? 0 : a + parseFloat(b[1])),
+          0
+        ) / 7,
+      templeProgram:
+        sadhanaData.value.templeProgram.reduce(
+          (a, b) => (isNaN(parseInt(b[1])) ? 0 : a + parseFloat(b[1])),
+          0
+        ) / 7,
+      brahmana:
+        sadhanaData.value.brahmana.reduce(
+          (a, b) => (isNaN(parseInt(b[1])) ? 0 : a + parseFloat(b[1])),
+          0
+        ) / 7,
+    },
+    min: {
+      japa: Math.min(
+        ...sadhanaData.value.japa.map((d: any) =>
+          isNaN(parseInt(d[1])) ? 0 : d[1]
+        )
+      ),
+      templeProgram: Math.min(
+        ...sadhanaData.value.templeProgram.map((d: any) =>
+          isNaN(parseInt(d[1])) ? 0 : d[1]
+        )
+      ),
+      brahmana: Math.min(
+        ...sadhanaData.value.brahmana.map((d: any) =>
+          isNaN(parseInt(d[1])) ? 0 : d[1]
+        )
+      ),
+    },
+    max: {
+      japa: Math.max(
+        ...sadhanaData.value.japa.map((d: any) =>
+          isNaN(parseInt(d[1])) ? 0 : d[1]
+        )
+      ),
+      templeProgram: Math.max(
+        ...sadhanaData.value.templeProgram.map((d: any) =>
+          isNaN(parseInt(d[1])) ? 0 : d[1]
+        )
+      ),
+      brahmana: Math.max(
+        ...sadhanaData.value.brahmana.map((d: any) =>
+          isNaN(parseInt(d[1])) ? 0 : d[1]
+        )
+      ),
+    },
+  }))
 </script>
 
 <template>
-  <h1>2023. február 6 -12.</h1>
-  <h2>Japa</h2>
+  <h1><input type="week" v-model="week" @change="getStat" /></h1>
+  <div class="title">
+    <h2>Japa</h2>
+    <h3>
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.min.japa
+        )
+      }}
+      /
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.avg.japa
+        )
+      }}
+      /
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.max.japa
+        )
+      }}
+    </h3>
+  </div>
   <GChart type="AreaChart" :data="sadhanaData.japa" :options="options" />
 
-  <h2>Templomi program</h2>
+  <div class="title">
+    <h2>Templomi program</h2>
+    <h3>
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.min.templeProgram
+        )
+      }}
+      /
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.avg.templeProgram
+        )
+      }}
+      /
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.max.templeProgram
+        )
+      }}
+    </h3>
+  </div>
   <GChart
     type="AreaChart"
     :data="sadhanaData.templeProgram"
     :options="options"
   />
 
-  <h2>Brahmana</h2>
+  <div class="title">
+    <h2>Brahmana</h2>
+    <h3>
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.min.brahmana
+        )
+      }}
+      /
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.avg.brahmana
+        )
+      }}
+      /
+      {{
+        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+          info.max.brahmana
+        )
+      }}
+    </h3>
+  </div>
   <GChart type="AreaChart" :data="sadhanaData.brahmana" :options="options" />
 </template>
 
 <style scoped>
-  h2 {
+  .title {
     margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h3 {
+    font-weight: normal;
+    font-size: 1rem;
   }
 </style>

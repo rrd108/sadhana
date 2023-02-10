@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use JsonApiException\Error\Exception\JsonApiException;
 
 /**
@@ -78,9 +79,11 @@ class SadhanasController extends AppController
         }
     }
 
-    public function stat(string $dateRange)
+    public function stat(string $weekNumber)
     {
-        $dateRange = explode('-', $dateRange);
+        $startDate = new FrozenDate($weekNumber);
+        $endDate = $startDate->addDays(6);
+
         $sadhanas = $this->Sadhanas->find();
         $sadhanaData = Configure::read('sadhana');
         $sadhanas->select([
@@ -91,10 +94,11 @@ class SadhanasController extends AppController
         ])
             ->where([
                 'user_id' => $this->Authentication->getIdentity()->id,
-                'date <=' => $dateRange[1], 'date >=' => $dateRange[0]
+                'date >=' => $startDate,
+                'date <=' => $endDate,
             ])->group('date');
 
-        $allDates = $this->getBetweenDates($dateRange[0], $dateRange[1]);
+        $allDates = $this->getBetweenDates($startDate, $endDate);
         $sadhanasDates = $sadhanas->extract('date')->toArray();
         $missingDates = array_diff($allDates, $sadhanasDates);
         $sadhanas = $sadhanas->toArray();
@@ -112,16 +116,10 @@ class SadhanasController extends AppController
 
     private function getBetweenDates($startDate, $endDate)
     {
-        $rangArray = [];
-
-        $startDate = strtotime($startDate);
-        $endDate = strtotime($endDate);
-
-        for ($currentDate = $startDate; $currentDate <= $endDate; $currentDate += (86400)) {
-
-            $rangArray[] = new FrozenDate($currentDate);
+        $dateArray = [];
+        for ($currentDate = $startDate; $currentDate <= $endDate; $currentDate = $currentDate->addDay()) {
+            $dateArray[] = new FrozenDate($currentDate);
         }
-
-        return $rangArray;
+        return $dateArray;
     }
 }
