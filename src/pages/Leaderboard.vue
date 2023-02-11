@@ -18,17 +18,22 @@
   )
 
   const list = ref([{ user: '', points: 0 }])
-  axios
-    .get(
-      `${import.meta.env.VITE_APP_API_URL}sadhanas/liststat/${week.value}.json`,
-      store.tokenHeader
-    )
-    .then(res => (list.value = res.data))
-    .catch(err => console.error(err))
+  const getStat = () =>
+    axios
+      .get(
+        `${import.meta.env.VITE_APP_API_URL}sadhanas/liststat/${
+          week.value
+        }.json`,
+        store.tokenHeader
+      )
+      .then(res => (list.value = res.data))
+      .catch(err => console.error(err))
+
+  getStat()
 </script>
 
 <template>
-  <h1><input type="week" v-model="week" /></h1>
+  <h1><input type="week" v-model="week" @change="getStat" /></h1>
   <ul>
     <li
       v-for="(user, i) in list"
