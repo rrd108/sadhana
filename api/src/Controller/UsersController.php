@@ -96,6 +96,19 @@ class UsersController extends AppController
         $this->viewBuilder()->setOption('serialize', ['user']);
     }
 
+    public function register()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Users->newEmptyEntity();
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if (!$this->Users->save($user)) {
+                $user->errors = $user->getErrors();
+            }
+            $this->set(compact('user'));
+            $this->viewBuilder()->setOption('serialize', ['user']);
+        }
+    }
+
     public function forgotpass()
     {
         if ($this->request->is('post')) {
