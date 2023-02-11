@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Chronos\Chronos;
+use Cake\Mailer\Mailer;
 use Cake\Utility\Security;
 use JsonApiException\Error\Exception\JsonApiException;
 
@@ -19,7 +20,7 @@ class UsersController extends AppController
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Authentication->allowUnauthenticated(['login']);
+        $this->Authentication->allowUnauthenticated(['login', 'forgotpass']);
     }
 
     public function login()
@@ -35,6 +36,7 @@ class UsersController extends AppController
         $user = $userIdentity->getOriginalData();
         list($user->token, $user->token_expiration) = $this->generateToken();
         $user->last_login = Chronos::now();
+        $user->forgotpass = null;
         $user = $this->Users->save($user);
 
         $this->set(compact('user'));
@@ -47,9 +49,8 @@ class UsersController extends AppController
         );
     }
 
-    private function generateToken()
+    private function generateToken($length = 36)
     {
-        $length = 36;
         $random = base64_encode(Security::randomBytes($length));
         $cleaned = preg_replace('/[^A-Za-z0-9]/', '', $random);
         return [$cleaned, strtotime('+6 hours')];
@@ -93,5 +94,34 @@ class UsersController extends AppController
         }
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', ['user']);
+    }
+
+    public function forgotpass()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Users->find()
+                ->where(['email' => $this->request->getData('email')])
+                ->first();
+            if (!$user) {
+                throw new JsonApiException(null, 'Invalid email');
+                return;
+            }
+            $user->forgotPass = substr($this->generateToken()[0], 0, 12);
+            $user = $this->Users->save($user);
+
+            // send email to the user
+            $mailer = new Mailer('default');
+            $mailer->setFrom(['forgotpass@sadhana.krisna.hu' => 'Sadhana'])
+                ->setTo($user->email)
+                ->setSubject('Sadhana elfelejtett jelszó')
+                ->deliver('Gauranga @' . strtok($user->email, '@') . '!<br><br>Az új jelszavad: ' . $user->forgotPass . '<br><br>Üdvözlettel,<br>Sadhana');
+
+            $result = [
+                'message' => 'Your temporary password is sent to your email.',
+                'success' => true
+            ];
+            $this->set(compact('result'));
+            $this->viewBuilder()->setOption('serialize', ['result']);
+        }
     }
 }
