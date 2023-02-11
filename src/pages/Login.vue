@@ -23,7 +23,7 @@
 <template>
   <section>
     <LoginForm button="Belép" @formSubmit="login" />
-    <LoginFooter page="login" />
+    <LoginFooter />
   </section>
 </template>
 

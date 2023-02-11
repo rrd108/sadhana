@@ -1,10 +1,6 @@
 <script setup lang="ts">
   import { useRoute } from 'vue-router'
   const route = useRoute()
-
-  const props = defineProps({
-    page: { type: String, required: true },
-  })
 </script>
 
 <template>
@@ -13,9 +9,9 @@
     <router-link to="/register" v-if="route.path != '/register'">
       Regisztráció
     </router-link>
-    <router-link to="/forgot-pass" v-if="route.path != '/forgot-pass'">
+    <!--router-link to="/forgot-pass" v-if="route.path != '/forgot-pass'">
       Elfelejtett jelszó
-    </router-link>
+    </!--router-link-->
   </small>
 </template>
 
