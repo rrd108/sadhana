@@ -8,14 +8,24 @@ const routes = [
     component: Day,
   },
   {
-    path: '/stat',
-    name: 'Stat',
-    component: () => import('/src/pages/Stat.vue'),
+    path: '/forgot-pass',
+    name: 'ForgotPass',
+    component: () => import('/src/pages/ForgotPass.vue'),
   },
   {
     path: '/leaderboard',
     name: 'Leaderboard',
     component: () => import('/src/pages/Leaderboard.vue'),
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('/src/pages/Register.vue'),
+  },
+  {
+    path: '/stat',
+    name: 'Stat',
+    component: () => import('/src/pages/Stat.vue'),
   },
 ]
 

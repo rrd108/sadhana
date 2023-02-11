@@ -5,8 +5,8 @@
 
 <template>
   <section>
-    <LoginForm button="Belép" />
-    <LoginFooter page="login" />
+    <LoginForm button="Jelszó emlékeztető" :showPass="false" />
+    <LoginFooter />
   </section>
 </template>
 
