@@ -20,7 +20,7 @@ class RequestPolicy implements RequestPolicyInterface
     {
         if (
             $request->getParam('controller') === 'Users'
-            && $request->getParam('action') === 'forgotpass'
+            && ($request->getParam('action') === 'forgotpass' || $request->getParam('action') === 'register')
         ) {
             return true;
         }
