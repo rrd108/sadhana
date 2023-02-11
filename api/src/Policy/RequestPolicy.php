@@ -18,6 +18,13 @@ class RequestPolicy implements RequestPolicyInterface
      */
     public function canAccess($identity, ServerRequest $request)
     {
+        if (
+            $request->getParam('controller') === 'Users'
+            && ($request->getParam('action') === 'forgotpass' || $request->getParam('action') === 'register')
+        ) {
+            return true;
+        }
+
         if ($identity) {
             if ($identity->getOriginalData()->role == 'admin') {
                 return true;

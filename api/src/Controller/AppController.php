@@ -55,6 +55,6 @@ class AppController extends Controller
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
 
-        $this->permissions = ['role' => $this->Authentication->getIdentity()->role];
+        $this->permissions = ['role' => $this->Authentication->getIdentity()->role ?? ''];
     }
 }
