@@ -1,29 +1,19 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import axios from 'axios'
-  import { useStore } from '../store'
 
   const props = defineProps({
     button: { type: String, required: true },
     showPass: { type: Boolean, default: true },
   })
 
-  const store = useStore()
+  const emit = defineEmits<{
+    (e: 'formSubmit', data: {}): void
+  }>()
+
   const email = ref('')
   const pass = ref('')
-  const login = () => {
-    axios
-      .post(`${import.meta.env.VITE_APP_API_URL}users/login.json`, {
-        email: email.value,
-        password: pass.value,
-      })
-      .then(res => {
-        store.user = res.data
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }
+  const login = () =>
+    emit('formSubmit', { email: email.value, pass: pass.value })
 </script>
 
 <template>
