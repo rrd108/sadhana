@@ -18,6 +18,11 @@ const routes = [
     component: () => import('/src/pages/Leaderboard.vue'),
   },
   {
+    path: '/pass-reset/:userId/:tempPass',
+    name: 'PassReset',
+    component: () => import('/src/pages/PassReset.vue'),
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import('/src/pages/Register.vue'),

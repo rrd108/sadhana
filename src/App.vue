@@ -6,6 +6,7 @@
   import Login from '@/pages/Login.vue'
   import Register from '@/pages/Register.vue'
   import ForgotPass from '@/pages/ForgotPass.vue'
+  import PassReset from '@/pages/PassReset.vue'
 
   const store = useStore()
   const route = useRoute()
@@ -15,8 +16,9 @@
   <div class="app">
     <div v-if="!store.user.id">
       <Login v-if="route.path == '/'" />
-      <Register v-if="route.path == '/register'" />
-      <ForgotPass v-if="route.path == '/forgot-pass'" />
+      <Register v-if="route.name == 'Register'" />
+      <ForgotPass v-if="route.name == 'ForgotPass'" />
+      <PassReset v-if="route.name == 'PassReset'" />
     </div>
     <div v-if="store.user.id">
       <AppHeader />

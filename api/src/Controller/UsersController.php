@@ -20,13 +20,14 @@ class UsersController extends AppController
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Authentication->allowUnauthenticated(['login', 'forgotpass', 'register']);
+        $this->Authentication->allowUnauthenticated(['login', 'forgotpass', 'passreset', 'register']);
     }
 
     public function login()
     {
         $result = $this->Authentication->getResult();
         if (!$result->isValid()) {
+            // try to login with the forgot password
             throw new JsonApiException(null, 'Invalid login');
             return;
         }
@@ -36,7 +37,7 @@ class UsersController extends AppController
         $user = $userIdentity->getOriginalData();
         list($user->token, $user->token_expiration) = $this->generateToken();
         $user->last_login = Chronos::now();
-        $user->forgotpass = null;
+        $user->forgotPass = null;
         $user = $this->Users->save($user);
 
         $this->set(compact('user'));
@@ -109,7 +110,7 @@ class UsersController extends AppController
         }
     }
 
-    public function forgotpass()
+    public function forgotpass($userId = null, $tempPass = null)
     {
         if ($this->request->is('post')) {
             $user = $this->Users->find()
@@ -127,14 +128,31 @@ class UsersController extends AppController
             $mailer->setFrom(['forgotpass@sadhana.krisna.hu' => 'Sadhana'])
                 ->setTo($user->email)
                 ->setSubject('Sadhana elfelejtett jelszó')
-                ->deliver('Gauranga @' . strtok($user->email, '@') . '!<br><br>Az új jelszavad: ' . $user->forgotPass . '<br><br>Üdvözlettel,<br>Sadhana');
+                ->deliver('Gauranga @' . strtok($user->email, '@') . '!<br><br>Új jelszó létrehozásához kattints <a href="https://sadhana.1108.cc/pass-reset/' . $user->id . '/' . $user->forgotPass . '">ide</a><br><br>Üdvözlettel,<br>Sadhana');
 
             $result = [
-                'message' => 'Your temporary password is sent to your email.',
+                'message' => 'You got an email how to log in.',
                 'success' => true
             ];
             $this->set(compact('result'));
             $this->viewBuilder()->setOption('serialize', ['result']);
+        }
+    }
+
+    public function passreset()
+    {
+        if ($this->request->is('patch')) {
+            $user = $this->Users->find()
+                ->where(['id' => $this->request->getData('id'), 'forgotPass' => $this->request->getData('tempPass')])
+                ->firstOrFail();
+
+            $user->forgotPass = null;
+            $user->password = $this->request->getData('pass');
+            $user = $this->Users->save($user);
+
+            $success = true;
+            $this->set(compact('success'));
+            $this->viewBuilder()->setOption('serialize', ['success']);
         }
     }
 }

@@ -33,6 +33,7 @@ class User extends Entity
     protected $_accessible = [
         'email' => true,
         'password' => true,
+        'forgotpass' => true,
         'token' => true,
         'token_expiration' => true,
         'last_login' => true,
@@ -45,7 +46,7 @@ class User extends Entity
      *
      * @var array<string>
      */
-    protected $_hidden = ['password'];
+    protected $_hidden = ['password', 'forgotpass'];
 
     protected function _setPassword(string $password)
     {

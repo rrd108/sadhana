@@ -1,34 +1,34 @@
 <script setup lang="ts">
   import axios from 'axios'
+  import { useRoute, useRouter } from 'vue-router'
   import { useToast } from 'vue-toastification'
-  import { useRouter } from 'vue-router'
   import LoginForm from '@/components/LoginForm.vue'
   import LoginFooter from '@/components/LoginFooter.vue'
 
+  const route = useRoute()
   const router = useRouter()
   const toast = useToast()
 
-  const forgotpass = (data: { email: string }) =>
+  const passReset = (data: { pass: string }) => {
     axios
-      .post(`${import.meta.env.VITE_APP_API_URL}users/forgotpass.json`, {
-        email: data.email,
+      .patch(`${import.meta.env.VITE_APP_API_URL}users/passreset.json`, {
+        id: route.params.userId,
+        tempPass: route.params.tempPass,
+        pass: data.pass,
       })
       .then(res => {
-        toast.success('Emailben elküldtük, hogy tudsz bejelentkezni!')
+        toast.success('A jelszó frissítve, jelentkezz be!')
         router.push('/')
       })
       .catch(err => {
         console.error(err)
       })
+  }
 </script>
 
 <template>
   <section>
-    <LoginForm
-      button="Jelszó emlékeztető"
-      :showPass="false"
-      @formSubmit="forgotpass"
-    />
+    <LoginForm button="Jelszó módosítás" passConfirm @formSubmit="passReset" />
     <LoginFooter />
   </section>
 </template>

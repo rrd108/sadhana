@@ -18,9 +18,14 @@ class RequestPolicy implements RequestPolicyInterface
      */
     public function canAccess($identity, ServerRequest $request)
     {
+        $allowedActions = [
+            'login',
+            'forgotpass',
+            'passreset',
+            'register',
+        ];
         if (
-            $request->getParam('controller') === 'Users'
-            && ($request->getParam('action') === 'forgotpass' || $request->getParam('action') === 'register')
+            $request->getParam('controller') === 'Users' && in_array($request->getParam('action'), $allowedActions)
         ) {
             return true;
         }

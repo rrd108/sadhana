@@ -4,6 +4,7 @@
   const props = defineProps({
     button: { type: String, required: true },
     showPass: { type: Boolean, default: true },
+    passConfirm: { type: Boolean, default: false },
   })
 
   const emit = defineEmits<{
@@ -12,6 +13,8 @@
 
   const email = ref('')
   const pass = ref('')
+  const pass_confirm = ref('')
+
   const login = () =>
     emit('formSubmit', { email: email.value, pass: pass.value })
 </script>
@@ -19,10 +22,15 @@
 <template>
   <img alt="Sadhana" src="@/assets/logo.png" />
   <form @submit.prevent="login">
-    <label for="email">Email</label>
-    <input type="email" v-model="email" />
+    <label for="email" v-if="!passConfirm">Email</label>
+    <input type="email" v-if="!passConfirm" v-model="email" />
+
     <label for="password" v-if="showPass">Password</label>
     <input type="password" v-if="showPass" v-model="pass" />
+
+    <label for="pass_confirm" v-if="passConfirm">Password újra</label>
+    <input type="password" v-if="passConfirm" v-model="pass_confirm" />
+
     <input type="submit" :value="button" />
   </form>
 </template>
