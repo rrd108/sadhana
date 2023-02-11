@@ -13,9 +13,9 @@ const routes = [
     component: () => import('/src/pages/Stat.vue'),
   },
   {
-    path: '/tab',
-    name: 'Tab',
-    component: () => import('/src/pages/Tab.vue'),
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component: () => import('/src/pages/Leaderboard.vue'),
   },
 ]
 

@@ -3,7 +3,7 @@
 <template>
   <footer>
     <nav>
-      <router-link to="/tab"
+      <router-link to="/leaderboard"
         ><font-awesome-icon icon="gauge-high"
       /></router-link>
       <router-link to="/"><font-awesome-icon icon="circle-plus" /></router-link>
