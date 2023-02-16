@@ -74,17 +74,32 @@
         sadhanaData.value.japa.reduce(
           (a, b) => (isNaN(parseInt(b[1])) ? 0 : a + parseFloat(b[1])),
           0
-        ) / 7,
+        ) /
+        sadhanaData.value.japa.reduce(
+          (count, b) =>
+            !isNaN(parseInt(b[1])) && parseInt(b[1]) > 0 ? count + 1 : count,
+          0
+        ),
       templeProgram:
         sadhanaData.value.templeProgram.reduce(
           (a, b) => (isNaN(parseInt(b[1])) ? 0 : a + parseFloat(b[1])),
           0
-        ) / 7,
+        ) /
+        sadhanaData.value.templeProgram.reduce(
+          (count, b) =>
+            !isNaN(parseInt(b[1])) && parseInt(b[1]) > 0 ? count + 1 : count,
+          0
+        ),
       brahmana:
         sadhanaData.value.brahmana.reduce(
           (a, b) => (isNaN(parseInt(b[1])) ? 0 : a + parseFloat(b[1])),
           0
-        ) / 7,
+        ) /
+        sadhanaData.value.brahmana.reduce(
+          (count, b) =>
+            !isNaN(parseInt(b[1])) && parseInt(b[1]) > 0 ? count + 1 : count,
+          0
+        ),
     },
     min: {
       japa: Math.min(
