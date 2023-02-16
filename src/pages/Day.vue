@@ -86,37 +86,36 @@
     }
     if (isIdle && points.value) {
       if (pointsChanged.value || dateChanged.value) {
-        pointsChanged.value = false
-        dateChanged.value = false
-        const method = bhakti.value.id ? 'patch' : 'post'
-        const id = bhakti.value.id ? `/${bhakti.value.id}` : ''
-        axios[method](
-          `${import.meta.env.VITE_APP_API_URL}sadhanas${id}.json`,
-          { date: date.value, ...bhakti.value },
-          store.tokenHeader
-        )
-          .then(res => {
-            bhakti.value = res.data
-            toast.success('Mentve')
-          })
-          .catch(err => {
-            console.error(err)
-            toast.error('Mentési hiba')
-          })
+        saveData()
       }
     }
   })
 
+  const saveData = () => {
+    pointsChanged.value = false
+    dateChanged.value = false
+    const method = bhakti.value.id ? 'patch' : 'post'
+    const id = bhakti.value.id ? `/${bhakti.value.id}` : ''
+    axios[method](
+      `${import.meta.env.VITE_APP_API_URL}sadhanas${id}.json`,
+      { date: date.value, ...bhakti.value },
+      store.tokenHeader
+    )
+      .then(res => {
+        bhakti.value = res.data
+        toast.success('Mentve')
+      })
+      .catch(err => {
+        console.error(err)
+        toast.error('Mentési hiba')
+      })
+  }
+
   onBeforeRouteLeave((to, from, next) => {
     if (pointsChanged.value || dateChanged.value) {
-      if (confirm('Nem mentettél. Biztosan el akarsz menni?')) {
-        next()
-      } else {
-        next(false)
-      }
-    } else {
-      next()
+      saveData()
     }
+    next()
   })
 </script>
 
