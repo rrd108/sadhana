@@ -4,6 +4,7 @@
   import axios from 'axios'
   import { useToast } from 'vue-toastification'
   import { useStore } from '../store'
+  import { onBeforeRouteLeave } from 'vue-router'
 
   const store = useStore()
 
@@ -103,6 +104,18 @@
             toast.error('Mentési hiba')
           })
       }
+    }
+  })
+
+  onBeforeRouteLeave((to, from, next) => {
+    if (pointsChanged.value || dateChanged.value) {
+      if (confirm('Nem mentettél. Biztosan el akarsz menni?')) {
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next()
     }
   })
 </script>
