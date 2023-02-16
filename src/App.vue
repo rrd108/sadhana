@@ -57,6 +57,6 @@
 
   .fade-slide-enter-active,
   .fade-slide-leave-active {
-    transition: opacity 0.5s;
+    transition: opacity 350ms;
   }
 </style>
