@@ -3,10 +3,7 @@
   import axios from 'axios'
   import { useStore } from '../store'
   import { GChart } from 'vue-google-charts'
-  import dayjs from 'dayjs'
-  import weekOfYear from 'dayjs/plugin/weekOfYear'
-
-  dayjs.extend(weekOfYear)
+  import { today, todayWeekNumber } from '../composables/getDateData'
 
   const store = useStore()
 
@@ -17,11 +14,9 @@
     brahmana: [[...emptyData]],
   })
 
-  const currentDate = dayjs()
-  const weekNumber = currentDate.week()
   const week = ref(
-    `${currentDate.format('YYYY')}-W${
-      weekNumber < 10 ? `0${weekNumber}` : weekNumber
+    `${today.getFullYear()}-W${
+      todayWeekNumber < 10 ? `0${todayWeekNumber}` : todayWeekNumber
     }`
   )
 

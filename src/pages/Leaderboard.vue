@@ -2,23 +2,13 @@
   import { ref } from 'vue'
   import axios from 'axios'
   import { useStore } from '../store'
-  import dayjs from 'dayjs'
-  import 'dayjs/locale/hu'
-  import weekOfYear from 'dayjs/plugin/weekOfYear'
-  import updateLocale from 'dayjs/plugin/updateLocale'
-
-  dayjs.extend(updateLocale)
-  dayjs.extend(weekOfYear)
-  dayjs.locale('hu')
-  dayjs.updateLocale('en', { weekStart: 1 }) // shoud be 1 for have Monday in the Huna cal
+  import { today, todayWeekNumber } from '../composables/getDateData'
 
   const store = useStore()
 
-  const currentDate = dayjs()
-  const weekNumber = currentDate.week()
   const week = ref(
-    `${currentDate.format('YYYY')}-W${
-      weekNumber < 10 ? `0${weekNumber}` : weekNumber
+    `${today.getFullYear()}-W${
+      todayWeekNumber < 10 ? `0${todayWeekNumber}` : todayWeekNumber
     }`
   )
 
