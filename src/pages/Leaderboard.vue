@@ -28,17 +28,19 @@
 </script>
 
 <template>
-  <h1><input type="week" v-model="week" @change="getStat" /></h1>
-  <ul>
-    <li
-      v-for="(user, i) in list"
-      :class="{ me: user.user == store.user.email }"
-    >
-      <span>{{ i + 1 }}</span>
-      <span>{{ user.user.split('@')[0] }}</span>
-      <span class="right">{{ user.points }}</span>
-    </li>
-  </ul>
+  <section>
+    <h1><input type="week" v-model="week" @change="getStat" /></h1>
+    <ul>
+      <li
+        v-for="(user, i) in list"
+        :class="{ me: user.user == store.user.email }"
+      >
+        <span>{{ i + 1 }}</span>
+        <span>{{ user.user.split('@')[0] }}</span>
+        <span class="right">{{ user.points }}</span>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <style scoped>

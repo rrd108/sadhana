@@ -22,7 +22,13 @@
     </div>
     <div v-if="store.user.id">
       <AppHeader />
-      <main><router-view /></main>
+      <main>
+        <router-view v-slot="{ Component }">
+          <transition name="fade-slide" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </main>
       <AppFooter />
     </div>
   </div>
@@ -42,5 +48,15 @@
   main {
     min-height: 80vh;
     padding: 10vh 1em;
+  }
+
+  .fade-slide-enter-from,
+  .fade-slide-leave-to {
+    opacity: 0;
+  }
+
+  .fade-slide-enter-active,
+  .fade-slide-leave-active {
+    transition: opacity 0.5s;
   }
 </style>

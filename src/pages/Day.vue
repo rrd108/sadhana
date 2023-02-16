@@ -112,7 +112,7 @@
   }
 
   onBeforeRouteLeave((to, from, next) => {
-    if (pointsChanged.value || dateChanged.value) {
+    if (points.value && (pointsChanged.value || dateChanged.value)) {
       saveData()
     }
     next()

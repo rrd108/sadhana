@@ -139,82 +139,84 @@
 </script>
 
 <template>
-  <h1><input type="week" v-model="week" @change="getStat" /></h1>
-  <div class="title">
-    <h2>Japa</h2>
-    <h3>
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.min.japa
-        )
-      }}
-      /
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.avg.japa
-        )
-      }}
-      /
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.max.japa
-        )
-      }}
-    </h3>
-  </div>
-  <GChart type="AreaChart" :data="sadhanaData.japa" :options="options" />
+  <section>
+    <h1><input type="week" v-model="week" @change="getStat" /></h1>
+    <div class="title">
+      <h2>Japa</h2>
+      <h3>
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.min.japa
+          )
+        }}
+        /
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.avg.japa
+          )
+        }}
+        /
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.max.japa
+          )
+        }}
+      </h3>
+    </div>
+    <GChart type="AreaChart" :data="sadhanaData.japa" :options="options" />
 
-  <div class="title">
-    <h2>Templomi program</h2>
-    <h3>
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.min.templeProgram
-        )
-      }}
-      /
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.avg.templeProgram
-        )
-      }}
-      /
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.max.templeProgram
-        )
-      }}
-    </h3>
-  </div>
-  <GChart
-    type="AreaChart"
-    :data="sadhanaData.templeProgram"
-    :options="options"
-  />
+    <div class="title">
+      <h2>Templomi program</h2>
+      <h3>
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.min.templeProgram
+          )
+        }}
+        /
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.avg.templeProgram
+          )
+        }}
+        /
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.max.templeProgram
+          )
+        }}
+      </h3>
+    </div>
+    <GChart
+      type="AreaChart"
+      :data="sadhanaData.templeProgram"
+      :options="options"
+    />
 
-  <div class="title">
-    <h2>Brahmana</h2>
-    <h3>
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.min.brahmana
-        )
-      }}
-      /
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.avg.brahmana
-        )
-      }}
-      /
-      {{
-        Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
-          info.max.brahmana
-        )
-      }}
-    </h3>
-  </div>
-  <GChart type="AreaChart" :data="sadhanaData.brahmana" :options="options" />
+    <div class="title">
+      <h2>Brahmana</h2>
+      <h3>
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.min.brahmana
+          )
+        }}
+        /
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.avg.brahmana
+          )
+        }}
+        /
+        {{
+          Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+            info.max.brahmana
+          )
+        }}
+      </h3>
+    </div>
+    <GChart type="AreaChart" :data="sadhanaData.brahmana" :options="options" />
+  </section>
 </template>
 
 <style scoped>
