@@ -3,8 +3,10 @@
   import LoginFooter from '@/components/LoginFooter.vue'
   import axios from 'axios'
   import { useStore } from '../store'
+  import { useToast } from 'vue-toastification'
 
   const store = useStore()
+  const toast = useToast()
 
   const login = (data: { email: string; pass: string }) =>
     axios
@@ -16,7 +18,7 @@
         store.user = res.data
       })
       .catch(err => {
-        console.error(err)
+        toast.error(err.response.data.message)
       })
 </script>
 

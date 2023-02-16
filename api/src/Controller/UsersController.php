@@ -28,7 +28,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         if (!$result->isValid()) {
             // try to login with the forgot password
-            throw new JsonApiException(null, 'Invalid login');
+            throw new JsonApiException(null, 'Az emailcím vagy a jelszó nem megfelelő');
             return;
         }
 
