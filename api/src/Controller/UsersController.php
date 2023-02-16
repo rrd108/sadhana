@@ -39,6 +39,7 @@ class UsersController extends AppController
         $user->last_login = Chronos::now();
         $user->forgotPass = null;
         $user = $this->Users->save($user);
+        $user = $this->Users->get($user->id, ['contain' => ['Badges']]);
 
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', 'user');

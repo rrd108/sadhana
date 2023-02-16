@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -44,6 +45,12 @@ class UsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsToMany('Badges', [
+            'foreignKey' => 'user_id',
+            'targetForeignKey' => 'badge_id',
+            'joinTable' => 'badges_users',
+        ]);
     }
 
     /**

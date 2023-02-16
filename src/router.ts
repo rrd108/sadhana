@@ -8,6 +8,11 @@ const routes = [
     component: Day,
   },
   {
+    path: '/badges',
+    name: 'Badges',
+    component: () => import('/src/pages/Badges.vue'),
+  },
+  {
     path: '/forgot-pass',
     name: 'ForgotPass',
     component: () => import('/src/pages/ForgotPass.vue'),

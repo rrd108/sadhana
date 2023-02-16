@@ -74,6 +74,7 @@ return static function (RouteBuilder $routes) {
          * routes you want in your application.
          */
 
+        $builder->resources('BadgesUsers');
         $builder->resources('Users');
         $builder->resources('Sadhanas');
 

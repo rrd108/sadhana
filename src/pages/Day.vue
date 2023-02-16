@@ -112,7 +112,6 @@
   }
 
   onBeforeRouteLeave((to, from, next) => {
-    console.log('before route leave')
     if (!initialData && (pointsChanged.value || dateChanged.value)) {
       saveData()
     }

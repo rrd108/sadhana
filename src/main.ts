@@ -13,9 +13,10 @@ import {
   faChartPie,
   faCirclePlus,
   faGaugeHigh,
+  faShieldHeart,
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faChartPie, faCirclePlus, faGaugeHigh)
+library.add(faChartPie, faCirclePlus, faGaugeHigh, faShieldHeart)
 
 const pinia = createPinia()
 
