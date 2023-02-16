@@ -48,14 +48,16 @@
       >
         <h2>{{ badge.name }}</h2>
         <img :src="getImagePath(badge.icon)" />
-        <h3>{{ badge.level }}. szint</h3>
+        <h3 v-if="badge.level">{{ badge.level }}. szint</h3>
+        <h3 v-if="!badge.level">{{ badge._joinData.created }}</h3>
       </li>
     </ul>
 
     <div v-if="selectedBadge.id" class="center" @click="hide">
       <h2>{{ selectedBadge.name }}</h2>
       <img :src="getImagePath(selectedBadge.icon)" />
-      <h3>{{ selectedBadge.level }}. szint</h3>
+      <h3 v-if="selectedBadge.level">{{ selectedBadge.level }}. szint</h3>
+      <h3 v-if="!selectedBadge.level">{{ selectedBadge._joinData.created }}</h3>
       <p>{{ selectedBadge.description }}</p>
       <small>{{ selectedBadge._joinData.created }}</small>
     </div>
