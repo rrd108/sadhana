@@ -128,17 +128,10 @@ class SadhanasController extends AppController
         $startDate = new FrozenDate($weekNumber);
         $endDate = $startDate->addDays(6);
 
-        $sadhanas = $this->Sadhanas->find()->contain(['Users']);
-        $sadhanaData = Configure::read('sadhana');
-        $sadhanas->select([
-            'user' => 'Users.email',
-            'points'  => $sadhanas->func()->sum('japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight'] . ' + mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati'] . ' + reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + murtiseva * ' . $sadhanaData['murtiseva']),
-        ])
-            ->where([
-                'date >=' => $startDate,
-                'date <=' => $endDate,
-            ])->group('user_id')
-            ->order(['points' => 'DESC']);
+        $sadhanas = $this->Sadhanas->find('stats')->where([
+            'date >=' => $startDate,
+            'date <=' => $endDate,
+        ]);
 
         $this->set(compact('sadhanas'));
         $this->viewBuilder()->setOption('serialize', 'sadhanas')

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Core\Configure;
+use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 /**
@@ -123,5 +124,18 @@ class SadhanasTable extends Table
         $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
         $rules->add($rules->isUnique(['user_id', 'date'], 'Sadhana entry is already in the database.'));
         return $rules;
+    }
+
+    public function findStats(Query $query, array $options)
+    {
+        $sadhanaData = Configure::read('sadhana');
+
+        return $query->select([
+            'userId' => 'Users.id',
+            'user' => 'Users.email',
+            'points'  => $query->func()->sum('japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight'] . ' + mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati'] . ' + reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + murtiseva * ' . $sadhanaData['murtiseva']),
+        ])->contain(['Users'])
+            ->group('user_id')
+            ->order(['points' => 'DESC']);
     }
 }
