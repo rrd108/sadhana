@@ -72,13 +72,13 @@ class BadgeDistributorCommand extends Command
         $this->io->out('Distributing badges for the week ' . $dateStart . ' to ' . $dateEnd);
 
         foreach ($this->badges as $badge) {
-            if ($badge->field == 'all' && $badge->base = 'count') {
+            if ($badge->goal === 0 && $badge->base = 'count') {
                 $this->io->out('<error>TODO not implemented see #18</error>');
             }
-            if ($badge->field == 'all' && $badge->base = 'point') {
+            if ($badge->goal === 0 && $badge->base = 'point') {
                 $sadhanas = $this->sadhanasTable->find()
                     ->where(['Sadhanas.date >=' => $dateStart, 'Sadhanas.date <=' => $dateEnd]);
-                $gainedBy = $sadhanas->find('stats');
+                $gainedBy = $sadhanas->find('points', ['elements' => $badge->field]);
                 $data = [
                     'badge_id' => $badge->id,
                     'user_id' => $gainedBy->first()->user_id,
@@ -107,7 +107,7 @@ class BadgeDistributorCommand extends Command
                 ->where(['badge_id' => $badge->id])
                 ->select(['user_id']);
 
-            if ($badge->field != 'all' && $badge->base == 'count') {
+            if ($badge->goal && $badge->base == 'count') {
                 $gainedBy = $sadhanas->find('all')
                     ->select(['user_id', 'count' => $sadhanas->func()->sum($badge->field)])
                     ->where(['user_id NOT IN' => $usersAlreadyGained])
@@ -115,7 +115,7 @@ class BadgeDistributorCommand extends Command
                     ->having(['count >=' => $badge->goal]);
                 $this->saveBadge($gainedBy, $badge);
             }
-            if ($badge->field != 'all' && $badge->base == 'point') {
+            if ($badge->goal && $badge->base == 'point') {
                 $gainedBy = $sadhanas->find('points', ['elements' => $badge->field])
                     ->where(['user_id NOT IN' => $usersAlreadyGained])
                     ->group('user_id')
