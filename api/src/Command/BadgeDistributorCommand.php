@@ -73,7 +73,7 @@ class BadgeDistributorCommand extends Command
 
         foreach ($this->badges as $badge) {
             if ($badge->field == 'all' && $badge->base = 'count') {
-                // TODO
+                $this->io->out('<error>TODO not implemented see #18</error>');
             }
             if ($badge->field == 'all' && $badge->base = 'point') {
                 $sadhanas = $this->sadhanasTable->find()
