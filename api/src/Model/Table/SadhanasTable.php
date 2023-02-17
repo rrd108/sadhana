@@ -126,14 +126,29 @@ class SadhanasTable extends Table
         return $rules;
     }
 
-    public function findStats(Query $query, array $options)
+    public function findPoints(Query $query, array $options)
     {
         $sadhanaData = Configure::read('sadhana');
 
+        $fields = '';
+        if ($options['elements'] != 'all') {
+            $fieldsArray = explode('+', $options['elements']);
+
+            foreach ($fieldsArray as $_field) {
+                $fields .= $_field . ' * ' . $sadhanaData[$_field] . ' +';
+            }
+            // cut the last added + sign from $fields
+            $fields = substr($fields, 0, -1);
+        }
+
+        if ($options['elements'] == 'all') {
+            $fields = 'japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight'] . ' + mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati'] . ' + reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + murtiseva * ' . $sadhanaData['murtiseva'];
+        }
+
         return $query->select([
-            'userId' => 'Users.id',
+            'Sadhanas.user_id',
             'user' => 'Users.email',
-            'points'  => $query->func()->sum('japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight'] . ' + mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati'] . ' + reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + murtiseva * ' . $sadhanaData['murtiseva']),
+            'points'  => $query->func()->sum($fields),
         ])->contain(['Users'])
             ->group('user_id')
             ->order(['points' => 'DESC']);

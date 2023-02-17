@@ -4,56 +4,141 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Cake\Core\Configure;
+use Cake\ORM\Query;
+use Cake\ORM\Entity;
 use Cake\Command\Command;
+use Cake\I18n\FrozenDate;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleOptionParser;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 class BadgeDistributorCommand extends Command
 {
     use LocatorAwareTrait;
 
+    protected $badgesTable;
+    protected $badgesUsersTable;
+    protected $sadhanasTable;
+    protected $io;
+    protected $today;
+    protected $badges;
+
+    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    {
+        $parser = parent::buildOptionParser($parser);
+
+        $parser->addOption('type', [
+            'short' => 't',
+            'help' => 'Type of badges to distribute',
+            'required' => true,
+            'choices' => ['day', 'week'],
+        ]);
+
+        return $parser;
+    }
+
+
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        Configure::load('sadhana', 'default', false);
-        $sadhanaCalculation = Configure::read('sadhana');
+        $this->badgesTable = $this->fetchTable('Badges');
+        $this->badgesUsersTable = $this->fetchTable('BadgesUsers');
+        $this->sadhanasTable = $this->fetchTable('Sadhanas');
 
-        $dateStart = '2023-02-06';  // TODO
-        $dateEnd = '2023-02-16';    // TODO
+        $this->io = $io;
 
-        $badgesTable = $this->fetchTable('Badges');
-        $badgesUsersTable = $this->fetchTable('BadgesUsers');
-        $sadhanasTable = $this->fetchTable('Sadhanas');
+        $this->io->setStyle('warn', ['background' => 'red']);
+        $this->io->setStyle('info', ['background' => 'blue']);
+        $this->io->setStyle('ok', ['background' => 'green', 'text' => 'black']);
 
-        $io->setStyle('warn', ['background' => 'red']);
-        $io->setStyle('info', ['background' => 'blue']);
-        $io->setStyle('ok', ['background' => 'green', 'text' => 'black']);
+        FrozenDate::setDefaultLocale('hu-HU');
+        $this->today = new FrozenDate();
 
-        $io->out('Distributing badges for the period ' . $dateStart . ' to ' . $dateEnd);
-        $badges = $badgesTable->find();
+        $this->badges = $this->badgesTable->find();
 
-        $sadhanas = $sadhanasTable->find()
-            ->where(['date >=' => $dateStart, 'date <=' => $dateEnd]);
+        if ($args->getOption('type') == 'week') {
+            $this->mondayMorning();
+        }
+        if ($args->getOption('type') == 'day') {
+            $this->everyMorning();
+        }
+    }
 
-        foreach ($badges as $badge) {
+    public function mondayMorning()
+    {
+        $dateStart = $this->today->startOfWeek();
+        $dateEnd = $this->today->endOfWeek();
+
+        $this->io->out('Distributing badges for the week ' . $dateStart . ' to ' . $dateEnd);
+
+        foreach ($this->badges as $badge) {
+            if ($badge->field == 'all' && $badge->base = 'count') {
+                // TODO
+            }
             if ($badge->field == 'all' && $badge->base = 'point') {
+                $sadhanas = $this->sadhanasTable->find()
+                    ->where(['Sadhanas.date >=' => $dateStart, 'Sadhanas.date <=' => $dateEnd]);
                 $gainedBy = $sadhanas->find('stats');
                 $data = [
                     'badge_id' => $badge->id,
-                    'user_id' => $gainedBy->first()->userId,
+                    'user_id' => $gainedBy->first()->user_id,
                 ];
-                $badgeUser = $badgesUsersTable->newEntity($data);
-                if ($badgesUsersTable->save($badgeUser)) {
-                    $io->out('<ok>Badge ' . $badge->name . ' given to user.</ok>');
+                $badgeUser = $this->badgesUsersTable->newEntity($data);
+                if ($this->badgesUsersTable->save($badgeUser)) {
+                    $this->io->out('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->first()->user . '.</ok>');
                 } else {
-                    $io->out('<error>Badge ' . $badge->name . ' could not be given to user.</error>');
+                    $this->io->out('<error>Badge ' . $badge->name . ' could not be given to user.</error>');
                 }
             }
+        }
+    }
 
-            if ($badge->field != 'all') {
-                $fields = explode('+', $badge->field);
+    public function everyMorning()
+    {
+        $this->io->out('Distributing badges for ' . $this->today->subDay());
+
+        // these badges can be gained only ones
+        foreach ($this->badges as $badge) {
+
+            $sadhanas = $this->sadhanasTable->find()
+                ->where(['Sadhanas.date <=' => $this->today->subDay()]);
+
+            $usersAlreadyGained = $this->badgesUsersTable->find()
+                ->where(['badge_id' => $badge->id])
+                ->select(['user_id']);
+
+            if ($badge->field != 'all' && $badge->base == 'count') {
+                $gainedBy = $sadhanas->find('all')
+                    ->select(['user_id', 'count' => $sadhanas->func()->sum($badge->field)])
+                    ->where(['user_id NOT IN' => $usersAlreadyGained])
+                    ->group('user_id')
+                    ->having(['count >=' => $badge->goal]);
+                $this->saveBadge($gainedBy, $badge);
             }
+            if ($badge->field != 'all' && $badge->base == 'point') {
+                $gainedBy = $sadhanas->find('points', ['elements' => $badge->field])
+                    ->where(['user_id NOT IN' => $usersAlreadyGained])
+                    ->group('user_id')
+                    ->having(['points >=' => $badge->goal]);
+                $this->saveBadge($gainedBy, $badge);
+            }
+        }
+    }
+
+    private function saveBadge(Query $gainedBy, Entity $badge)
+    {
+        $data = [];
+        foreach ($gainedBy as $user) {
+            $data[] = [
+                'badge_id' => $badge->id,
+                'user_id' => $user->user_id,
+            ];
+        }
+        $badgeUsers = $this->badgesUsersTable->newEntities($data);
+        if ($this->badgesUsersTable->saveMany($badgeUsers)) {
+            $this->io->out('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->count() . ' users.</ok>');
+        } else {
+            $this->io->out('<error>Badge ' . $badge->name . ' could not be given to any users.</error>');
         }
     }
 }

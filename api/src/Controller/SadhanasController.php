@@ -128,7 +128,7 @@ class SadhanasController extends AppController
         $startDate = new FrozenDate($weekNumber);
         $endDate = $startDate->addDays(6);
 
-        $sadhanas = $this->Sadhanas->find('stats')->where([
+        $sadhanas = $this->Sadhanas->find('points', ['elements' => 'all'])->where([
             'date >=' => $startDate,
             'date <=' => $endDate,
         ]);
