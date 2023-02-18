@@ -10,6 +10,11 @@ SSH_USER=$1
 SSH_HOST=$2
 SSH_PATH='../../web/'
 
+if ! echo "$SSH_USER" | grep -q "dhan"; then
+	echo -e "${RED}The SSH_USER seems to be different then the required${NC}"
+    exit 1
+fi
+
 PREV_STEP=1
 
 # echo $'\n' "Running Backend Tests" $'\n'
