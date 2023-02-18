@@ -377,6 +377,14 @@ return [
             'url' => env('LOG_QUERIES_URL', null),
             'scopes' => ['queriesLog'],
         ],
+        'badgeDistribution' => [
+            'className' => FileLog::class,
+            'path' => LOGS,
+            'file' => 'badgeDistribution-' . date('ymd'),
+            'url' => env('LOG_DEBUG_URL', null),
+            'scopes' => ['badgeDistribution'],
+            'levels' => [],
+        ],
     ],
 
     /*

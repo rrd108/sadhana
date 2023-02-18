@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\Entity;
 use Cake\Command\Command;
@@ -23,6 +24,7 @@ class BadgeDistributorCommand extends Command
     protected $io;
     protected $today;
     protected $badges;
+    protected $log = false;
 
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
@@ -35,12 +37,26 @@ class BadgeDistributorCommand extends Command
             'choices' => ['day', 'week'],
         ]);
 
+        $parser->addOption('log', [
+            'short' => 'l',
+            'help' => 'write log file',
+            'boolean' => true,
+        ]);
+
         return $parser;
     }
 
+    private function logger(string $message)
+    {
+        if ($this->log) {
+            Log::debug($message, 'badgeDistribution');
+        }
+        $this->io->out($message);
+    }
 
     public function execute(Arguments $args, ConsoleIo $io)
     {
+        $this->log = $args->getOption('log');
         $this->badgesTable = $this->fetchTable('Badges');
         $this->badgesUsersTable = $this->fetchTable('BadgesUsers');
         $this->sadhanasTable = $this->fetchTable('Sadhanas');
@@ -62,6 +78,14 @@ class BadgeDistributorCommand extends Command
         if ($args->getOption('type') == 'day') {
             $this->everyMorning();
         }
+
+        /*TODO
+        $mailer = new Mailer('default');
+            $logContent = file_get_contents(LOGS . 'mkb-' . date('ymd') . '.log');
+            $mailer->setFrom(['notifications@laksmi3.1108.cc' => 'Laksmi Notification'])
+                ->setTo('rrd@1108.cc')
+                ->setSubject('Laksmi MKB Import értesítés')
+                ->deliver($logContent);*/
     }
 
     public function mondayMorning()
@@ -69,13 +93,13 @@ class BadgeDistributorCommand extends Command
         $dateStart = $this->today->startOfWeek();
         $dateEnd = $this->today->endOfWeek();
 
-        $this->io->out('Distributing badges for the week ' . $dateStart . ' to ' . $dateEnd);
+        $this->logger('Distributing badges for the week ' . $dateStart . ' to ' . $dateEnd);
 
         foreach ($this->badges as $badge) {
-            if ($badge->goal === 0 && $badge->base = 'count') {
-                $this->io->out('<error>TODO not implemented see #18</error>');
+            if ($badge->level === 0 && $badge->base = 'count') {
+                $this->logger('<warn>TODO not implemented see #18</warn>');
             }
-            if ($badge->goal === 0 && $badge->base = 'point') {
+            if ($badge->level === 0 && $badge->base = 'point') {
                 $sadhanas = $this->sadhanasTable->find()
                     ->where(['Sadhanas.date >=' => $dateStart, 'Sadhanas.date <=' => $dateEnd]);
                 $gainedBy = $sadhanas->find('points', ['elements' => $badge->field]);
@@ -85,9 +109,9 @@ class BadgeDistributorCommand extends Command
                 ];
                 $badgeUser = $this->badgesUsersTable->newEntity($data);
                 if ($this->badgesUsersTable->save($badgeUser)) {
-                    $this->io->out('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->first()->user . '.</ok>');
+                    $this->logger('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->first()->user . '.</ok>');
                 } else {
-                    $this->io->out('<error>Badge ' . $badge->name . ' could not be given to user.</error>');
+                    $this->logger('<info>Badge ' . $badge->name . ' could not be given to user.</info>');
                 }
             }
         }
@@ -95,7 +119,7 @@ class BadgeDistributorCommand extends Command
 
     public function everyMorning()
     {
-        $this->io->out('Distributing badges for ' . $this->today->subDay());
+        $this->logger('Distributing badges for ' . $this->today->subDay());
 
         // these badges can be gained only ones
         foreach ($this->badges as $badge) {
@@ -107,7 +131,7 @@ class BadgeDistributorCommand extends Command
                 ->where(['badge_id' => $badge->id])
                 ->select(['user_id']);
 
-            if ($badge->goal && $badge->base == 'count') {
+            if ($badge->level && $badge->base == 'count') {
                 $gainedBy = $sadhanas->find('all')
                     ->select(['user_id', 'count' => $sadhanas->func()->sum($badge->field)])
                     ->where(['user_id NOT IN' => $usersAlreadyGained])
@@ -115,7 +139,7 @@ class BadgeDistributorCommand extends Command
                     ->having(['count >=' => $badge->goal]);
                 $this->saveBadge($gainedBy, $badge);
             }
-            if ($badge->goal && $badge->base == 'point') {
+            if ($badge->level && $badge->base == 'point') {
                 $gainedBy = $sadhanas->find('points', ['elements' => $badge->field])
                     ->where(['user_id NOT IN' => $usersAlreadyGained])
                     ->group('user_id')
@@ -136,9 +160,9 @@ class BadgeDistributorCommand extends Command
         }
         $badgeUsers = $this->badgesUsersTable->newEntities($data);
         if ($this->badgesUsersTable->saveMany($badgeUsers)) {
-            $this->io->out('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->count() . ' users.</ok>');
+            $this->logger('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->count() . ' users.</ok>');
         } else {
-            $this->io->out('<error>Badge ' . $badge->name . ' could not be given to any users.</error>');
+            $this->logger('<info>Badge ' . $badge->name . ' could not be given to any users.</info>');
         }
     }
 }
