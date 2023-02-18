@@ -4,6 +4,7 @@
   import axios from 'axios'
   import { useStore } from '../store'
   import { useToast } from 'vue-toastification'
+  import router from '../router'
 
   const store = useStore()
   const toast = useToast()
@@ -16,6 +17,7 @@
       })
       .then(res => {
         store.user = res.data
+        router.push('/')
       })
       .catch(err => {
         toast.error(err.response.data.message)

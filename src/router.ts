@@ -13,6 +13,11 @@ const routes = [
     component: () => import('/src/pages/Badges.vue'),
   },
   {
+    path: '/welcome',
+    name: 'Welcome',
+    component: () => import('/src/components/Welcome.vue'),
+  },
+  {
     path: '/forgot-pass',
     name: 'ForgotPass',
     component: () => import('/src/pages/ForgotPass.vue'),
