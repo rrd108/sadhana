@@ -7,6 +7,7 @@ namespace App\Command;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\Entity;
+use Cake\Mailer\Mailer;
 use Cake\Command\Command;
 use Cake\I18n\FrozenDate;
 use Cake\Console\Arguments;
@@ -79,13 +80,12 @@ class BadgeDistributorCommand extends Command
             $this->everyMorning();
         }
 
-        /*TODO
         $mailer = new Mailer('default');
-            $logContent = file_get_contents(LOGS . 'mkb-' . date('ymd') . '.log');
-            $mailer->setFrom(['notifications@laksmi3.1108.cc' => 'Laksmi Notification'])
-                ->setTo('rrd@1108.cc')
-                ->setSubject('Laksmi MKB Import értesítés')
-                ->deliver($logContent);*/
+        $logContent = file_get_contents(LOGS . 'badgeDistribution-' . date('ymd') . '.log');
+        $mailer->setFrom(['notifications@sadhana.1108.cc' => 'Sadhana Notification'])
+            ->setTo('rrd@1108.cc')
+            ->setSubject('Sadhana Badge Distribution Log')
+            ->deliver($logContent);
     }
 
     public function mondayMorning()
