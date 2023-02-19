@@ -149,7 +149,8 @@ class SadhanasTable extends Table
             'Sadhanas.user_id',
             'user' => 'Users.email',
             'points'  => $query->func()->sum($fields),
-        ])->contain(['Users'])
+        ])->having(['points >' => 0])
+            ->contain(['Users'])
             ->group('user_id')
             ->order(['points' => 'DESC']);
     }
