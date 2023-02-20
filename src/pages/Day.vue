@@ -2,7 +2,7 @@
   import { computed, ref, watch } from 'vue'
   import { useIdle } from '@vueuse/core'
   import axios from 'axios'
-  import { useToast } from 'vue-toastification'
+  import { POSITION, useToast } from 'vue-toastification'
   import { useStore } from '../store'
   import { onBeforeRouteLeave } from 'vue-router'
 
@@ -111,6 +111,15 @@
       })
   }
 
+  const checkMax = () => {
+    if (bhakti.value.murtiseva > 120) {
+      toast.warning('Ugye ez mind szabadidős murti-seva volt?', {
+        timeout: 10000,
+        position: POSITION.BOTTOM_CENTER,
+      })
+    }
+  }
+
   onBeforeRouteLeave((to, from, next) => {
     if (!initialData && (pointsChanged.value || dateChanged.value)) {
       saveData()
@@ -177,7 +186,7 @@
       <input type="number" v-model="bhakti.study" />
 
       <h2>Murti-seva (perc)</h2>
-      <input type="number" v-model="bhakti.murtiseva" />
+      <input type="number" v-model="bhakti.murtiseva" @blur="checkMax" />
     </div>
   </section>
 </template>
