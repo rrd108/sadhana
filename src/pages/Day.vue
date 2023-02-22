@@ -57,7 +57,7 @@
 
   const points = computed(
     () =>
-      // TODO get these numbers from the API
+      // TODO get these numbers from the API issue #24
       bhakti.value.japaEarly * 3 +
       bhakti.value.japaMorning * 2 +
       bhakti.value.japaAfternoon * 1 +
@@ -67,9 +67,9 @@
       +bhakti.value.kirtana * 5 +
       +bhakti.value.class * 10 +
       +bhakti.value.gauraarati * 4 +
-      bhakti.value.reading * 0.5 +
-      bhakti.value.study * 1 +
-      bhakti.value.murtiseva * 1
+      bhakti.value.reading * 0.25 +
+      bhakti.value.study * 0.5 +
+      bhakti.value.murtiseva * 0.5
   )
 
   const pointsChanged = ref(false)
