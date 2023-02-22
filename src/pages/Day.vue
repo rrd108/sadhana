@@ -69,7 +69,7 @@
       +bhakti.value.gauraarati * 4 +
       bhakti.value.reading * 0.25 +
       bhakti.value.study * 0.5 +
-      bhakti.value.murtiseva * 0.5
+      bhakti.value.murtiseva * 0.25
   )
 
   const pointsChanged = ref(false)
