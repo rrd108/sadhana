@@ -27,7 +27,7 @@
   const bhakti = ref(emptyBhakti)
 
   const dateChanged = ref(false)
-  let initialData = true
+  let initialData = 0
   const getSadhana = () =>
     axios
       .get(
@@ -38,9 +38,10 @@
         store.tokenHeader
       )
       .then(res => {
+        console.log('response from server')
         bhakti.value = res.data ? res.data : emptyBhakti
         dateChanged.value = true
-        initialData = true
+        initialData = 1
       })
       .catch(err => console.error(err))
 
@@ -55,9 +56,24 @@
     )
   })
 
-  const points = computed(
-    () =>
-      // TODO get these numbers from the API issue #24
+  const points = computed(() => {
+    console.log(
+      'points computation ' +
+        (bhakti.value.japaEarly * 3 +
+          bhakti.value.japaMorning * 2 +
+          bhakti.value.japaAfternoon * 1 +
+          bhakti.value.japaNight * 0.75 +
+          +bhakti.value.mangala * 10 +
+          +bhakti.value.japa * 10 +
+          +bhakti.value.kirtana * 5 +
+          +bhakti.value.class * 10 +
+          +bhakti.value.gauraarati * 4 +
+          bhakti.value.reading * 0.25 +
+          bhakti.value.study * 0.5 +
+          bhakti.value.murtiseva * 0.25)
+    )
+    // TODO get these numbers from the API issue #24
+    return (
       bhakti.value.japaEarly * 3 +
       bhakti.value.japaMorning * 2 +
       bhakti.value.japaAfternoon * 1 +
@@ -70,18 +86,26 @@
       bhakti.value.reading * 0.25 +
       bhakti.value.study * 0.5 +
       bhakti.value.murtiseva * 0.25
-  )
+    )
+  })
 
   const pointsChanged = ref(false)
-  watch(points, () => {
-    pointsChanged.value = true
-  })
+  watch(points, () => (pointsChanged.value = true))
 
   const toast = useToast()
   const { idle } = useIdle(3000) // set idle time to 3 seconds
   watch(idle, isIdle => {
-    if (initialData == true) {
-      initialData = false
+    console.log(
+      'isIdle: ' + isIdle,
+      'initial: ' + initialData,
+      'pc: ' + pointsChanged.value,
+      'dc: ' + dateChanged.value,
+      'points: ' + points.value
+    )
+
+    if (initialData == 1) {
+      initialData = -1
+      dateChanged.value = pointsChanged.value = false
       return
     }
     if (isIdle && points.value) {
