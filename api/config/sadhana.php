@@ -14,6 +14,6 @@ return [
         'gauraarati' => 4,
         'reading' => 0.25,
         'study' => 0.5,
-        'murtiseva' => 0.5
+        'murtiseva' => 0.25
     ]
 ];
