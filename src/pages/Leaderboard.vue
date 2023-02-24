@@ -37,7 +37,7 @@
       >
         <span>{{ i + 1 }}</span>
         <span>{{ user.user.split('@')[0] }}</span>
-        <span class="right">{{ user.points }}</span>
+        <span class="right">{{ Math.round(user.points) }}</span>
       </li>
     </ul>
   </section>
