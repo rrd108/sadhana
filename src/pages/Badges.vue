@@ -17,20 +17,21 @@
   const lookDetails = (badge: Badge) => {
     selectedBadge.value = badge
     if (!badge._joinData.accepted) {
-    axios
-      .patch(
-        `${import.meta.env.VITE_APP_API_URL}badges-users/${
-          badge._joinData.id
-        }.json`,
-        { accepted: true },
-        store.tokenHeader
-      )
-      .then(res => {
-        toast.success('Jelvény elfogadva')
-        badge._joinData.accepted = true
-      })
-      .catch(err => toast.error('Mentési hiba'))
-  }}
+      axios
+        .patch(
+          `${import.meta.env.VITE_APP_API_URL}badges-users/${
+            badge._joinData.id
+          }.json`,
+          { accepted: true },
+          store.tokenHeader
+        )
+        .then(res => {
+          toast.success('Jelvény elfogadva')
+          badge._joinData.accepted = true
+        })
+        .catch(err => toast.error('Mentési hiba'))
+    }
+  }
 
   const hide = () => {
     selectedBadge.value = { id: 0 } as Badge
