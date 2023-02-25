@@ -16,6 +16,7 @@
   const selectedBadge = ref({ id: 0 } as Badge)
   const lookDetails = (badge: Badge) => {
     selectedBadge.value = badge
+    if (!badge._joinData.accepted) {
     axios
       .patch(
         `${import.meta.env.VITE_APP_API_URL}badges-users/${
@@ -29,7 +30,7 @@
         badge._joinData.accepted = true
       })
       .catch(err => toast.error('Mentési hiba'))
-  }
+  }}
 
   const hide = () => {
     selectedBadge.value = { id: 0 } as Badge
