@@ -90,8 +90,8 @@ class BadgeDistributorCommand extends Command
 
     public function mondayMorning()
     {
-        $dateStart = $this->today->startOfWeek();
-        $dateEnd = $this->today->endOfWeek();
+        $dateStart = $this->today->subDay()->startOfWeek(); // cron runs at monday morning so we have to calculate for previous week
+        $dateEnd = $this->today->subDay()->endOfWeek();
 
         $this->logger('Distributing badges for the week ' . $dateStart . ' to ' . $dateEnd);
 
