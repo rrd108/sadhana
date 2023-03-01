@@ -50,6 +50,7 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'badge_id',
             'joinTable' => 'badges_users',
+            'sort' => ['BadgesUsers.created' => 'DESC'],
         ]);
     }
 
