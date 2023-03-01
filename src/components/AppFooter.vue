@@ -14,6 +14,7 @@
         <font-awesome-icon icon="chart-pie" />
       </router-link>
       <router-link to="/badges" v-if="store.user.badges.length">
+        <small>{{ store.notAcceptedBadges }}</small>
         <font-awesome-icon icon="shield-heart" />
       </router-link>
     </nav>
@@ -37,5 +38,20 @@
   }
   a {
     color: var(--dark-purple);
+    position: relative;
+  }
+  small {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.25rem;
+    z-index: 1;
+    background-color: #f00;
+    color: #fff;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: bold;
   }
 </style>
