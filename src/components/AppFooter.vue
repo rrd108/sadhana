@@ -14,7 +14,9 @@
         <font-awesome-icon icon="chart-pie" />
       </router-link>
       <router-link to="/badges" v-if="store.user.badges.length">
-        <small>{{ store.notAcceptedBadges }}</small>
+        <small v-if="store.notAcceptedBadges">
+          {{ store.notAcceptedBadges }}
+        </small>
         <font-awesome-icon icon="shield-heart" />
       </router-link>
     </nav>
