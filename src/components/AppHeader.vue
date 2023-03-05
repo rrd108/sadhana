@@ -15,6 +15,7 @@
     position: fixed;
     top: 0;
     height: 10vh;
+    width: 100vw;
     display: grid;
     grid-template-columns: 1fr 5fr;
     align-items: center;
