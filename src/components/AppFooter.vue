@@ -19,6 +19,7 @@
         </small>
         <font-awesome-icon icon="shield-heart" />
       </router-link>
+      <span id="indicator"></span>
     </nav>
   </footer>
 </template>
@@ -30,18 +31,31 @@
     width: 100vw;
     height: 10vh;
     font-size: 3rem;
+
+    --linkWidth: 3rem;
+    --linkMargin: 0.25em;
+    --indicatorWidth: 0.5rem;
   }
   nav {
+    position: relative;
     display: flex;
-    justify-content: space-evenly;
     background-color: var(--pinky);
-    margin: 0 0.5em;
+    margin: 0 auto;
     border-radius: 0.5em;
+    font-size: 2.75rem;
+    width: calc(4 * var(--linkWidth) + 4 * 2 * var(--linkMargin));
+  }
+  a,
+  #indicator {
+    width: var(--linkWidth);
+    margin: 0 var(--linkMargin);
   }
   a {
     color: var(--dark-purple);
     position: relative;
+    text-align: center;
   }
+
   small {
     position: absolute;
     top: -0.5rem;
@@ -55,5 +69,29 @@
     font-size: 1.2rem;
     text-align: center;
     font-weight: bold;
+  }
+
+  #indicator {
+    position: absolute;
+    z-index: -1;
+    top: -0.75rem;
+    left: calc((var(--linkWidth) - var(--linkMargin)) / 2);
+    background-color: var(--pinky);
+    width: var(--indicatorWidth);
+    height: var(--indicatorWidth);
+    border-radius: 50%;
+    transition: transform 350ms ease-in-out;
+  }
+  a:nth-child(1).router-link-exact-active ~ #indicator {
+    transform: translateX(calc(0 * var(--linkWidth) + 0 * var(--linkMargin)));
+  }
+  a:nth-child(2).router-link-exact-active ~ #indicator {
+    transform: translateX(calc(var(--linkWidth) + 2 * var(--linkMargin)));
+  }
+  a:nth-child(3).router-link-exact-active ~ #indicator {
+    transform: translateX(calc(2 * var(--linkWidth) + 4 * var(--linkMargin)));
+  }
+  a:nth-child(4).router-link-exact-active ~ #indicator {
+    transform: translateX(calc(3 * var(--linkWidth) + 6 * var(--linkMargin)));
   }
 </style>
