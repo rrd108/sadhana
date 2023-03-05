@@ -75,7 +75,7 @@
     position: absolute;
     z-index: -1;
     top: -0.75rem;
-    left: calc((var(--linkWidth) - var(--linkMargin)) / 2);
+    left: calc((var(--linkWidth) - var(--indicatorWidth)) / 2);
     background-color: var(--pinky);
     width: var(--indicatorWidth);
     height: var(--indicatorWidth);
