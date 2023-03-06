@@ -73,7 +73,7 @@
   ul {
     list-style: none;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1em;
   }
   li,
@@ -95,13 +95,17 @@
     width: 90vw;
   }
   h2 {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1rem;
+  }
+  h3 {
+    font-size: 0.8rem;
   }
   img {
     width: 100%;
     background-color: var(--dark-purple);
     border-radius: 50%;
-    padding: 1em;
-    margin-bottom: 1em;
+    padding: 0.25em;
+    margin-bottom: 0.5em;
   }
 </style>
