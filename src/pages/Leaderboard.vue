@@ -25,11 +25,32 @@
       .catch(err => console.error(err))
 
   getStat()
+
+  const weekChange = (direction: string) => {
+    const [year, weekNum] = week.value.split('-W').map(Number)
+    if (direction == 'decrease') {
+      week.value = `${year}-W${(weekNum - 1).toString().padStart(2, '0')}`
+    }
+    if (direction == 'increase') {
+      week.value = `${year}-W${(weekNum + 1).toString().padStart(2, '0')}`
+    }
+    getStat()
+  }
 </script>
 
 <template>
   <section>
-    <h1><input type="week" v-model="week" @change="getStat" /></h1>
+    <h1>
+      <font-awesome-icon
+        icon="chevron-circle-left"
+        @click="weekChange('decrease')"
+      />
+      <input type="week" v-model="week" @change="getStat" />
+      <font-awesome-icon
+        icon="chevron-circle-right"
+        @click="weekChange('increase')"
+      />
+    </h1>
     <ul>
       <li
         v-for="(user, i) in list"
@@ -46,6 +67,11 @@
 <style scoped>
   h1 {
     margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    color: var(--pinky);
   }
   li {
     display: grid;

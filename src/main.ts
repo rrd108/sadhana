@@ -11,12 +11,21 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faChartPie,
+  faChevronCircleLeft,
+  faChevronCircleRight,
   faCirclePlus,
   faGaugeHigh,
   faShieldHeart,
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faChartPie, faCirclePlus, faGaugeHigh, faShieldHeart)
+library.add(
+  faChartPie,
+  faChevronCircleLeft,
+  faChevronCircleRight,
+  faCirclePlus,
+  faGaugeHigh,
+  faShieldHeart
+)
 
 const pinia = createPinia()
 
