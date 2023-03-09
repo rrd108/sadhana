@@ -79,7 +79,6 @@
   const { idle } = useIdle(3000) // set idle time to 3 seconds
   watch(idle, isIdle => {
     if (JSON.stringify(initialData) == JSON.stringify(bhakti.value)) {
-      console.log('current object is initial')
       dateChanged.value = pointsChanged.value = false
       return
     }
@@ -121,7 +120,10 @@
   }
 
   onBeforeRouteLeave((to, from, next) => {
-    if (!initialData && (pointsChanged.value || dateChanged.value)) {
+    if (
+      JSON.stringify(initialData) != JSON.stringify(bhakti.value) &&
+      (pointsChanged.value || dateChanged.value)
+    ) {
       saveData()
     }
     next()
