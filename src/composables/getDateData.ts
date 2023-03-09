@@ -50,7 +50,7 @@ export const getDatesInWeek = (week: string) => {
   let date = new Date(`${year}-01-01`)
   const dayOfWeek = date.getDay()
   const diff = (parseInt(weekNumber) - 1) * 7 - dayOfWeek + 1
-  date.setDate(diff)
+  date.setDate(diff + 1)
 
   // Get all the dates of the week
   const dates = []
