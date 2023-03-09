@@ -17,9 +17,11 @@
   const getDateData = (date: Date) =>
     journal.value.find(day => day.date == date.toISOString().slice(0, 10))
 
+  const action = route.params.userId == store.user.id ? 'myjournal' : 'journal'
+
   axios
     .get(
-      `${import.meta.env.VITE_APP_API_URL}sadhanas/journal/${
+      `${import.meta.env.VITE_APP_API_URL}sadhanas/${action}/${
         route.params.userId
       }/${route.params.week}.json`,
       store.tokenHeader

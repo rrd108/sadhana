@@ -157,4 +157,9 @@ class SadhanasController extends AppController
         $this->viewBuilder()->setOption('serialize', ['sadhanas', 'user'])
             ->setOption('jsonOptions', JSON_NUMERIC_CHECK);
     }
+
+    public function myjournal(string $userId, string $weekNumber)
+    {
+        return $this->journal($this->Authentication->getIdentity()->id, $weekNumber);
+    }
 }

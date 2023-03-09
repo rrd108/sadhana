@@ -2,7 +2,7 @@
 $user = [        // can *read* and *write* own resources
     'BadgesUsers' => ['edit'],
     'Users' => ['login', 'forgotpass'],
-    'Sadhanas' => ['view', 'add', 'edit', 'mystat', 'liststat'],
+    'Sadhanas' => ['view', 'add', 'edit', 'mystat', 'liststat', 'myjournal'],
 ];
 
 $counsellor = array_merge($user,  ['Sadhanas' => [...$user['Sadhanas'], 'journal']]);

@@ -38,6 +38,15 @@
     }
     getStat()
   }
+
+  const showJournal = (user: { user_id: string }) => {
+    if (
+      store.user.role == 'counsellor' ||
+      store.user.role == 'admin' ||
+      store.user.id == user.user_id
+    )
+      router.push(`/journal/${user.user_id}/${week.value}`)
+  }
 </script>
 
 <template>
@@ -57,7 +66,7 @@
       <li
         v-for="(user, i) in list"
         :class="{ me: user.user == store.user.email }"
-        @click="router.push(`/journal/${user.user_id}/${week}`)"
+        @click="showJournal(user)"
       >
         <span>{{ i + 1 }}</span>
         <span>{{ user.user.split('@')[0] }}</span>
