@@ -29,7 +29,7 @@ export const weeks = getWeeks()
 
 export const todayWeekNumber =
   weeks.findIndex(
-    (w) =>
+    w =>
       today.toISOString().substring(0, 10) >= w[0] &&
       today.toISOString().substring(0, 10) <= w[1]
   ) + 1
@@ -41,4 +41,23 @@ export const toISO = (date: string) => {
 
 export const getMonthName = (month: number) => {
   return new Date(year, month, 1).toLocaleString('default', { month: 'long' })
+}
+
+export const getDatesInWeek = (week: string) => {
+  const [year, weekNumber] = week.split('-W')
+
+  // Set the date to the first day of the week
+  let date = new Date(`${year}-01-01`)
+  const dayOfWeek = date.getDay()
+  const diff = (parseInt(weekNumber) - 1) * 7 - dayOfWeek + 1
+  date.setDate(diff)
+
+  // Get all the dates of the week
+  const dates = []
+  for (let i = 0; i < 7; i++) {
+    dates.push(new Date(date.getTime()))
+    date.setDate(date.getDate() + 1)
+  }
+
+  return dates
 }

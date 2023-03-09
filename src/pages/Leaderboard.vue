@@ -1,10 +1,12 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import axios from 'axios'
+  import { useRouter } from 'vue-router'
   import { useStore } from '../store'
   import { today, todayWeekNumber } from '../composables/getDateData'
 
   const store = useStore()
+  const router = useRouter()
 
   const week = ref(
     `${today.getFullYear()}-W${
@@ -12,7 +14,7 @@
     }`
   )
 
-  const list = ref([{ user: '', points: 0 }])
+  const list = ref([{ user: '', user_id: '', points: 0 }])
   const getStat = () =>
     axios
       .get(
@@ -55,6 +57,7 @@
       <li
         v-for="(user, i) in list"
         :class="{ me: user.user == store.user.email }"
+        @click="router.push(`/journal/${user.user_id}/${week}`)"
       >
         <span>{{ i + 1 }}</span>
         <span>{{ user.user.split('@')[0] }}</span>

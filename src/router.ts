@@ -42,6 +42,11 @@ const routes = [
     name: 'Stat',
     component: () => import('/src/pages/Stat.vue'),
   },
+  {
+    path: '/journal/:userId/:week',
+    name: 'Journal',
+    component: () => import('/src/pages/Journal.vue'),
+  },
 ]
 
 const router = createRouter({

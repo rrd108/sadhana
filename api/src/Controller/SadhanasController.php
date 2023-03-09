@@ -137,4 +137,24 @@ class SadhanasController extends AppController
         $this->viewBuilder()->setOption('serialize', 'sadhanas')
             ->setOption('jsonOptions', JSON_NUMERIC_CHECK);
     }
+
+    public function journal(string $userId, string $weekNumber)
+    {
+        $startDate = new FrozenDate($weekNumber);
+        $endDate = $startDate->addDays(6);
+
+        $sadhanas = $this->Sadhanas->find();
+        $sadhanaData = Configure::read('sadhana');
+        $sadhanas->where([
+            'user_id' => $userId,
+            'date >=' => $startDate,
+            'date <=' => $endDate,
+        ]);
+
+        $user = $this->Sadhanas->Users->get($userId);
+
+        $this->set(compact('sadhanas', 'user'));
+        $this->viewBuilder()->setOption('serialize', ['sadhanas', 'user'])
+            ->setOption('jsonOptions', JSON_NUMERIC_CHECK);
+    }
 }
