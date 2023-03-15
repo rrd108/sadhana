@@ -83,12 +83,14 @@
           <span>Olvasás</span>
           <span>Tanulás</span>
           <span>MS</span>
+          <span>GY</span>
         </h4>
         <p>
           <span></span>
           <span> {{ getDateData(date)?.reading || '-' }}</span>
           <span>{{ getDateData(date)?.study || '-' }}</span>
           <span> {{ getDateData(date)?.murtiseva || '-' }}</span>
+          <span> {{ getDateData(date)?.gayatri || '-' }}</span>
         </p>
       </section>
     </li>
