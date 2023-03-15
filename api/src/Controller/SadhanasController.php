@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
 use JsonApiException\Error\Exception\JsonApiException;
 
 /**
@@ -161,5 +160,11 @@ class SadhanasController extends AppController
     public function myjournal(string $userId, string $weekNumber)
     {
         return $this->journal($this->Authentication->getIdentity()->id, $weekNumber);
+    }
+
+    public function getConfig()
+    {
+        $this->set('sadhanaConfig',  Configure::read('sadhana'));
+        $this->viewBuilder()->setOption('serialize', 'sadhanaConfig');
     }
 }

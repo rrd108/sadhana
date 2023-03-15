@@ -2,7 +2,6 @@
 
 return [
     'sadhana' => [
-        // TODO issue #24 have only one source
         'japaEarly' => 3,
         'japaMorning' => 2,
         'japaAfternoon' => 1,

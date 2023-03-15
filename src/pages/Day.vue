@@ -5,8 +5,31 @@
   import { POSITION, useToast } from 'vue-toastification'
   import { useStore } from '../store'
   import { onBeforeRouteLeave } from 'vue-router'
+  import SadhanaFields from '../types/SadhanaFields'
 
   const store = useStore()
+
+  let sadhanaConfig = {
+    japaEarly: 0,
+    japaMorning: 0,
+    japaAfternoon: 0,
+    japaNight: 0,
+    mangala: 0,
+    japa: 0,
+    kirtana: 0,
+    class: 0,
+    gauraarati: 0,
+    reading: 0,
+    study: 0,
+    murtiseva: 0,
+  } as SadhanaFields
+  axios
+    .get(
+      `${import.meta.env.VITE_APP_API_URL}sadhanas/getConfig.json`,
+      store.tokenHeader
+    )
+    .then(res => (sadhanaConfig = res.data))
+    .catch(err => console.error(err))
 
   const date = ref(new Date().toISOString().substring(0, 10))
   const emptyBhakti = {
@@ -57,19 +80,18 @@
 
   const points = computed(
     () =>
-      // TODO get these numbers from the API issue #24
-      bhakti.value.japaEarly * 3 +
-      bhakti.value.japaMorning * 2 +
-      bhakti.value.japaAfternoon * 1 +
-      bhakti.value.japaNight * 0.75 +
-      +bhakti.value.mangala * 10 +
-      +bhakti.value.japa * 10 +
-      +bhakti.value.kirtana * 5 +
-      +bhakti.value.class * 10 +
-      +bhakti.value.gauraarati * 4 +
-      bhakti.value.reading * 0.25 +
-      bhakti.value.study * 0.5 +
-      bhakti.value.murtiseva * 0.25
+      bhakti.value.japaEarly * sadhanaConfig.japaEarly +
+      bhakti.value.japaMorning * sadhanaConfig.japaMorning +
+      bhakti.value.japaAfternoon * sadhanaConfig.japaAfternoon +
+      bhakti.value.japaNight * sadhanaConfig.japaNight +
+      +bhakti.value.mangala * sadhanaConfig.mangala +
+      +bhakti.value.japa * sadhanaConfig.japa +
+      +bhakti.value.kirtana * sadhanaConfig.kirtana +
+      +bhakti.value.class * sadhanaConfig.class +
+      +bhakti.value.gauraarati * sadhanaConfig.gauraarati +
+      bhakti.value.reading * sadhanaConfig.reading +
+      bhakti.value.study * sadhanaConfig.study +
+      bhakti.value.murtiseva * sadhanaConfig.murtiseva
   )
 
   const pointsChanged = ref(false)
