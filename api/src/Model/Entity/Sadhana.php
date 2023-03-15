@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -23,6 +24,7 @@ use Cake\ORM\Entity;
  * @property int $reading
  * @property int $study
  * @property int $murtiseva
+ * @property int $gayatri
  *
  * @property \App\Model\Entity\User $user
  */
@@ -52,6 +54,7 @@ class Sadhana extends Entity
         'reading' => true,
         'study' => true,
         'murtiseva' => true,
+        'gayatri' => true,
         'user' => true,
     ];
 }

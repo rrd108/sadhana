@@ -11,6 +11,7 @@ interface SadhanaFields {
   reading: number
   study: number
   murtiseva: number
+  gayatri: number
 }
 
 export default SadhanaFields

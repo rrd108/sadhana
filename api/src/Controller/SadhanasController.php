@@ -89,7 +89,7 @@ class SadhanasController extends AppController
             'date',
             'japa'  => $sadhanas->func()->sum('japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight']),
             'templeProgram'  => $sadhanas->func()->sum('mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati']),
-            'brahmana'  => $sadhanas->func()->sum('reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + murtiseva * ' . $sadhanaData['murtiseva']),
+            'brahmana'  => $sadhanas->func()->sum('reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + murtiseva * ' . $sadhanaData['murtiseva'] . ' + gayatri * ' . $sadhanaData['gayatri']),
         ])
             ->where([
                 'user_id' => $this->Authentication->getIdentity()->id,

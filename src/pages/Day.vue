@@ -22,6 +22,7 @@
     reading: 0,
     study: 0,
     murtiseva: 0,
+    gayatri: 0,
   } as SadhanaFields
   axios
     .get(
@@ -46,6 +47,7 @@
     reading: 0,
     study: 0,
     murtiseva: 0,
+    gayatri: 0,
   }
   const bhakti = ref(emptyBhakti)
 
@@ -91,7 +93,8 @@
       +bhakti.value.gauraarati * sadhanaConfig.gauraarati +
       bhakti.value.reading * sadhanaConfig.reading +
       bhakti.value.study * sadhanaConfig.study +
-      bhakti.value.murtiseva * sadhanaConfig.murtiseva
+      bhakti.value.murtiseva * sadhanaConfig.murtiseva +
+      bhakti.value.gayatri * sadhanaConfig.gayatri
   )
 
   const pointsChanged = ref(false)
@@ -211,6 +214,9 @@
 
       <h2>Murti-seva (perc)</h2>
       <input type="number" v-model="bhakti.murtiseva" @blur="checkMax" />
+
+      <h2>Gayatri</h2>
+      <input type="number" v-model="bhakti.gayatri" />
     </div>
   </section>
 </template>
