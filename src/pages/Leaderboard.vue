@@ -88,7 +88,7 @@
   li {
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.75em;
     background-color: var(--pinky);
     border-radius: 0.5em;
     padding: 0.25em 0.5em;
