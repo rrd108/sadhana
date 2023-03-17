@@ -58,6 +58,7 @@ if [ $PREV_STEP -eq 1 ];then
 	if [ $PREV_STEP -eq 1 ];then
 		echo $'\n' "Copy dist folder to server" $'\n'
 		rsync --progress -azh \
+			--delete --exclude='api/' --exclude='error/' --exclude='stat/' --exclude='.htaccess' --exclude='favicon.ico' --exclude='robots.txt' --exclude='standard_index.html' \
 			./dist/ \
 			-e "ssh -i /home/rrd/.ssh/id_ed25519" \
 			$SSH_USER@$SSH_HOST:$SSH_PATH
@@ -74,6 +75,7 @@ fi
 if [ $PREV_STEP -eq 1 ];then
 	echo $'\n' "Copy api folder to server without vendor and ignored files" $'\n'
 	rsync --progress -azh \
+		--exclude='.github/' \
 		--exclude='config/app_local.php' \
 		--exclude='config/.env' \
 		--exclude='logs/' \
