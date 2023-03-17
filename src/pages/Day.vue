@@ -161,7 +161,7 @@
       <h1>{{ points }}</h1>
       <div>
         <label for="date">Dátum</label>
-        <input type="date" v-model="date" @change="getSadhana" />
+        <input type="date" v-model="date" @change="getSadhana" class="wide" />
       </div>
     </div>
 
@@ -240,6 +240,7 @@
   }
   .radio input {
     width: auto;
+    margin: 0;
   }
   h1 {
     font-size: 4rem;
@@ -248,7 +249,11 @@
     font-size: 1rem;
   }
   input {
-    width: 100%;
+    width: 50%;
     text-align: center;
+    margin: 0 auto;
+  }
+  .wide {
+    width: 100%;
   }
 </style>
