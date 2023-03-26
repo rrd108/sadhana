@@ -2,7 +2,7 @@
   import { ref, watch } from 'vue'
 
   const notification = ref(false)
-  const time = ref('20:00')
+  const time = ref('20:00') // should be the same in sadhana-sw.js
 
   if (Notification.permission === 'granted') {
     notification.value = true
@@ -47,11 +47,11 @@
     <div>
       <label for="notification">Emlékeztető</label>
       <input type="checkbox" v-model="notification" />
+      <input type="time" v-model="time" v-show="notification" />
       <p>
         Ha az emlékeztetőt bekapcsolod, akkor az alkalmazás esténként küld egy
         üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.
       </p>
-      <input type="time" v-model="time" />
     </div>
   </section>
 </template>
@@ -60,8 +60,8 @@
   h1 {
     margin: 1em 0;
   }
-  label {
-    margin-right: 1em;
+  input {
+    margin-left: 1em;
   }
   p {
     color: var(--pinky);

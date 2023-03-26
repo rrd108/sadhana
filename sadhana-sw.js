@@ -5,7 +5,7 @@ const sendNotification = () => {
   })
 }
 
-let targetTime = '17:36'
+let targetTime = '20:00' // should be the same in Settings.vue
 
 const setNotification = time => {
   let currentDate = new Date()
