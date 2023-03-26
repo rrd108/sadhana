@@ -2,6 +2,7 @@
   import { ref, watch } from 'vue'
 
   const notification = ref(false)
+  const time = ref('20:00')
 
   if (Notification.permission === 'granted') {
     notification.value = true
@@ -34,6 +35,10 @@
       notification.value = false
     }
   })
+
+  watch(time, value => {
+    navigator.serviceWorker.controller?.postMessage(value)
+  })
 </script>
 
 <template>
@@ -46,6 +51,7 @@
         Ha az emlékeztetőt bekapcsolod, akkor az alkalmazás esténként küld egy
         üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.
       </p>
+      <input type="time" v-model="time" />
     </div>
   </section>
 </template>

@@ -7,7 +7,10 @@
   <header>
     <img alt="Sadhana" src="@/assets/logo.png" />
     <span> {{ store.user.email.split('@')[0] }}</span>
-    <router-link to="/settings">
+    <router-link
+      to="/settings"
+      v-if="store.user.email.substring(0, 3) == 'rrd'"
+    >
       <font-awesome-icon icon="gears" />
     </router-link>
   </header>
