@@ -37,7 +37,10 @@
   })
 
   watch(time, value => {
-    navigator.serviceWorker.controller?.postMessage(value)
+    navigator.serviceWorker.controller?.postMessage({
+      type: 'timeChange',
+      data: value,
+    })
   })
 </script>
 
@@ -49,8 +52,9 @@
       <input type="checkbox" v-model="notification" />
       <input type="time" v-model="time" v-show="notification" />
       <p>
-        Ha az emlékeztetőt bekapcsolod, akkor az alkalmazás esténként küld egy
-        üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.
+        Ha az emlékeztetőt bekapcsolod, akkor az alkalmazás a kiválasztott
+        időpontban küld egy üzenetet a telefonra, ha aznap nem töltötted ki a
+        sadhana adatokat.
       </p>
     </div>
   </section>
