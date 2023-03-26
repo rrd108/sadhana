@@ -24,6 +24,7 @@ export default defineConfig({
         short_name: 'Sadhana',
         description: 'Sadhana',
         theme_color: '#31003e',
+        orientation: 'portrait',
         icons: [
           {
             src: 'android-chrome-192x192.png',
@@ -37,6 +38,7 @@ export default defineConfig({
           },
         ],
       },
+      workbox: { importScripts: ['sadhana-sw.js'] },
     }),
   ],
 })

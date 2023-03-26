@@ -15,6 +15,7 @@ import {
   faChevronCircleRight,
   faCirclePlus,
   faGaugeHigh,
+  faGears,
   faShieldHeart,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -24,6 +25,7 @@ library.add(
   faChevronCircleRight,
   faCirclePlus,
   faGaugeHigh,
+  faGears,
   faShieldHeart
 )
 
