@@ -41,10 +41,11 @@ self.addEventListener('message', event => {
 
   if (type == 'sadhanaData') {
     let currentDate = new Date()
-    if (data == currentDate.toISOString().substring(0, 10)) {
-      // this is today's sadhana data, no notification is needed
-      clearTimeout(at)
-    }
+    // TODO put this code back after tests
+    // if (data == currentDate.toISOString().substring(0, 10)) {
+    //   // this is today's sadhana data, no notification is needed
+    //   clearTimeout(at)
+    // }
   }
 })
 
