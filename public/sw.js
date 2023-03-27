@@ -1,3 +1,7 @@
+import { precacheAndRoute } from 'workbox-precaching'
+
+precacheAndRoute(self.__WB_MANIFEST)
+
 let targetTime = '20:00' // should be the same in Settings.vue
 let at
 

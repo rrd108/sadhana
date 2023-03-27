@@ -15,10 +15,11 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
-        // TODO remove for production
         enabled: true,
+        type: 'module', // need to be 'module' for HMR
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      strategies: 'injectManifest',
       manifest: {
         name: 'Sadhana App',
         short_name: 'Sadhana',
@@ -38,7 +39,7 @@ export default defineConfig({
           },
         ],
       },
-      workbox: { importScripts: ['sadhana-sw.js'] },
+      workbox: {},
     }),
   ],
 })
