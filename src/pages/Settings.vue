@@ -1,47 +1,48 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue'
 
-  const notification = ref(false)
-  const time = ref('20:00') // should be the same in sadhana-sw.js
+  // TODO read from localStorage
+  const time = ref('20:00') // should be the same in sw.js
 
+  const notification = ref(false)
   if (Notification.permission === 'granted') {
     notification.value = true
   }
 
-  watch(notification, value => {
-    if (value) {
-      console.log('Notification enabled')
-      if (Notification.permission !== 'denied') {
-        Notification.requestPermission()
-          .then(permission => {
-            if (permission === 'granted') {
-              console.log('Notification permission granted.')
-            }
-          })
-          .catch(err => {
-            console.error('Unable to get permission to notify.', err)
-          })
-      }
+  // watch(notification, value => {
+  //   if (value) {
+  //     console.log('Notification enabled')
+  //     if (Notification.permission !== 'denied') {
+  //       Notification.requestPermission()
+  //         .then(permission => {
+  //           if (permission === 'granted') {
+  //             console.log('Notification permission granted.')
+  //           }
+  //         })
+  //         .catch(err => {
+  //           console.error('Unable to get permission to notify.', err)
+  //         })
+  //     }
 
-      if (Notification.permission === 'granted') {
-        const notification = new Notification('Sadhana', {
-          body: 'Az értesítések engedélyezve!',
-          icon: 'favicon-32x32.png',
-        })
-      }
-    }
-    if (!value) {
-      console.log('Notification disabled')
-      notification.value = false
-    }
-  })
+  //     if (Notification.permission === 'granted') {
+  //       const notification = new Notification('Sadhana', {
+  //         body: 'Az értesítések engedélyezve!',
+  //         icon: 'favicon-32x32.png',
+  //       })
+  //     }
+  //   }
+  //   if (!value) {
+  //     console.log('Notification disabled')
+  //     notification.value = false
+  //   }
+  // })
 
-  watch(time, value => {
-    navigator.serviceWorker.controller?.postMessage({
-      type: 'timeChange',
-      data: value,
-    })
-  })
+  // watch(time, value => {
+  //   navigator.serviceWorker.controller?.postMessage({
+  //     type: 'timeChange',
+  //     data: value,
+  //   })
+  // })
 </script>
 
 <template>
