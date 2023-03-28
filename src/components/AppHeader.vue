@@ -7,6 +7,12 @@
   <header>
     <img alt="Sadhana" src="@/assets/logo.png" />
     <span> {{ store.user.email.split('@')[0] }}</span>
+    <router-link
+      to="/settings"
+      v-if="store.user.email.substring(0, 3) == 'rrd'"
+    >
+      <font-awesome-icon icon="gears" />
+    </router-link>
   </header>
 </template>
 
@@ -17,7 +23,7 @@
     height: 10vh;
     width: 100vw;
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 1fr 4fr 1fr;
     align-items: center;
     justify-items: center;
     font-size: 2rem;
@@ -28,7 +34,7 @@
   img {
     height: 10vh;
   }
-  span {
-    transform: translateX(-5vh);
+  a {
+    color: var(--pinky);
   }
 </style>

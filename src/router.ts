@@ -38,6 +38,11 @@ const routes = [
     component: () => import('/src/pages/Register.vue'),
   },
   {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('/src/pages/Settings.vue'),
+  },
+  {
     path: '/stat',
     name: 'Stat',
     component: () => import('/src/pages/Stat.vue'),

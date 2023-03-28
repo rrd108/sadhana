@@ -128,6 +128,10 @@
       .then(res => {
         bhakti.value = res.data
         toast.success('Mentve')
+        /*navigator.serviceWorker.controller?.postMessage({
+          type: 'sadhanaData',
+          data: date.value,
+        })*/
       })
       .catch(err => {
         console.error(err)
