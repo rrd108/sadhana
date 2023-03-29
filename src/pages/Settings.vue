@@ -1,48 +1,77 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue'
+  import { ref } from 'vue'
+  import axios from 'axios'
+  import { useStore } from '../store'
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from 'firebase/app'
+  import { getMessaging, getToken } from 'firebase/messaging'
 
-  // TODO read from localStorage
-  const time = ref('20:00') // should be the same in sw.js
+  const firebaseConfig = {
+    apiKey: import.meta.env.VITE_APP_FIREBASE_APIKEY,
+    authDomain: import.meta.env.VITE_APP_FIREBASE_AUTHDOMAIN,
+    projectId: import.meta.env.VITE_APP_FIREBASE_PROJECTID,
+    storageBucket: import.meta.env.VITE_APP_FIREBASE_STORAGEBUCKET,
+    messagingSenderId: import.meta.env.VITE_APP_FIREBASE_MESSAGINGSENDERID,
+    appId: import.meta.env.VITE_APP_FIREBASE_APPID,
+    measurementId: import.meta.env.VITE_APP_FIREBASE_MEASUREMENTID,
+  }
+  const app = initializeApp(firebaseConfig)
 
-  const notification = ref(false)
-  if (Notification.permission === 'granted') {
-    notification.value = true
+  // Get registration token. Initially this makes a network call, once retrieved
+  // subsequent calls to getToken will return from cache.
+  const messaging = getMessaging()
+
+  const store = useStore()
+
+  if (!store.user.firebaseUserToken) {
+    // TODO An update frequency of once per month likely strikes a good balance between battery impact vs. detecting inactive registration tokens. So if the token is older than a month, you should call getToken again.
+    getToken(messaging, {
+      vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
+    })
+      .then(currentToken => {
+        if (currentToken) {
+          axios
+            .patch(
+              `${import.meta.env.VITE_APP_API_URL}users/${store.user.id}.json`,
+              { firebaseUserToken: currentToken },
+              store.tokenHeader
+            )
+            .then(res => console.log(res.data.firebaseUserToken))
+            .catch(err => console.error(err))
+        }
+        if (!currentToken) {
+          // Show permission request UI
+          console.log(
+            'No reg token available. Request permission to generate one.'
+          )
+          Notification.requestPermission()
+            .then(permission => {
+              if (permission === 'granted') {
+                console.log('Notification permission granted.')
+                new Notification('Sadhana', {
+                  body: 'Az értesítések engedélyezve!',
+                  icon: 'favicon-32x32.png',
+                })
+              }
+            })
+            .catch(err => {
+              console.error('Unable to get permission to notify.', err)
+            })
+        }
+      })
+      .catch(err => {
+        console.log('An error occurred while retrieving token. ', err)
+      })
   }
 
-  // watch(notification, value => {
-  //   if (value) {
-  //     console.log('Notification enabled')
-  //     if (Notification.permission !== 'denied') {
-  //       Notification.requestPermission()
-  //         .then(permission => {
-  //           if (permission === 'granted') {
-  //             console.log('Notification permission granted.')
-  //           }
-  //         })
-  //         .catch(err => {
-  //           console.error('Unable to get permission to notify.', err)
-  //         })
-  //     }
+  // TODO read from API
+  const time = ref('20:00') // should be the same in sw.js
 
-  //     if (Notification.permission === 'granted') {
-  //       const notification = new Notification('Sadhana', {
-  //         body: 'Az értesítések engedélyezve!',
-  //         icon: 'favicon-32x32.png',
-  //       })
-  //     }
-  //   }
-  //   if (!value) {
-  //     console.log('Notification disabled')
-  //     notification.value = false
-  //   }
-  // })
-
-  // watch(time, value => {
-  //   navigator.serviceWorker.controller?.postMessage({
-  //     type: 'timeChange',
-  //     data: value,
-  //   })
-  // })
+  // TODO get from API
+  const notification = ref(false)
+  if (store.user.firebaseUserToken) {
+    notification.value = true
+  }
 </script>
 
 <template>

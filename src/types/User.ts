@@ -5,6 +5,7 @@ interface User {
   email: string
   role: string
   token: string
+  firebaseUserToken: string
   badges: Badge[]
 }
 
