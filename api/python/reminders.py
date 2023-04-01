@@ -2,12 +2,18 @@ from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials, messaging
 import re
+import os
 import mysql.connector
 
-cred = credentials.Certificate('../config/sadhana-firebase.json')
+## runned by cron as export PYTHONPATH=/var/www/clients/client10/web154/home/1108_sadhana/.local/lib/python3.9/site-packages:$PYTHONPATH && /usr/bin/python3 /var/www/clients/client10/web154/home/1108_sadhana/web/api/python/reminders.py
+
+current_file_path = os.path.realpath(__file__)
+config_path = os.path.join(os.path.dirname(current_file_path), '..', 'config')
+
+cred = credentials.Certificate(config_path + '/sadhana-firebase.json')
 firebase_admin.initialize_app(cred)
 
-text_file = open("../config/app_local.php", "r")
+text_file = open(config_path + "/app_local.php", "r")
 data = text_file.read()
 text_file.close()
 
