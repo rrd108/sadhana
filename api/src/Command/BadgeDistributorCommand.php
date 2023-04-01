@@ -110,8 +110,6 @@ class BadgeDistributorCommand extends Command
                 $badgeUser = $this->badgesUsersTable->newEntity($data);
                 if ($this->badgesUsersTable->save($badgeUser)) {
                     $this->logger('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->first()->user . '.</ok>');
-                } else {
-                    $this->logger('<info>Badge ' . $badge->name . ' could not be given to user.</info>');
                 }
             }
         }
