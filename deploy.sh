@@ -81,6 +81,7 @@ if [ $PREV_STEP -eq 1 ];then
 		--exclude='logs/' \
 		--exclude='tmp/' \
 		--exclude='vendor/' \
+		--exclude='python/deploy.sh' \
 		./api/ \
 		-e "ssh -i /home/rrd/.ssh/id_ed25519" \
 		$SSH_USER@$SSH_HOST:$SSH_PATH"api/"
