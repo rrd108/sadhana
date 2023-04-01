@@ -25,8 +25,8 @@
 
   const store = useStore()
 
-  const notificationPermission = ref(false)
-  const showInfo = ref(false)
+  const notificationPermission = ref(Notification.permission == 'granted')
+  const isDenied = ref(Notification.permission == 'denied')
 
   const requestNotificationPermission = () => {
     if (Notification.permission == 'granted') {
@@ -35,7 +35,7 @@
     }
 
     if (Notification.permission == 'denied') {
-      showInfo.value = true
+      isDenied.value = true
       return
     }
 
@@ -54,8 +54,6 @@
       })
   }
 
-  requestNotificationPermission()
-
   if (!store.user.firebaseUserToken) {
     // TODO An update frequency of once per month likely strikes a good balance between battery impact vs. detecting inactive registration tokens. So if the token is older than a month, you should call getToken again.
     getToken(messaging, {
@@ -73,10 +71,6 @@
             .catch(err => toast.error(err))
         }
         if (!currentToken) {
-          // Show permission request UI
-          toast.info(
-            'No reg token available. Request permission to generate one.'
-          )
           requestNotificationPermission()
         }
       })
@@ -103,12 +97,13 @@
         type="checkbox"
         v-model="notificationPermission"
         @change="requestNotificationPermission"
-        :disabled="!notificationPermission"
+        :disabled="isDenied"
       />
+    </div>
+    <div v-show="notificationPermission">
       <label for="time">Időpont</label>
       <input
         id="time"
-        v-show="notificationPermission"
         type="number"
         min="8"
         max="24"
@@ -117,14 +112,19 @@
         @blur="timeBlur"
       />
       óra
-      <p v-if="showInfo" class="info">
-        Korábban letiltottad az értesítéseket. Engedélyezdned kell a
-        böngészőben, hogy megkapd az értesítéseket.
+    </div>
+    <p v-if="isDenied" class="info">
+      Korábban letiltottad az értesítéseket. Engedélyezdned kell a
+      <strong>böngészőben</strong>, hogy megkapd az értesítéseket.
+    </p>
+    <div>
+      <p v-if="!notificationPermission">
+        Ha kipipálod akkor a böngésző rá fog kérdezni, hogy engedélyezed-e az
+        értesítéseket, ahol az <strong>"engedélyezést"</strong> kell választani.
       </p>
       <p>
-        Ha az emlékeztetőt bekapcsolod, akkor az alkalmazás a kiválasztott
-        időpontban küld egy üzenetet a telefonra, ha aznap nem töltötted ki a
-        sadhana adatokat.
+        Ha bekapcsolod, akkor az alkalmazás a kiválasztott időpontban küld egy
+        üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.
       </p>
     </div>
   </section>
@@ -136,6 +136,9 @@
   }
   input {
     margin-left: 1em;
+  }
+  div {
+    display: inline-block;
   }
   p {
     color: var(--pinky);
