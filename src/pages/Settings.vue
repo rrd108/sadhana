@@ -1,48 +1,90 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue'
+  import { ref } from 'vue'
+  import axios from 'axios'
+  import { useStore } from '../store'
+  import { initializeApp } from 'firebase/app'
+  import { getMessaging, getToken } from 'firebase/messaging'
+  import { useToast } from 'vue-toastification'
 
-  // TODO read from localStorage
-  const time = ref('20:00') // should be the same in sw.js
+  const toast = useToast()
 
-  const notification = ref(false)
-  if (Notification.permission === 'granted') {
-    notification.value = true
+  const firebaseConfig = {
+    apiKey: import.meta.env.VITE_APP_FIREBASE_APIKEY,
+    authDomain: import.meta.env.VITE_APP_FIREBASE_AUTHDOMAIN,
+    projectId: import.meta.env.VITE_APP_FIREBASE_PROJECTID,
+    storageBucket: import.meta.env.VITE_APP_FIREBASE_STORAGEBUCKET,
+    messagingSenderId: import.meta.env.VITE_APP_FIREBASE_MESSAGINGSENDERID,
+    appId: import.meta.env.VITE_APP_FIREBASE_APPID,
+    measurementId: import.meta.env.VITE_APP_FIREBASE_MEASUREMENTID,
+  }
+  const app = initializeApp(firebaseConfig)
+
+  // Get registration token. Initially this makes a network call, once retrieved
+  // subsequent calls to getToken will return from cache.
+  const messaging = getMessaging()
+
+  const store = useStore()
+
+  const notificationPermission = ref(Notification.permission == 'granted')
+  const isDenied = ref(Notification.permission == 'denied')
+
+  const requestNotificationPermission = () => {
+    if (Notification.permission == 'granted') {
+      notificationPermission.value = true
+      return
+    }
+
+    if (Notification.permission == 'denied') {
+      isDenied.value = true
+      return
+    }
+
+    Notification.requestPermission()
+      .then(permission => {
+        if (permission == 'granted') {
+          notificationPermission.value = true
+          new Notification('Sadhana', {
+            body: 'Az értesítések engedélyezve!',
+            icon: 'favicon-32x32.png',
+          })
+        }
+      })
+      .catch(err => {
+        toast.error('Unable to get permission to notify.', err)
+      })
   }
 
-  // watch(notification, value => {
-  //   if (value) {
-  //     console.log('Notification enabled')
-  //     if (Notification.permission !== 'denied') {
-  //       Notification.requestPermission()
-  //         .then(permission => {
-  //           if (permission === 'granted') {
-  //             console.log('Notification permission granted.')
-  //           }
-  //         })
-  //         .catch(err => {
-  //           console.error('Unable to get permission to notify.', err)
-  //         })
-  //     }
+  if (!store.user.firebaseUserToken) {
+    // TODO An update frequency of once per month likely strikes a good balance between battery impact vs. detecting inactive registration tokens. So if the token is older than a month, you should call getToken again.
+    getToken(messaging, {
+      vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
+    })
+      .then(currentToken => {
+        if (currentToken) {
+          axios
+            .patch(
+              `${import.meta.env.VITE_APP_API_URL}users/${store.user.id}.json`,
+              { firebaseUserToken: currentToken },
+              store.tokenHeader
+            )
+            .then(res => toast.success('Beállítás mentve'))
+            .catch(err => toast.error(err))
+        }
+        if (!currentToken) {
+          requestNotificationPermission()
+        }
+      })
+      .catch(err => {
+        toast.warning(
+          'An error occurred while retrieving token. ' + err.message
+        )
+      })
+  }
 
-  //     if (Notification.permission === 'granted') {
-  //       const notification = new Notification('Sadhana', {
-  //         body: 'Az értesítések engedélyezve!',
-  //         icon: 'favicon-32x32.png',
-  //       })
-  //     }
-  //   }
-  //   if (!value) {
-  //     console.log('Notification disabled')
-  //     notification.value = false
-  //   }
-  // })
-
-  // watch(time, value => {
-  //   navigator.serviceWorker.controller?.postMessage({
-  //     type: 'timeChange',
-  //     data: value,
-  //   })
-  // })
+  // TODO read from API
+  const time = ref('20')
+  // TODO save to API on blur
+  const timeBlur = () => console.log('blur')
 </script>
 
 <template>
@@ -50,12 +92,39 @@
     <h1>Beállítások</h1>
     <div>
       <label for="notification">Emlékeztető</label>
-      <input type="checkbox" v-model="notification" />
-      <input type="time" v-model="time" v-show="notification" />
+      <input
+        id="notification"
+        type="checkbox"
+        v-model="notificationPermission"
+        @change="requestNotificationPermission"
+        :disabled="isDenied"
+      />
+    </div>
+    <div v-show="notificationPermission">
+      <label for="time">Időpont</label>
+      <input
+        id="time"
+        type="number"
+        min="8"
+        max="24"
+        step="1"
+        v-model="time"
+        @blur="timeBlur"
+      />
+      óra
+    </div>
+    <p v-if="isDenied" class="info">
+      Korábban letiltottad az értesítéseket. Engedélyezdned kell a
+      <strong>böngészőben</strong>, hogy megkapd az értesítéseket.
+    </p>
+    <div>
+      <p v-if="!notificationPermission">
+        Ha kipipálod akkor a böngésző rá fog kérdezni, hogy engedélyezed-e az
+        értesítéseket, ahol az <strong>"engedélyezést"</strong> kell választani.
+      </p>
       <p>
-        Ha az emlékeztetőt bekapcsolod, akkor az alkalmazás a kiválasztott
-        időpontban küld egy üzenetet a telefonra, ha aznap nem töltötted ki a
-        sadhana adatokat.
+        Ha bekapcsolod, akkor az alkalmazás a kiválasztott időpontban küld egy
+        üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.
       </p>
     </div>
   </section>
@@ -68,8 +137,24 @@
   input {
     margin-left: 1em;
   }
+  div {
+    display: inline-block;
+  }
   p {
     color: var(--pinky);
     margin-top: 0.5em;
+  }
+  .info {
+    background-color: var(--pinky);
+    color: var(--dark-purple);
+    margin: 1em;
+    padding: 0.5em;
+  }
+
+  input[type='checkbox'] {
+    margin-right: 2em;
+  }
+  input[type='number'] {
+    text-align: center;
   }
 </style>
