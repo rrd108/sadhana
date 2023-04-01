@@ -28,3 +28,4 @@ dist-ssr
 *.sw?
 
 .env.development
+api/config/sadhana-firebase.json
