@@ -1,11 +1,10 @@
 from datetime import datetime
 import firebase_admin
 from firebase_admin import messaging
-import os
+from firebase_admin import credentials
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../config/sadhana-d0c2c-firebase-adminsdk-d5iaz-922236c4a7.json"
-
-default_app = firebase_admin.initialize_app()
+cred = credentials.Certificate('../config/sadhana-firebase.json')
+firebase_admin.initialize_app(cred)
 
 # This registration token comes from the client FCM SDKs.
 registration_token = 'USER_REG_TOKEN'
