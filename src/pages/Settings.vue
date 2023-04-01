@@ -21,7 +21,7 @@
 
   // Get registration token. Initially this makes a network call, once retrieved
   // subsequent calls to getToken will return from cache.
-  //this initialize the service worker
+  // this initialize the service worker
   const messaging = getMessaging(app)
 
   const store = useStore()
