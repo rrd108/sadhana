@@ -27,6 +27,7 @@ dist-ssr
 *.sln
 *.sw?
 
+.dccache
 .env.development
 .env.production
 api/config/sadhana-firebase.json
