@@ -2,9 +2,11 @@
   import { ref } from 'vue'
   import axios from 'axios'
   import { useStore } from '../store'
-  // Import the functions you need from the SDKs you need
   import { initializeApp } from 'firebase/app'
   import { getMessaging, getToken } from 'firebase/messaging'
+  import { useToast } from 'vue-toastification'
+
+  const toast = useToast()
 
   const firebaseConfig = {
     apiKey: import.meta.env.VITE_APP_FIREBASE_APIKEY,
@@ -36,18 +38,18 @@
               { firebaseUserToken: currentToken },
               store.tokenHeader
             )
-            .then(res => console.log(res.data.firebaseUserToken))
-            .catch(err => console.error(err))
+            .then(res => toast.success(res.data.firebaseUserToken))
+            .catch(err => toast.error(err))
         }
         if (!currentToken) {
           // Show permission request UI
-          console.log(
+          toast.info(
             'No reg token available. Request permission to generate one.'
           )
           Notification.requestPermission()
             .then(permission => {
               if (permission === 'granted') {
-                console.log('Notification permission granted.')
+                toast.info('Notification permission granted.')
                 new Notification('Sadhana', {
                   body: 'Az értesítések engedélyezve!',
                   icon: 'favicon-32x32.png',
@@ -55,12 +57,12 @@
               }
             })
             .catch(err => {
-              console.error('Unable to get permission to notify.', err)
+              toast.error('Unable to get permission to notify.', err)
             })
         }
       })
       .catch(err => {
-        console.log('An error occurred while retrieving token. ', err)
+        toast.warning('An error occurred while retrieving token. ', err)
       })
   }
 
