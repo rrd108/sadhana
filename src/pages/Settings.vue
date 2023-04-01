@@ -25,6 +25,37 @@
 
   const store = useStore()
 
+  const notificationPermission = ref(false)
+  const showInfo = ref(false)
+
+  const requestNotificationPermission = () => {
+    if (Notification.permission == 'granted') {
+      notificationPermission.value = true
+      return
+    }
+
+    if (Notification.permission == 'denied') {
+      showInfo.value = true
+      return
+    }
+
+    Notification.requestPermission()
+      .then(permission => {
+        if (permission == 'granted') {
+          notificationPermission.value = true
+          new Notification('Sadhana', {
+            body: 'Az értesítések engedélyezve!',
+            icon: 'favicon-32x32.png',
+          })
+        }
+      })
+      .catch(err => {
+        toast.error('Unable to get permission to notify.', err)
+      })
+  }
+
+  requestNotificationPermission()
+
   if (!store.user.firebaseUserToken) {
     // TODO An update frequency of once per month likely strikes a good balance between battery impact vs. detecting inactive registration tokens. So if the token is older than a month, you should call getToken again.
     getToken(messaging, {
@@ -38,7 +69,7 @@
               { firebaseUserToken: currentToken },
               store.tokenHeader
             )
-            .then(res => toast.success(res.data.firebaseUserToken))
+            .then(res => toast.success('Beállítás mentve'))
             .catch(err => toast.error(err))
         }
         if (!currentToken) {
@@ -46,19 +77,7 @@
           toast.info(
             'No reg token available. Request permission to generate one.'
           )
-          Notification.requestPermission()
-            .then(permission => {
-              if (permission === 'granted') {
-                toast.info('Notification permission granted.')
-                new Notification('Sadhana', {
-                  body: 'Az értesítések engedélyezve!',
-                  icon: 'favicon-32x32.png',
-                })
-              }
-            })
-            .catch(err => {
-              toast.error('Unable to get permission to notify.', err)
-            })
+          requestNotificationPermission()
         }
       })
       .catch(err => {
@@ -69,13 +88,9 @@
   }
 
   // TODO read from API
-  const time = ref('20:00') // should be the same in sw.js
-
-  // TODO get from API
-  const notification = ref(false)
-  if (store.user.firebaseUserToken) {
-    notification.value = true
-  }
+  const time = ref('20')
+  // TODO save to API on blur
+  const timeBlur = () => console.log('blur')
 </script>
 
 <template>
@@ -83,8 +98,29 @@
     <h1>Beállítások</h1>
     <div>
       <label for="notification">Emlékeztető</label>
-      <input type="checkbox" v-model="notification" />
-      <input type="time" v-model="time" v-show="notification" />
+      <input
+        id="notification"
+        type="checkbox"
+        v-model="notificationPermission"
+        @change="requestNotificationPermission"
+        :disabled="!notificationPermission"
+      />
+      <label for="time">Időpont</label>
+      <input
+        id="time"
+        v-show="notificationPermission"
+        type="number"
+        min="8"
+        max="24"
+        step="1"
+        v-model="time"
+        @blur="timeBlur"
+      />
+      óra
+      <p v-if="showInfo" class="info">
+        Korábban letiltottad az értesítéseket. Engedélyezdned kell a
+        böngészőben, hogy megkapd az értesítéseket.
+      </p>
       <p>
         Ha az emlékeztetőt bekapcsolod, akkor az alkalmazás a kiválasztott
         időpontban küld egy üzenetet a telefonra, ha aznap nem töltötted ki a
@@ -104,5 +140,18 @@
   p {
     color: var(--pinky);
     margin-top: 0.5em;
+  }
+  .info {
+    background-color: var(--pinky);
+    color: var(--dark-purple);
+    margin: 1em;
+    padding: 0.5em;
+  }
+
+  input[type='checkbox'] {
+    margin-right: 2em;
+  }
+  input[type='number'] {
+    text-align: center;
   }
 </style>
