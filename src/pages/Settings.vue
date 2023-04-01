@@ -21,6 +21,7 @@
 
   // Get registration token. Initially this makes a network call, once retrieved
   // subsequent calls to getToken will return from cache.
+  //this initialize the service worker
   const messaging = getMessaging()
 
   const store = useStore()
@@ -55,7 +56,6 @@
   }
 
   if (!store.user.firebaseUserToken) {
-    // TODO An update frequency of once per month likely strikes a good balance between battery impact vs. detecting inactive registration tokens. So if the token is older than a month, you should call getToken again.
     getToken(messaging, {
       vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
     })
