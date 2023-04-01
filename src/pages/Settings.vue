@@ -62,7 +62,9 @@
         }
       })
       .catch(err => {
-        toast.warning('An error occurred while retrieving token. ', err)
+        toast.warning(
+          'An error occurred while retrieving token. ' + err.message
+        )
       })
   }
 
