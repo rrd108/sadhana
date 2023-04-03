@@ -15,7 +15,7 @@
   const dates = getDatesInWeek(route.params.week as string)
 
   const getDateData = (date: Date) =>
-    journal.value.find(day => day.date == date.toISOString().slice(0, 10))
+    journal.value.find(day => day.date == date.toLocaleDateString())
 
   const action = route.params.userId == store.user.id ? 'myjournal' : 'journal'
 
@@ -27,7 +27,10 @@
       store.tokenHeader
     )
     .then(res => {
-      journal.value = res.data.sadhanas
+      journal.value = res.data.sadhanas.map((day: Journal) => ({
+        ...day,
+        date: new Date(day.date).toLocaleDateString(),
+      }))
       user.value = res.data.user
     })
     .catch(err => console.error(err))
@@ -38,7 +41,7 @@
     <li v-for="date in dates">
       <h3>
         <span> {{ user.email?.split('@')[0] }}</span>
-        <span>{{ date.toISOString().slice(0, 10) }}</span>
+        <span>{{ date.toLocaleDateString() }}</span>
       </h3>
       <section>
         <h4>
@@ -98,6 +101,9 @@
 </template>
 
 <style scoped>
+  ul {
+    list-style: none;
+  }
   li {
     margin-bottom: 1em;
     background-color: var(--pinky);
