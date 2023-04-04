@@ -159,8 +159,6 @@ class BadgeDistributorCommand extends Command
         $badgeUsers = $this->badgesUsersTable->newEntities($data);
         if ($this->badgesUsersTable->saveMany($badgeUsers)) {
             $this->logger('<ok>Badge ' . $badge->name . ' given to ' . count($data) . ' users.</ok>');
-        } else {
-            $this->logger('<info>Badge ' . $badge->name . ' could not be given to any users.</info>');
         }
     }
 }
