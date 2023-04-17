@@ -39,22 +39,25 @@
         },
         store.tokenHeader
       )
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.error(err)
-      })
+      .then(
+        res => (store.user.notificationTime = res.data.user.notificationTime)
+      )
+      .catch(err => console.error(err))
 
   const requestNotificationPermission = () => {
-    if (Notification.permission == 'granted') {
-      notificationPermission.value = true
+    if (notificationPermission.value == false) {
       saveNotificationTime()
       return
     }
 
     if (Notification.permission == 'denied') {
       isDenied.value = true
+      return
+    }
+
+    if (Notification.permission == 'granted') {
+      notificationPermission.value = true
+      saveNotificationTime()
       return
     }
 
