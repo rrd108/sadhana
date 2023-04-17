@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { useStore } from '../store'
   const store = useStore()
+
+  const menuItemsCount = store.user.badges.length ? 5 : 4
 </script>
 
 <template>
@@ -39,13 +41,17 @@
     --indicatorWidth: 0.5rem;
   }
   nav {
+    --menuItems: v-bind(menuItemsCount);
     position: relative;
     display: flex;
     background-color: var(--pinky);
     margin: 0 auto;
     border-radius: 0.5em;
     font-size: 2.75rem;
-    width: calc(5 * var(--linkWidth) + 5 * 2 * var(--linkMargin));
+    width: calc(
+      var(--menuItems) * var(--linkWidth) + var(--menuItems) * 2 *
+        var(--linkMargin)
+    );
   }
   a,
   #indicator {
