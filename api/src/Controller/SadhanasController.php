@@ -82,6 +82,7 @@ class SadhanasController extends AppController
     {
         $startDate = new FrozenDate($weekNumber);
         $endDate = $startDate->addDays(6);
+        $startDate = $startDate->subDays(28);
 
         $sadhanas = $this->Sadhanas->find();
         $sadhanaData = Configure::read('sadhana');
