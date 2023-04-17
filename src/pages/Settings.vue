@@ -45,19 +45,19 @@
       .catch(err => console.error(err))
 
   const requestNotificationPermission = () => {
-    if (notificationPermission.value == false) {
+    if (store.user.notificationTime && notificationPermission.value == false) {
       saveNotificationTime()
-      return
-    }
-
-    if (Notification.permission == 'denied') {
-      isDenied.value = true
       return
     }
 
     if (Notification.permission == 'granted') {
       notificationPermission.value = true
       saveNotificationTime()
+      return
+    }
+
+    if (Notification.permission == 'denied') {
+      isDenied.value = true
       return
     }
 
@@ -75,32 +75,34 @@
       .catch(err => {
         toast.error('Unable to get permission to notify.', err)
       })
-  }
 
-  if (!store.user.firebaseUserToken) {
-    getToken(messaging, {
-      vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
-    })
-      .then(currentToken => {
-        if (currentToken) {
-          axios
-            .patch(
-              `${import.meta.env.VITE_APP_API_URL}users/${store.user.id}.json`,
-              { firebaseUserToken: currentToken },
-              store.tokenHeader
-            )
-            .then(res => toast.success('Beállítás mentve'))
-            .catch(err => toast.error(err))
-        }
-        if (!currentToken) {
-          requestNotificationPermission()
-        }
+    if (!store.user.firebaseUserToken) {
+      getToken(messaging, {
+        vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
       })
-      .catch(err => {
-        toast.warning(
-          'An error occurred while retrieving token. ' + err.message
-        )
-      })
+        .then(currentToken => {
+          if (currentToken) {
+            axios
+              .patch(
+                `${import.meta.env.VITE_APP_API_URL}users/${
+                  store.user.id
+                }.json`,
+                { firebaseUserToken: currentToken },
+                store.tokenHeader
+              )
+              .then(res => toast.success('Beállítás mentve'))
+              .catch(err => toast.error(err))
+          }
+          if (!currentToken) {
+            requestNotificationPermission()
+          }
+        })
+        .catch(err => {
+          toast.warning(
+            'An error occurred while retrieving token. ' + err.message
+          )
+        })
+    }
   }
 </script>
 
