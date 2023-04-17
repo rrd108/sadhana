@@ -109,7 +109,7 @@ class BadgeDistributorCommand extends Command
                 ];
                 $badgeUser = $this->badgesUsersTable->newEntity($data);
                 if ($this->badgesUsersTable->save($badgeUser)) {
-                    $this->logger('<ok>Badge ' . $badge->name . ' given to ' . $gainedBy->first()->user . '.</ok>');
+                    $this->logger('<ok>Badge ' . $badge->name . ' ' . $badge->level . ' given to ' . $gainedBy->first()->user . '.</ok>');
                 }
             }
         }
@@ -158,7 +158,7 @@ class BadgeDistributorCommand extends Command
         }
         $badgeUsers = $this->badgesUsersTable->newEntities($data);
         if ($this->badgesUsersTable->saveMany($badgeUsers)) {
-            $this->logger('<ok>Badge ' . $badge->name . ' given to ' . count($data) . ' users.</ok>');
+            $this->logger('<ok>Badge ' . $badge->name . ' ' . $badge->level . ' given to ' . count($data) . ' users.</ok>');
         }
     }
 }
