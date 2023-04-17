@@ -38,6 +38,7 @@ class User extends Entity
         'token_expiration' => true,
         'last_login' => true,
         'firebaseUserToken' => true,
+        'notificationTime' => true,
         'created' => true,
         'modified' => true,
     ];

@@ -28,10 +28,28 @@
 
   const notificationPermission = ref(Notification.permission == 'granted')
   const isDenied = ref(Notification.permission == 'denied')
+  const time = ref(store.user.notificationTime || '19')
+
+  const saveNotificationTime = () =>
+    axios
+      .patch(
+        `${import.meta.env.VITE_APP_API_URL}users/${store.user.id}.json`,
+        {
+          notificationTime: notificationPermission.value ? time.value : null,
+        },
+        store.tokenHeader
+      )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.error(err)
+      })
 
   const requestNotificationPermission = () => {
     if (Notification.permission == 'granted') {
       notificationPermission.value = true
+      saveNotificationTime()
       return
     }
 
@@ -48,6 +66,7 @@
             body: 'Az értesítések engedélyezve!',
             icon: 'favicon-32x32.png',
           })
+          saveNotificationTime()
         }
       })
       .catch(err => {
@@ -80,11 +99,6 @@
         )
       })
   }
-
-  // TODO read from API
-  const time = ref('20')
-  // TODO save to API on blur
-  const timeBlur = () => console.log('blur')
 </script>
 
 <template>
@@ -102,15 +116,9 @@
     </div>
     <div v-show="notificationPermission">
       <label for="time">Időpont</label>
-      <input
-        id="time"
-        type="number"
-        min="8"
-        max="24"
-        step="1"
-        v-model="time"
-        @blur="timeBlur"
-      />
+      <select v-model="time" @change="saveNotificationTime">
+        <option v-for="i in 12" :key="i" :value="i + 8">{{ i + 8 }}</option>
+      </select>
       óra
     </div>
     <p v-if="isDenied" class="info">

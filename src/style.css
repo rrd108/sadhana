@@ -16,7 +16,9 @@ body {
   color: #fff;
 }
 
-input {
+input,
+select,
+option {
   font-family: 'Quicksand', sans-serif;
   font-size: 1rem;
   border: none;

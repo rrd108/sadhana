@@ -6,6 +6,7 @@ interface User {
   role: string
   token: string
   firebaseUserToken: string
+  notificationTime: string
   badges: Badge[]
 }
 

@@ -19,6 +19,9 @@
         </small>
         <font-awesome-icon icon="shield-heart" />
       </router-link>
+      <router-link to="/settings">
+        <font-awesome-icon icon="gears" />
+      </router-link>
       <span id="indicator"></span>
     </nav>
   </footer>
@@ -30,9 +33,8 @@
     bottom: 0;
     width: 100vw;
     height: 10vh;
-    font-size: 3rem;
 
-    --linkWidth: 3rem;
+    --linkWidth: 2.5rem;
     --linkMargin: 0.25em;
     --indicatorWidth: 0.5rem;
   }
@@ -43,12 +45,13 @@
     margin: 0 auto;
     border-radius: 0.5em;
     font-size: 2.75rem;
-    width: calc(4 * var(--linkWidth) + 4 * 2 * var(--linkMargin));
+    width: calc(5 * var(--linkWidth) + 5 * 2 * var(--linkMargin));
   }
   a,
   #indicator {
     width: var(--linkWidth);
     margin: 0 var(--linkMargin);
+    font-size: 2.5rem;
   }
   a {
     color: var(--dark-purple);
@@ -93,5 +96,8 @@
   }
   a:nth-child(4).router-link-exact-active ~ #indicator {
     transform: translateX(calc(3 * var(--linkWidth) + 6 * var(--linkMargin)));
+  }
+  a:nth-child(5).router-link-exact-active ~ #indicator {
+    transform: translateX(calc(4 * var(--linkWidth) + 8 * var(--linkMargin)));
   }
 </style>
