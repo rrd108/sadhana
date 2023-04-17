@@ -39,28 +39,28 @@ cnx = mysql.connector.connect(
 cursor = cnx.cursor()
 
 # Execute a query
-query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL"
+query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL AND notificationTime IS NOT NULL AND notificationTime = HOUR(DATE_SUB(NOW(), INTERVAL 1 HOUR))"
 cursor.execute(query)
-
-# Fetch the results
-# TODO multiple users: https://firebase.google.com/docs/cloud-messaging/send-message
 results = cursor.fetchall()
+
+registration_tokens = []
 for row in results:
-    # This registration token comes from the client FCM SDKs.
-    user_registration_token = row[0]
+    # Add registration token to list
+    registration_tokens.append(row[0])
 
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    message = messaging.Message(
-        notification=messaging.Notification(
-            title='😱 Sadhana emlézetető',
-            body=current_time + '\nMa még nem töltötted ki a sadhana infókat!',
-        ),
-        token=user_registration_token,
-    )
+current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+message = messaging.MulticastMessage(
+    notification=messaging.Notification(
+        title='😱 Sadhana emlékető',
+        body=current_time + '\nMa még nem töltötted ki a sadhana infókat!',
+    ),
+    tokens=registration_tokens,
+)
 
-    # Send the message
-    response = messaging.send(message)
-    print(response)
+# Send the message to all registration tokens
+response = messaging.send_multicast(message)
+print(response)
+print('{0} messages were sent successfully'.format(response.success_count))
 
 # Close the cursor and connection
 cursor.close()
