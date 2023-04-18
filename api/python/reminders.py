@@ -39,7 +39,7 @@ cnx = mysql.connector.connect(
 cursor = cnx.cursor()
 
 # Execute a query
-query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL AND notificationTime IS NOT NULL AND notificationTime = HOUR(DATE_SUB(NOW(), INTERVAL 1 HOUR))"
+query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL AND notificationTime IS NOT NULL AND notificationTime = HOUR(DATE_SUB(NOW(), INTERVAL 1 HOUR)) AND id NOT IN (SELECT user_id FROM sadhanas WHERE date = DATE_FORMAT(NOW(), '%Y-%m-%d'));"
 cursor.execute(query)
 results = cursor.fetchall()
 
@@ -47,6 +47,10 @@ registration_tokens = []
 for row in results:
     # Add registration token to list
     registration_tokens.append(row[0])
+
+if len(registration_tokens) == 0:
+    print('No tokens found for this hour')
+    exit()
 
 current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 message = messaging.MulticastMessage(
