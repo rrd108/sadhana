@@ -27,20 +27,23 @@ messaging.onBackgroundMessage(payload => {
     payload
   )
 
-  clients.matchAll().then(clients => {
-    const isAppInForeground = clients.some(
-      client => client.visibilityState === 'visible'
-    )
+  clients
+    .matchAll()
+    .then(clients => {
+      const isAppInForeground = clients.some(
+        client => client.visibilityState === 'visible'
+      )
 
-    if (isAppInForeground) return
+      if (isAppInForeground) return
+    })
+    .catch(err => console.error(err))
 
-    // Customize notification here
-    const notificationTitle = 'BG/' + payload.notification.title
-    const notificationOptions = {
-      body: payload.notification.body,
-      icon: '/android-chrome-192x192.png',
-    }
+  // Customize notification here
+  const notificationTitle = 'BG/' + payload.notification.title
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: '/android-chrome-192x192.png',
+  }
 
-    self.registration.showNotification(notificationTitle, notificationOptions)
-  })
+  self.registration.showNotification(notificationTitle, notificationOptions)
 })
