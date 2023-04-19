@@ -44,14 +44,47 @@
       )
       .catch(err => console.error(err))
 
+  const getFirebaseToken = () => {
+    if (!store.user.firebaseUserToken) {
+      getToken(messaging, {
+        vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
+      })
+        .then(currentToken => {
+          if (currentToken) {
+            axios
+              .patch(
+                `${import.meta.env.VITE_APP_API_URL}users/${
+                  store.user.id
+                }.json`,
+                { firebaseUserToken: currentToken },
+                store.tokenHeader
+              )
+              .then(res => toast.success('Beállítás mentve'))
+              .catch(err => toast.error(err))
+          }
+          if (!currentToken) {
+            requestNotificationPermission()
+          }
+        })
+        .catch(err => {
+          toast.warning(
+            'An error occurred while retrieving token. ' + err.message
+          )
+        })
+    }
+  }
+
   const requestNotificationPermission = () => {
     if (store.user.notificationTime && notificationPermission.value == false) {
+      // swich off notifications by set notificationTime to null
       saveNotificationTime()
       return
     }
 
     if (Notification.permission == 'granted') {
+      // permission is already granted, this is a time change
       notificationPermission.value = true
+      getFirebaseToken()
       saveNotificationTime()
       return
     }
@@ -61,6 +94,7 @@
       return
     }
 
+    // notification permission is not granted yet
     Notification.requestPermission()
       .then(permission => {
         if (permission == 'granted') {
@@ -92,33 +126,7 @@
         toast.error('Unable to get permission to notify.', err)
       })
 
-    if (!store.user.firebaseUserToken) {
-      getToken(messaging, {
-        vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
-      })
-        .then(currentToken => {
-          if (currentToken) {
-            axios
-              .patch(
-                `${import.meta.env.VITE_APP_API_URL}users/${
-                  store.user.id
-                }.json`,
-                { firebaseUserToken: currentToken },
-                store.tokenHeader
-              )
-              .then(res => toast.success('Beállítás mentve'))
-              .catch(err => toast.error(err))
-          }
-          if (!currentToken) {
-            requestNotificationPermission()
-          }
-        })
-        .catch(err => {
-          toast.warning(
-            'An error occurred while retrieving token. ' + err.message
-          )
-        })
-    }
+    getFirebaseToken()
   }
 </script>
 
