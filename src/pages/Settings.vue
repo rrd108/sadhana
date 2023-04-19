@@ -65,10 +65,26 @@
       .then(permission => {
         if (permission == 'granted') {
           notificationPermission.value = true
-          new Notification('Sadhana', {
-            body: 'Az értesítések engedélyezve!',
-            icon: 'favicon-32x32.png',
-          })
+          if (window.matchMedia('(display-mode: standalone)').matches) {
+            // PWA mode
+            navigator.serviceWorker.ready
+              .then(registration =>
+                registration.showNotification('Sadhana', {
+                  body: 'Az értesítések engedélyezve!',
+                  icon: 'favicon-32x32.png',
+                })
+              )
+              .catch(err => {
+                toast.error('Unable to get permission to notify.', err)
+              })
+          }
+          if (!window.matchMedia('(display-mode: standalone)').matches) {
+            // Browser mode
+            new Notification('Sadhana', {
+              body: 'Az értesítések engedélyezve!',
+              icon: 'favicon-32x32.png',
+            })
+          }
           saveNotificationTime()
         }
       })
