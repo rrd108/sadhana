@@ -2,7 +2,13 @@
   import { useStore } from '../store'
   const store = useStore()
 
-  const menuItemsCount = store.user.badges.length ? 5 : 4
+  let menuItemsCount = 0
+  if (store.user.email == 'rrd@krisna.hu') {
+    // TODO remove this
+    menuItemsCount = store.user.badges.length ? 5 : 4
+  } else {
+    menuItemsCount = store.user.badges.length ? 4 : 3
+  }
 </script>
 
 <template>
@@ -21,7 +27,7 @@
         </small>
         <font-awesome-icon icon="shield-heart" />
       </router-link>
-      <router-link to="/settings">
+      <router-link to="/settings" v-if="store.user.email == 'rrd@krisna.hu'">
         <font-awesome-icon icon="gears" />
       </router-link>
       <span id="indicator"></span>

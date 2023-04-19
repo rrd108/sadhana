@@ -44,38 +44,7 @@
       )
       .catch(err => console.error(err))
 
-  const requestNotificationPermission = () => {
-    if (store.user.notificationTime && notificationPermission.value == false) {
-      saveNotificationTime()
-      return
-    }
-
-    if (Notification.permission == 'granted') {
-      notificationPermission.value = true
-      saveNotificationTime()
-      return
-    }
-
-    if (Notification.permission == 'denied') {
-      isDenied.value = true
-      return
-    }
-
-    Notification.requestPermission()
-      .then(permission => {
-        if (permission == 'granted') {
-          notificationPermission.value = true
-          new Notification('Sadhana', {
-            body: 'Az értesítések engedélyezve!',
-            icon: 'favicon-32x32.png',
-          })
-          saveNotificationTime()
-        }
-      })
-      .catch(err => {
-        toast.error('Unable to get permission to notify.', err)
-      })
-
+  const getFirebaseToken = () => {
     if (!store.user.firebaseUserToken) {
       getToken(messaging, {
         vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPIDKEY,
@@ -103,6 +72,61 @@
           )
         })
     }
+  }
+
+  const requestNotificationPermission = () => {
+    if (store.user.notificationTime && notificationPermission.value == false) {
+      // swich off notifications by set notificationTime to null
+      saveNotificationTime()
+      return
+    }
+
+    if (Notification.permission == 'granted') {
+      // permission is already granted, this is a time change
+      notificationPermission.value = true
+      getFirebaseToken()
+      saveNotificationTime()
+      return
+    }
+
+    if (Notification.permission == 'denied') {
+      isDenied.value = true
+      return
+    }
+
+    // notification permission is not granted yet
+    Notification.requestPermission()
+      .then(permission => {
+        if (permission == 'granted') {
+          notificationPermission.value = true
+          if (window.matchMedia('(display-mode: standalone)').matches) {
+            // PWA mode
+            navigator.serviceWorker.ready
+              .then(registration =>
+                registration.showNotification('Sadhana', {
+                  body: 'Az értesítések engedélyezve!',
+                  icon: 'favicon-32x32.png',
+                })
+              )
+              .catch(err => {
+                toast.error('Unable to get permission to notify.', err)
+              })
+          }
+          if (!window.matchMedia('(display-mode: standalone)').matches) {
+            // Browser mode
+            new Notification('Sadhana', {
+              body: 'Az értesítések engedélyezve!',
+              icon: 'favicon-32x32.png',
+            })
+          }
+          saveNotificationTime()
+        }
+      })
+      .catch(err => {
+        toast.error('Unable to get permission to notify.', err)
+      })
+
+    getFirebaseToken()
   }
 </script>
 
