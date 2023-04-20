@@ -1,6 +1,6 @@
 from datetime import datetime
 import firebase_admin
-from firebase_admin import credentials, messaging
+from firebase_admin import auth, credentials, messaging
 import re
 import os
 import mysql.connector
@@ -39,22 +39,23 @@ cnx = mysql.connector.connect(
 cursor = cnx.cursor()
 
 # Execute a query
-query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL AND notificationTime IS NOT NULL AND notificationTime = HOUR(DATE_SUB(NOW(), INTERVAL 1 HOUR)) AND id NOT IN (SELECT user_id FROM sadhanas WHERE date = DATE_FORMAT(NOW(), '%Y-%m-%d'));"
+query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL AND notificationTime IS NOT NULL AND notificationTime = HOUR(DATE_SUB(NOW(), INTERVAL 1 HOUR)) AND id NOT IN (SELECT user_id FROM sadhanas WHERE date = DATE_FORMAT(NOW(), '%Y-%m-%d'))"
+query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL"
 cursor.execute(query)
 results = cursor.fetchall()
 
 registration_tokens = []
 for row in results:
-    # Add registration token to list
     registration_tokens.append(row[0])
 
 if len(registration_tokens) == 0:
     print('No tokens found for this hour')
     exit()
 
+
 current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 message = messaging.MulticastMessage(
-    notification=messaging.Notification(
+    notification = messaging.Notification(
         title='😱 Sadhana emlékető',
         body=current_time + '\nMa még nem töltötted ki a sadhana infókat!',
     ),
@@ -62,9 +63,12 @@ message = messaging.MulticastMessage(
 )
 
 # Send the message to all registration tokens
-response = messaging.send_multicast(message)
-print(response)
-print('{0} messages were sent successfully'.format(response.success_count))
+batch_response = messaging.send_multicast(message)
+for idx, response in enumerate(batch_response.responses):
+    if response.exception:
+        print(f"Message {idx} failed with error: {response.exception}")
+    else:
+        print(f"Message {idx} successfully sent with message ID: {response.message_id}")
 
 # Close the cursor and connection
 cursor.close()
