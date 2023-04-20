@@ -59,7 +59,10 @@
                 { firebaseUserToken: currentToken },
                 store.tokenHeader
               )
-              .then(res => toast.success('Beállítás mentve'))
+              .then(res => {
+                toast.success('Beállítás mentve')
+                store.user.firebaseUserToken = res.data.user.firebaseUserToken
+              })
               .catch(err => toast.error(err))
           }
           if (!currentToken) {
