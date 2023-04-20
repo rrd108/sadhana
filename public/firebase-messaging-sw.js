@@ -7,15 +7,8 @@ importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js')
 // Initialize the Firebase app in the service worker by passing in
 // your app's Firebase config object.
 // https://firebase.google.com/docs/web/setup#config-object
-firebase.initializeApp({
-  apiKey: import.meta.env.VITE_APP_FIREBASE_APIKEY,
-  authDomain: import.meta.env.VITE_APP_FIREBASE_AUTHDOMAIN,
-  projectId: import.meta.env.VITE_APP_FIREBASE_PROJECTID,
-  storageBucket: import.meta.env.VITE_APP_FIREBASE_STORAGEBUCKET,
-  messagingSenderId: import.meta.env.VITE_APP_FIREBASE_MESSAGINGSENDERID,
-  appId: import.meta.env.VITE_APP_FIREBASE_APPID,
-  measurementId: import.meta.env.VITE_APP_FIREBASE_MEASUREMENTID,
-})
+importScripts('/firebase-config.js')
+firebase.initializeApp(firebaseConfig)
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
@@ -40,6 +33,7 @@ messaging.onBackgroundMessage(payload => {
 
   // Customize notification here
   const notificationTitle = 'BG/' + payload.notification.title
+  console.log('notificationTitle', notificationTitle)
   const notificationOptions = {
     body: payload.notification.body,
     icon: '/android-chrome-192x192.png',
