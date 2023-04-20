@@ -131,6 +131,14 @@
 
     getFirebaseToken()
   }
+
+  if (
+    store.user.notificationTime &&
+    Notification.permission == 'granted' &&
+    !store.user.firebaseUserToken
+  ) {
+    getFirebaseToken()
+  }
 </script>
 
 <template>
