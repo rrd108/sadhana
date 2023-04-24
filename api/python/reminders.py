@@ -39,8 +39,8 @@ cnx = mysql.connector.connect(
 cursor = cnx.cursor()
 
 # Execute a query
-query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL AND notificationTime IS NOT NULL AND notificationTime = HOUR(DATE_SUB(NOW(), INTERVAL 1 HOUR)) AND id NOT IN (SELECT user_id FROM sadhanas WHERE date = DATE_FORMAT(NOW(), '%Y-%m-%d'))"
-query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL"
+query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL AND notificationTime IS NOT NULL AND notificationTime = HOUR(DATE_ADD(NOW(), INTERVAL 1 HOUR)) AND id NOT IN (SELECT user_id FROM sadhanas WHERE date = DATE_FORMAT(NOW(), '%Y-%m-%d'))"
+# query = "SELECT firebaseUserToken FROM users WHERE firebaseUserToken IS NOT NULL"
 cursor.execute(query)
 results = cursor.fetchall()
 
