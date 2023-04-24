@@ -83,13 +83,14 @@
   #indicator {
     position: absolute;
     z-index: -1;
-    top: -0.75rem;
+    bottom: -0.75rem;
     left: calc((var(--linkWidth) - var(--indicatorWidth)) / 2);
     background-color: var(--pinky);
     width: var(--indicatorWidth);
     height: var(--indicatorWidth);
     border-radius: 50%;
     transition: transform 350ms ease-in-out;
+    box-shadow: 0 0 0.75rem 0.1rem var(--pinky);
   }
   a:nth-child(1).router-link-exact-active ~ #indicator {
     transform: translateX(calc(0 * var(--linkWidth) + 0 * var(--linkMargin)));
