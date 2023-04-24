@@ -132,13 +132,14 @@
     getFirebaseToken()
   }
 
-  if (
-    store.user.notificationTime &&
-    Notification.permission == 'granted' &&
-    !store.user.firebaseUserToken
-  ) {
-    getFirebaseToken()
-  }
+  // if (
+  //   store.user.notificationTime &&
+  //   Notification.permission == 'granted' &&
+  //   !store.user.firebaseUserToken
+  // ) {
+  //   // TODO move this to login/day after I found out how and when to invalidate a token
+  //   getFirebaseToken()
+  // }
 </script>
 
 <template>
