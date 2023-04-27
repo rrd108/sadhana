@@ -7,6 +7,7 @@ interface User {
   token: string
   firebaseUserToken: string
   notificationTime: string
+  counsellors: string[]
   badges: Badge[]
 }
 

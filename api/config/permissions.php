@@ -1,7 +1,7 @@
 <?php
 $user = [        // can *read* and *write* own resources
     'BadgesUsers' => ['edit'],
-    'Users' => ['edit', 'login', 'forgotpass'],
+    'Users' => ['edit', 'index', 'login', 'forgotpass'],
     'Sadhanas' => ['add', 'edit', 'getConfig', 'myjournal', 'mystat', 'liststat',  'view'],
 ];
 

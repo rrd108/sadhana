@@ -249,9 +249,6 @@
   h1 {
     font-size: 4rem;
   }
-  h2 {
-    font-size: 1rem;
-  }
   input {
     width: 50%;
     text-align: center;

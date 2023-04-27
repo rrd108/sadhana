@@ -60,7 +60,7 @@ class UsersController extends AppController
 
     public function index()
     {
-        $users = $this->Users->find();
+        $users = $this->Users->find()->select(['id', 'email']);
         $this->set(compact('users'));
         $this->viewBuilder()->setOption('serialize', ['users']);
     }
