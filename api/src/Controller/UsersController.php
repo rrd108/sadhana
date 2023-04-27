@@ -87,9 +87,13 @@ class UsersController extends AppController
             $this->viewBuilder()->setOption('serialize', ['id']);
             return;
         }
+
         $user = $this->Users->get($id);
         if ($this->request->is(['patch'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->request->getData('counsellors')) {
+                $user->counsellors = json_encode($this->request->getData('counsellors'));
+            }
             if (!$this->Users->save($user)) {
                 $user->errors = $user->getErrors();
             }
