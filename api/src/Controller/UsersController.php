@@ -39,7 +39,13 @@ class UsersController extends AppController
         $user->last_login = Chronos::now();
         $user->forgotPass = null;
         $user = $this->Users->save($user);
+
         $user = $this->Users->get($user->id, ['contain' => ['Badges']]);
+
+        // get users where I am counsellor TODO change this to a hasAndBelongsTo relation
+        $user->counsulees = $this->Users->find()
+            ->where(['counsellors LIKE' => '%' . $user->id . '%'])
+            ->select(['id']);
 
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', 'user');
