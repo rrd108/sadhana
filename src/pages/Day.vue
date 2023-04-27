@@ -254,6 +254,10 @@
     text-align: center;
     margin: 0 auto;
   }
+  h2,
+  p {
+    margin: 0;
+  }
   .wide {
     width: 100%;
   }
