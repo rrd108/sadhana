@@ -42,6 +42,17 @@ class UsersController extends AppController
 
         $user = $this->Users->get($user->id, ['contain' => ['Badges', 'Counsellors', 'Counsulees']]);
 
+        $user->counsulees = collection($user->counsulees)->map(function ($counsulee) {
+            unset($counsulee->_joinData);
+            return $counsulee->id;
+        });
+
+        $user->counsellors = collection($user->counsellors)->map(function ($counsellor) {
+            $counsellor->id = $counsellor->_joinData?->counsellor_id;
+            unset($counsellor->_joinData);
+            return $counsellor->id;
+        });
+
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', 'user');
 

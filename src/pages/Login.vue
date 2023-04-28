@@ -17,9 +17,6 @@
       })
       .then(res => {
         store.user = res.data
-        store.user.counsellors = res.data.counsellors.map(
-          (c: { id: string }) => c.id
-        )
         router.push('/')
       })
       .catch(err => {
