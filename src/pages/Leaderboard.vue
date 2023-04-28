@@ -41,13 +41,12 @@
 
   const showJournal = (user: { user_id: string }) => {
     if (
-      // TODO counsellor role can be dropped
-      store.user.role == 'counsellor' ||
       store.user.role == 'admin' ||
       store.user.id == user.user_id ||
       store.user.counsulees.find(c => c == user.user_id)
-    )
+    ) {
       router.push(`/journal/${user.user_id}/${week.value}`)
+    }
   }
 </script>
 

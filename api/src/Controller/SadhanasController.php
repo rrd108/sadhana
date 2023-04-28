@@ -147,7 +147,7 @@ class SadhanasController extends AppController
             ])
             ->first();
 
-        if (!$counsellor) {
+        if (!$counsellor && $userId != $this->Authentication->getIdentity()->id) {
             throw new JsonApiException(null, 'You have no access to this information', 403);
         }
 
