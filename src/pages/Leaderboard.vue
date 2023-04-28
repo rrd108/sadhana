@@ -45,7 +45,7 @@
       store.user.role == 'counsellor' ||
       store.user.role == 'admin' ||
       store.user.id == user.user_id ||
-      store.user.counsulees.find(c => c.id == user.user_id)
+      store.user.counsulees.find(c => c == user.user_id)
     )
       router.push(`/journal/${user.user_id}/${week.value}`)
   }
@@ -68,9 +68,8 @@
       <li
         v-for="(user, i) in list"
         :class="{
-          me:
-            user.user == store.user.email ||
-            store.user.counsulees.find(c => c.id == user.user_id),
+          me: user.user == store.user.email,
+          counsulee: store.user.counsulees.find(c => c == user.user_id),
         }"
         @click="showJournal(user)"
       >
@@ -106,5 +105,9 @@
   .me {
     background-color: #fff;
     color: #000;
+  }
+  .counsulee {
+    background-color: var(--medium-purple);
+    color: var(--pinky);
   }
 </style>
