@@ -14,39 +14,33 @@
     .then(res => (users.value = res.data.users))
     .catch(err => console.error(err))
 
-const patchUser = (counsellorArray: string[]) => {
-    axios
-        .patch(
-          `${import.meta.env.VITE_APP_API_URL}users/${store.user.id}.json`,
-          { counsellors: counsellorArray },
-          store.tokenHeader
-        )
-        .then(res => {
-          store.user.counsellors = JSON.parse(res.data.user.counsellors)
-            userEmail.value = ''
-        })
-        .catch(err => console.error(err))
-}
-
   const addCounsellor = () => {
     const counsellor = users.value.find(
       user => user.email == userEmail.value
     )?.id
     if (counsellor) {
-        let counsellorArray: string[] = []
-        if (store.user.counsellors) {
-            counsellorArray = [...store.user.counsellors, counsellor]
-        }
-        if (!store.user.counsellors) {
-            counsellorArray = [counsellor]
-        }
-      patchUser(counsellorArray)
+        let counsellorCounsulee = {}
+          counsellorCounsulee = {counsellor_id: counsellor}
+          axios.post(
+            `${import.meta.env.VITE_APP_API_URL}counsellors-counsulees.json`,
+            counsellorCounsulee,
+            store.tokenHeader
+          )
+          .then(res => {
+            store.user.counsellors.push(res.data.counsellorsCounsulee.counsellor_id)
+            userEmail.value = ''
+          })
+          .catch(err => console.error(err))
     }
   }
 
   const removeCounsellor = (counsellor: string) => {
-    const counsellorArray = store.user.counsellors?.filter(id => id != counsellor)
-    patchUser(counsellorArray)
+    axios.delete(
+      `${import.meta.env.VITE_APP_API_URL}counsellors-counsulees/${counsellor}.json`,
+      store.tokenHeader
+    ).then(res => {
+      store.user.counsellors = store.user.counsellors.filter(c => c != counsellor)
+    }).catch(err => console.error(err))
   }
 
   const noAccessUsers = computed(() => {

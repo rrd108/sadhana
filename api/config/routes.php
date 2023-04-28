@@ -75,8 +75,9 @@ return static function (RouteBuilder $routes) {
          */
 
         $builder->resources('BadgesUsers');
-        $builder->resources('Users');
+        $builder->resources('CounsellorsCounsulees');
         $builder->resources('Sadhanas');
+        $builder->resources('Users');
 
         $builder->fallbacks();
     });

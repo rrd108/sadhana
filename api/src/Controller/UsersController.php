@@ -40,12 +40,7 @@ class UsersController extends AppController
         $user->forgotPass = null;
         $user = $this->Users->save($user);
 
-        $user = $this->Users->get($user->id, ['contain' => ['Badges']]);
-
-        // get users where I am counsellor TODO change this to a hasAndBelongsTo relation
-        $user->counsulees = $this->Users->find()
-            ->where(['counsellors LIKE' => '%' . $user->id . '%'])
-            ->select(['id']);
+        $user = $this->Users->get($user->id, ['contain' => ['Badges', 'Counsellors', 'Counsulees']]);
 
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', 'user');
@@ -94,12 +89,9 @@ class UsersController extends AppController
             return;
         }
 
-        $user = $this->Users->get($id);
+        $user = $this->Users->get($id, ['contain' => ['Counsellors']]);
         if ($this->request->is(['patch'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->request->getData('counsellors')) {
-                $user->counsellors = json_encode($this->request->getData('counsellors'));
-            }
             if (!$this->Users->save($user)) {
                 $user->errors = $user->getErrors();
             }

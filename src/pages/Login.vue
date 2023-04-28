@@ -17,7 +17,9 @@
       })
       .then(res => {
         store.user = res.data
-        store.user.counsellors = JSON.parse(res.data.counsellors)
+        store.user.counsellors = res.data.counsellors.map(
+          (c: { id: string }) => c.id
+        )
         router.push('/')
       })
       .catch(err => {
