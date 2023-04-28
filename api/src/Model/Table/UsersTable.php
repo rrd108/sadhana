@@ -68,6 +68,10 @@ class UsersTable extends Table
             'joinTable' => 'counsellors_counsulees',
             'finder' => 'onlyIds'
         ]);
+
+        $this->hasMany('CounsellorsCounsulees', [
+            'foreignKey' => 'counsulee_id',
+        ]);
     }
 
     /**
