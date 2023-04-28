@@ -94,10 +94,6 @@
     top: 10vh;
     width: 90vw;
   }
-  h2 {
-    margin-bottom: 0.5em;
-    font-size: 1rem;
-  }
   h3 {
     font-size: 0.8rem;
   }

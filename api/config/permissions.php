@@ -1,8 +1,9 @@
 <?php
 $user = [        // can *read* and *write* own resources
     'BadgesUsers' => ['edit'],
-    'Users' => ['edit', 'login', 'forgotpass'],
-    'Sadhanas' => ['add', 'edit', 'getConfig', 'myjournal', 'mystat', 'liststat',  'view'],
+    'CounsellorsCounsulees' => ['add', 'delete'],
+    'Users' => ['edit', 'index', 'login', 'forgotpass'],
+    'Sadhanas' => ['add', 'edit', 'getConfig', 'journal', 'myjournal', 'mystat', 'liststat',  'view'],
 ];
 
 $counsellor = array_merge($user,  ['Sadhanas' => [...$user['Sadhanas'], 'journal']]);

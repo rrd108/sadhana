@@ -140,6 +140,17 @@ class SadhanasController extends AppController
 
     public function journal(string $userId, string $weekNumber)
     {
+        $counsellor = $this->Sadhanas->Users->CounsellorsCounsulees->find()
+            ->where([
+                'counsulee_id' => $userId,
+                'counsellor_id' => $this->Authentication->getIdentity()->id
+            ])
+            ->first();
+
+        if (!$counsellor) {
+            throw new JsonApiException(null, 'You have no access to this information', 403);
+        }
+
         $startDate = new FrozenDate($weekNumber);
         $endDate = $startDate->addDays(6);
 

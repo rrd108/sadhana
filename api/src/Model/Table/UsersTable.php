@@ -52,6 +52,26 @@ class UsersTable extends Table
             'joinTable' => 'badges_users',
             'sort' => ['BadgesUsers.created' => 'DESC'],
         ]);
+
+        $this->belongsToMany('Counsulees', [
+            'className' => 'Users',
+            'foreignKey' => 'counsellor_id',
+            'targetForeignKey' => 'counsulee_id',
+            'joinTable' => 'counsellors_counsulees',
+            'finder' => 'onlyIds'
+        ]);
+
+        $this->belongsToMany('Counsellors', [
+            'className' => 'Users',
+            'foreignKey' => 'counsulee_id',
+            'targetForeignKey' => 'counsellor_id',
+            'joinTable' => 'counsellors_counsulees',
+            'finder' => 'onlyIds'
+        ]);
+
+        $this->hasMany('CounsellorsCounsulees', [
+            'foreignKey' => 'counsulee_id',
+        ]);
     }
 
     /**
@@ -102,5 +122,10 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
 
         return $rules;
+    }
+
+    public function findOnlyIds(Query $query, array $options)
+    {
+        return $query->select(['id']);
     }
 }

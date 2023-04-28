@@ -39,7 +39,8 @@ class UsersController extends AppController
         $user->last_login = Chronos::now();
         $user->forgotPass = null;
         $user = $this->Users->save($user);
-        $user = $this->Users->get($user->id, ['contain' => ['Badges']]);
+
+        $user = $this->Users->get($user->id, ['contain' => ['Badges', 'Counsellors', 'Counsulees']]);
 
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', 'user');
@@ -60,7 +61,7 @@ class UsersController extends AppController
 
     public function index()
     {
-        $users = $this->Users->find();
+        $users = $this->Users->find()->select(['id', 'email']);
         $this->set(compact('users'));
         $this->viewBuilder()->setOption('serialize', ['users']);
     }
@@ -87,7 +88,8 @@ class UsersController extends AppController
             $this->viewBuilder()->setOption('serialize', ['id']);
             return;
         }
-        $user = $this->Users->get($id);
+
+        $user = $this->Users->get($id, ['contain' => ['Counsellors']]);
         if ($this->request->is(['patch'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if (!$this->Users->save($user)) {

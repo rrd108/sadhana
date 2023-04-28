@@ -133,5 +133,6 @@
   }
   p {
     background-color: var(--pinky-dark);
+    color: var(--dark-purple);
   }
 </style>
