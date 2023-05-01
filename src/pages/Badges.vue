@@ -104,4 +104,7 @@
     padding: 0.25em;
     margin-bottom: 0.5em;
   }
+  p {
+    color: var(--dark-purple);
+  }
 </style>
