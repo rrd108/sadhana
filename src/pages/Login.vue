@@ -20,7 +20,7 @@
         router.push('/')
       })
       .catch(err => {
-        toast.error(err.response.data.message)
+        toast.error(`Sikertelen belépés ${err.code}`)
       })
 </script>
 
