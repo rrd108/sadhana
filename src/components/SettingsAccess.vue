@@ -7,7 +7,7 @@
 
   const store = useStore()
   const users = ref([] as User[])
-  const userEmail = ref('')
+  const counsellor = ref('')
 
   axios
     .get(`${import.meta.env.VITE_APP_API_URL}users.json`, store.tokenHeader)
@@ -15,12 +15,12 @@
     .catch(err => console.error(err))
 
   const addCounsellor = () => {
-    const counsellor = users.value.find(
-      user => user.email == userEmail.value
+    const selected = users.value.find(
+      user => user.email.split('@')[0] == counsellor.value
     )?.id
-    if (counsellor) {
+    if (selected) {
         let counsellorCounsulee = {}
-          counsellorCounsulee = {counsellor_id: counsellor}
+          counsellorCounsulee = {counsellor_id: selected}
           axios.post(
             `${import.meta.env.VITE_APP_API_URL}counsellors-counsulees.json`,
             counsellorCounsulee,
@@ -28,7 +28,7 @@
           )
           .then(res => {
             store.user.counsellors.push(res.data.counsellorsCounsulee.counsellor_id)
-            userEmail.value = ''
+            counsellor.value = ''
           })
           .catch(err => console.error(err))
     }
@@ -62,7 +62,7 @@
     <ul>
         <li v-for="counsellor in store.user.counsellors">
            <button @click="removeCounsellor(counsellor)"><font-awesome-icon icon="circle-minus" /></button>
-            <span>{{ users.find(user => user.id == counsellor)?.email }}</span>
+            <span>{{ users.find(user => user.id == counsellor)?.email.split('@')[0] }}</span>
         </li>
     </ul>
 </p>
@@ -73,11 +73,11 @@
       id="counsellor"
       type="email"
       list="users"
-      placeholder="Email cím"
-      v-model="userEmail"
+      placeholder="Felhasználó"
+      v-model="counsellor"
     />
     <datalist id="users">
-      <option v-for="user in noAccessUsers" :key="user.id" :value="user.email" />
+      <option v-for="user in noAccessUsers" :key="user.id" :value="user.email.split('@')[0]" />
     </datalist>
     <button @click="addCounsellor">
       <font-awesome-icon icon="circle-plus" />
