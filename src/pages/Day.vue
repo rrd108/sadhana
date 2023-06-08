@@ -63,7 +63,7 @@
         store.tokenHeader
       )
       .then(res => {
-        bhakti.value = res.data ? res.data : emptyBhakti
+        bhakti.value = res.data ?? { ...emptyBhakti }
         dateChanged.value = true
         initialData = { ...bhakti.value }
       })
