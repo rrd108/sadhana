@@ -41,7 +41,6 @@
 
   const showJournal = (user: { user_id: string }) => {
     if (
-      store.user.role == 'admin' ||
       store.user.id == user.user_id ||
       store.user.counsulees.find(c => c == user.user_id)
     ) {
