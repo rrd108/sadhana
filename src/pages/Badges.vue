@@ -55,14 +55,15 @@
       </li>
     </ul>
 
-    <div v-if="selectedBadge.id" class="center" @click="hide">
+    <div id="overlay" v-if="selectedBadge.id"></div>
+    <dialog v-if="selectedBadge.id" class="center" @click="hide">
       <h2>{{ selectedBadge.name }}</h2>
       <img :src="getImagePath(selectedBadge.icon)" />
       <h3 v-if="selectedBadge.level">{{ selectedBadge.level }}. szint</h3>
       <h3 v-if="!selectedBadge.level">{{ selectedBadge._joinData.created }}</h3>
       <p>{{ selectedBadge.description }}</p>
       <small>{{ selectedBadge._joinData.created }}</small>
-    </div>
+    </dialog>
   </section>
 </template>
 
@@ -76,8 +77,25 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1em;
   }
+  dialog {
+    top: 10vh;
+    width: 90vw;
+    margin-inline: auto;
+    display: block;
+    background-color: var(--pinky-dark);
+    border: none;
+    z-index: 1;
+  }
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
   li,
-  div {
+  dialog {
     color: var(--dark-purple);
     background-color: var(--pinky);
     border-radius: 0.5em;
@@ -88,11 +106,6 @@
   }
   li.accepted {
     filter: none;
-  }
-  div {
-    position: absolute;
-    top: 10vh;
-    width: 90vw;
   }
   h3 {
     font-size: 0.8rem;
