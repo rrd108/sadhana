@@ -31,13 +31,13 @@ messaging.onBackgroundMessage(payload => {
     })
     .catch(err => console.error(err))
 
-  // Customize notification here
-  const notificationTitle = 'BG/' + payload.notification.title
+  // Create a new notification here
+  /*const notificationTitle = 'BG/' + payload.notification.title
   console.log('notificationTitle', notificationTitle)
   const notificationOptions = {
     body: payload.notification.body,
     icon: '/android-chrome-192x192.png',
   }
 
-  self.registration.showNotification(notificationTitle, notificationOptions)
+  self.registration.showNotification(notificationTitle, notificationOptions)*/
 })
