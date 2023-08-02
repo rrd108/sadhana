@@ -150,7 +150,8 @@ class SadhanasTable extends Table
 
         return $query->select([
             'Sadhanas.user_id',
-            'user' => 'Users.email',
+            'userEmail' => 'Users.email',
+            'userName' => 'Users.name',
             'points'  => $query->func()->sum($fields),
         ])->having(['points >' => 0])
             ->contain(['Users'])

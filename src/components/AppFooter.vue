@@ -22,6 +22,7 @@
         <font-awesome-icon icon="shield-heart" />
       </router-link>
       <router-link to="/settings">
+        <small v-if="!store.user.name">!</small>
         <font-awesome-icon icon="gears" />
       </router-link>
       <span id="indicator"></span>

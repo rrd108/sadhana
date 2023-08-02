@@ -6,7 +6,7 @@
 <template>
   <header>
     <img alt="Sadhana" src="@/assets/logo.png" />
-    <span> {{ store.user.email.split('@')[0] }}</span>
+    <span> {{ store.user.name ?? store.user.email.split('@')[0] }}</span>
   </header>
 </template>
 
@@ -20,12 +20,15 @@
     grid-template-columns: 1fr 4fr 1fr;
     align-items: center;
     justify-items: center;
-    font-size: 2rem;
     font-weight: bold;
     background-color: var(--dark-purple);
     z-index: 1;
   }
   img {
     height: 10vh;
+  }
+  span {
+    text-align: center;
+    font-size: 1.2rem;
   }
 </style>

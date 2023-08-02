@@ -55,3 +55,16 @@ p {
   margin: 1em;
   padding: 0.5em;
 }
+.info::before {
+  content: '!';
+  margin-right: 0.5em;
+  color: #fff;
+  background-color: #f00;
+  display: inline-block;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+}

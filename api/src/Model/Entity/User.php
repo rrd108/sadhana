@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\ORM\Entity;
 
 /**
  * User Entity
@@ -18,6 +18,16 @@ use Authentication\PasswordHasher\DefaultPasswordHasher;
  * @property \Cake\I18n\FrozenTime|null $last_login
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property string $role
+ * @property string|null $forgotPass
+ * @property string|null $firebaseUserToken
+ * @property string|null $notificationTime
+ * @property string|null $name
+ *
+ * @property \App\Model\Entity\Badge[] $badges
+ * @property \App\Model\Entity\User[] $counsulees
+ * @property \App\Model\Entity\User[] $counsellors
+ * @property \App\Model\Entity\CounsellorsCounsulee[] $counsellors_counsulees
  */
 class User extends Entity
 {
@@ -33,14 +43,16 @@ class User extends Entity
     protected $_accessible = [
         'email' => true,
         'password' => true,
-        'forgotpass' => true,
         'token' => true,
         'token_expiration' => true,
         'last_login' => true,
-        'firebaseUserToken' => true,
-        'notificationTime' => true,
         'created' => true,
         'modified' => true,
+        'role' => true,
+        'forgotPass' => true,
+        'firebaseUserToken' => true,
+        'notificationTime' => true,
+        'name' => true,
     ];
 
     /**

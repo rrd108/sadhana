@@ -14,7 +14,7 @@
     }`
   )
 
-  const list = ref([{ user: '', user_id: '', points: 0 }])
+  const list = ref([{ userName: '', userEmail: '', user_id: '', points: 0 }])
   const getStat = () =>
     axios
       .get(
@@ -66,13 +66,13 @@
       <li
         v-for="(user, i) in list"
         :class="{
-          me: user.user == store.user.email,
+          me: user.userEmail == store.user.email,
           counsulee: store.user.counsulees.find(c => c == user.user_id),
         }"
         @click="showJournal(user)"
       >
         <span>{{ i + 1 }}</span>
-        <span>{{ user.user.split('@')[0] }}</span>
+        <span>{{ user.userName ?? user.userEmail.split('@')[0] }}</span>
         <span class="right">{{ Math.round(user.points) }}</span>
       </li>
     </ul>
