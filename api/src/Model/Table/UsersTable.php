@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -11,6 +10,8 @@ use Cake\Validation\Validator;
 
 /**
  * Users Model
+ *
+ * @property \App\Model\Table\BadgesTable&\Cake\ORM\Association\BelongsToMany $Badges
  *
  * @method \App\Model\Entity\User newEmptyEntity()
  * @method \App\Model\Entity\User newEntity(array $data, array $options = [])
@@ -106,6 +107,31 @@ class UsersTable extends Table
         $validator
             ->dateTime('last_login')
             ->allowEmptyDateTime('last_login');
+
+        $validator
+            ->scalar('role')
+            ->maxLength('role', 10)
+            ->notEmptyString('role');
+
+        $validator
+            ->scalar('forgotPass')
+            ->maxLength('forgotPass', 12)
+            ->allowEmptyString('forgotPass');
+
+        $validator
+            ->scalar('firebaseUserToken')
+            ->maxLength('firebaseUserToken', 255)
+            ->allowEmptyString('firebaseUserToken');
+
+        $validator
+            ->scalar('notificationTime')
+            ->maxLength('notificationTime', 2)
+            ->allowEmptyString('notificationTime');
+
+        $validator
+            ->scalar('name')
+            ->maxLength('name', 255)
+            ->allowEmptyString('name');
 
         return $validator;
     }
