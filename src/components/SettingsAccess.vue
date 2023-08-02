@@ -53,6 +53,8 @@
 <template>
   <h2>Hozzáférések</h2>
   <p>
+    Havonta fog kapni egy összesítőt a sadhana adatokról Śrīla Śivarāma Swāmi Mahārāja, Rādhā Kṛṣṇa Dāsa és Śrīpati Dāsa.</p>
+    <p>
     Ha szeretnéd, hogy a tanácsadód, barátod láthassa a sadhanád részleteit,
     akkor azt itt engedélyezheted. E nélkül mindneki más csak a pontszámaidat látja.
   </p>
