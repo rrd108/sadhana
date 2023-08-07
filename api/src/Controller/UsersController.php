@@ -142,7 +142,10 @@ class UsersController extends AppController
             $mailer->setFrom(['forgotpass@sadhana.krisna.hu' => 'Sadhana'])
                 ->setTo($user->email)
                 ->setSubject('Sadhana elfelejtett jelszó')
-                ->deliver('Gauranga @' . strtok($user->email, '@') . '!<br><br>Új jelszó létrehozásához kattints <a href="https://sadhana.1108.cc/pass-reset/' . $user->id . '/' . $user->forgotPass . '">ide</a><br><br>Üdvözlettel,<br>Sadhana');
+                ->deliver('Gauranga @' . strtok($user->email, '@') . '!'
+                    . "\n\n" . 'Új jelszó létrehozásához kattints ide: https://sadhana.1108.cc/pass-reset/' . $user->id . '/' . $user->forgotPass
+                    . "\n\n" . 'Üdvözlettel,'
+                    . "\n" . 'Sadhana');
 
             $result = [
                 'message' => 'You got an email how to log in.',
