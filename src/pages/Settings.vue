@@ -19,10 +19,4 @@
   h1 {
     margin: 1em 0;
   }
-  hr {
-    margin: 1.5em 3em;
-    height: 0.1em;
-    background-color: var(--pinky);
-    opacity: 0.25;
-  }
 </style>
