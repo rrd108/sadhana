@@ -113,6 +113,7 @@
   const saveData = () => {
     pointsChanged.value = false
     dateChanged.value = false
+
     const method = bhakti.value.id ? 'patch' : 'post'
     const id = bhakti.value.id ? `/${bhakti.value.id}` : ''
     axios[method](
@@ -123,10 +124,6 @@
       .then(res => {
         bhakti.value = res.data
         toast.success('Mentve')
-        /*navigator.serviceWorker.controller?.postMessage({
-          type: 'sadhanaData',
-          data: date.value,
-        })*/
       })
       .catch(err => {
         console.error(err)
