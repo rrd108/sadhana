@@ -1,4 +1,5 @@
 interface SadhanaFields {
+  japaBeforeMangala: number
   japaEarly: number
   japaMorning: number
   japaAfternoon: number

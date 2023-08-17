@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -12,6 +11,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $user_id
  * @property \Cake\I18n\FrozenDate $date
+ * @property int $japaBeforeMangala
  * @property int $japaEarly
  * @property int $japaMorning
  * @property int $japaAfternoon
@@ -42,6 +42,7 @@ class Sadhana extends Entity
     protected $_accessible = [
         'user_id' => true,
         'date' => true,
+        'japaBeforeMangala' => true,
         'japaEarly' => true,
         'japaMorning' => true,
         'japaAfternoon' => true,

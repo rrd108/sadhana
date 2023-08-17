@@ -69,6 +69,9 @@ class SadhanasTable extends Table
             ->notEmptyDate('date');
 
         $validator
+            ->notEmptyString('japaBeforeMangala');
+
+        $validator
             ->notEmptyString('japaEarly');
 
         $validator

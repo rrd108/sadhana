@@ -10,6 +10,7 @@
   const store = useStore()
 
   let sadhanaConfig = {
+    japaBeforeMangala: 0,
     japaEarly: 0,
     japaMorning: 0,
     japaAfternoon: 0,
@@ -25,16 +26,14 @@
     gayatri: 0,
   } as SadhanaFields
   axios
-    .get(
-      `${import.meta.env.VITE_APP_API_URL}sadhanas/getConfig.json`,
-      store.tokenHeader
-    )
+    .get(`${import.meta.env.VITE_APP_API_URL}sadhanas/getConfig.json`, store.tokenHeader)
     .then(res => (sadhanaConfig = res.data))
     .catch(err => console.error(err))
 
   const date = ref(new Date().toISOString().substring(0, 10))
   const emptyBhakti = {
     id: 0,
+    japaBeforeMangala: 0,
     japaEarly: 0,
     japaMorning: 0,
     japaAfternoon: 0,
@@ -55,13 +54,7 @@
   let initialData = {}
   const getSadhana = () =>
     axios
-      .get(
-        `${import.meta.env.VITE_APP_API_URL}sadhanas/${date.value.replace(
-          /\-/g,
-          ''
-        )}.json`,
-        store.tokenHeader
-      )
+      .get(`${import.meta.env.VITE_APP_API_URL}sadhanas/${date.value.replace(/\-/g, '')}.json`, store.tokenHeader)
       .then(res => {
         bhakti.value = res.data ?? { ...emptyBhakti }
         dateChanged.value = true
@@ -73,28 +66,30 @@
 
   const totalJapa = computed(() => {
     return (
-      bhakti.value.japaEarly +
-      bhakti.value.japaMorning +
-      bhakti.value.japaAfternoon +
-      bhakti.value.japaNight
+      Number(bhakti.value.japaBeforeMangala) +
+      Number(bhakti.value.japaEarly) +
+      Number(bhakti.value.japaMorning) +
+      Number(bhakti.value.japaAfternoon) +
+      Number(bhakti.value.japaNight)
     )
   })
 
   const points = computed(
     () =>
-      bhakti.value.japaEarly * sadhanaConfig.japaEarly +
-      bhakti.value.japaMorning * sadhanaConfig.japaMorning +
-      bhakti.value.japaAfternoon * sadhanaConfig.japaAfternoon +
-      bhakti.value.japaNight * sadhanaConfig.japaNight +
-      +bhakti.value.mangala * sadhanaConfig.mangala +
-      +bhakti.value.japa * sadhanaConfig.japa +
-      +bhakti.value.kirtana * sadhanaConfig.kirtana +
-      +bhakti.value.class * sadhanaConfig.class +
-      +bhakti.value.gauraarati * sadhanaConfig.gauraarati +
-      bhakti.value.reading * sadhanaConfig.reading +
-      bhakti.value.study * sadhanaConfig.study +
-      bhakti.value.murtiseva * sadhanaConfig.murtiseva +
-      bhakti.value.gayatri * sadhanaConfig.gayatri
+      Number(bhakti.value.japaBeforeMangala) * sadhanaConfig.japaBeforeMangala +
+      Number(bhakti.value.japaEarly) * sadhanaConfig.japaEarly +
+      Number(bhakti.value.japaMorning) * sadhanaConfig.japaMorning +
+      Number(bhakti.value.japaAfternoon) * sadhanaConfig.japaAfternoon +
+      Number(bhakti.value.japaNight) * sadhanaConfig.japaNight +
+      Number(bhakti.value.mangala) * sadhanaConfig.mangala +
+      Number(bhakti.value.japa) * sadhanaConfig.japa +
+      Number(bhakti.value.kirtana) * sadhanaConfig.kirtana +
+      Number(bhakti.value.class) * sadhanaConfig.class +
+      Number(bhakti.value.gauraarati) * sadhanaConfig.gauraarati +
+      Number(bhakti.value.reading) * sadhanaConfig.reading +
+      Number(bhakti.value.study) * sadhanaConfig.study +
+      Number(bhakti.value.murtiseva) * sadhanaConfig.murtiseva +
+      Number(bhakti.value.gayatri) * sadhanaConfig.gayatri
   )
 
   const pointsChanged = ref(false)
@@ -149,10 +144,7 @@
   }
 
   onBeforeRouteLeave((to, from, next) => {
-    if (
-      JSON.stringify(initialData) != JSON.stringify(bhakti.value) &&
-      (pointsChanged.value || dateChanged.value)
-    ) {
+    if (JSON.stringify(initialData) != JSON.stringify(bhakti.value) && (pointsChanged.value || dateChanged.value)) {
       saveData()
     }
     next()
@@ -172,6 +164,9 @@
     <div class="rows">
       <h2>Japa</h2>
       <h2 class="center">{{ totalJapa }}</h2>
+
+      <p>4:30 előtt</p>
+      <input type="number" v-model="bhakti.japaBeforeMangala" />
 
       <p>7 óra előtt</p>
       <input type="number" v-model="bhakti.japaEarly" />

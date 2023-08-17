@@ -2,6 +2,7 @@
 
 return [
     'sadhana' => [
+        'japaBeforeMangala' => 6,
         'japaEarly' => 3,
         'japaMorning' => 2,
         'japaAfternoon' => 1,
