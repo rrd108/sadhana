@@ -10,7 +10,7 @@ return [
         'japa' => 10,
         'kirtana' => 5,
         'class' => 10,
-        'gauraarati' => 4,
+        'gauraarati' => 10,
         'reading' => 0.25,
         'study' => 0.5,
         'murtiseva' => 0.25,
