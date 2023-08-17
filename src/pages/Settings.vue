@@ -2,6 +2,7 @@
   import SettingsNotifications from '../components/SettingsNotifications.vue'
   import SettingsName from '../components/SettingsName.vue'
   import SettingsAccess from '../components/SettingsAccess.vue'
+  import SettingsInfo from '../components/SettingsInfo.vue'
 </script>
 
 <template>
@@ -12,6 +13,8 @@
     <SettingsNotifications />
     <hr />
     <SettingsAccess />
+    <hr />
+    <SettingsInfo />
   </section>
 </template>
 
