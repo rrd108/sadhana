@@ -16,7 +16,7 @@
 
   const addCounsellor = () => {
     const selected = users.value.find(
-      user => user.email.split('@')[0] == counsellor.value
+      user => user.name == counsellor.value || user.email.split('@')[0] == counsellor.value
     )?.id
     if (selected) {
         let counsellorCounsulee = {}
@@ -64,7 +64,7 @@
     <ul>
         <li v-for="counsellor in store.user.counsellors">
            <button @click="removeCounsellor(counsellor)"><font-awesome-icon icon="circle-minus" /></button>
-            <span>{{ users.find(user => user.id == counsellor)?.email.split('@')[0] }}</span>
+            <span>{{ users.find(user => user.id == counsellor)?.name || users.find(user => user.id == counsellor)?.email.split('@')[0] }}</span>
         </li>
     </ul>
 </p>
@@ -79,7 +79,7 @@
       v-model="counsellor"
     />
     <datalist id="users">
-      <option v-for="user in noAccessUsers" :key="user.id" :value="user.email.split('@')[0]" />
+      <option v-for="user in noAccessUsers" :key="user.id" :value="user.name || user.email.split('@')[0]" />
     </datalist>
     <button @click="addCounsellor">
       <font-awesome-icon icon="circle-plus" />
