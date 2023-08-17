@@ -161,35 +161,40 @@
     <div class="rows">
       <h2>Japa</h2>
       <h2 class="center">{{ totalJapa }}</h2>
+    </div>
 
+    <div class="rows four">
       <p>4:30 előtt</p>
       <input type="number" v-model="bhakti.japaBeforeMangala" />
-
-      <p>7 óra előtt</p>
-      <input type="number" v-model="bhakti.japaEarly" />
-
-      <p>14 óra előtt</p>
-      <input type="number" v-model="bhakti.japaMorning" />
 
       <p>20 óra előtt</p>
       <input type="number" v-model="bhakti.japaAfternoon" />
 
+      <p>7 óra előtt</p>
+      <input type="number" v-model="bhakti.japaEarly" />
+
       <p>20 óra után</p>
       <input type="number" v-model="bhakti.japaNight" />
+
+      <p>14 óra előtt</p>
+      <input type="number" v-model="bhakti.japaMorning" />
     </div>
+    <hr />
 
     <div class="rows">
+      <h2 class="title">Templomi programok</h2>
+
       <div class="radio">
         <input type="checkbox" id="mangala" v-model="bhakti.mangala" />
         <label for="mangala">Mangala-arati</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="japa" v-model="bhakti.japa" />
-        <label for="japa">Japa (templom)</label>
+        <label for="japa">Japa</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="kirtana" v-model="bhakti.kirtana" />
-        <label for="kirtana">Kirtana</label>
+        <label for="kirtana">Guru-puja kirtana</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="class" v-model="bhakti.class" />
@@ -200,6 +205,7 @@
         <label for="gauraarati">Gaura-arati</label>
       </div>
     </div>
+    <hr />
 
     <div class="rows">
       <h2>Olvasás (perc)</h2>
@@ -225,10 +231,15 @@
   }
   .rows {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.5em;
     align-items: center;
-    margin-bottom: 1em;
+  }
+  .four {
+    grid-template-columns: 3fr 2fr 3fr 2fr;
+  }
+  .title {
+    grid-column: 1 / -1;
   }
   .radio {
     display: flex;
