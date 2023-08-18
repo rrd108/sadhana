@@ -14,16 +14,13 @@
   const user = ref({} as User)
   const dates = getDatesInWeek(route.params.week as string)
 
-  const getDateData = (date: Date) =>
-    journal.value.find(day => day.date == date.toLocaleDateString())
+  const getDateData = (date: Date) => journal.value.find(day => day.date == date.toLocaleDateString())
 
   const action = route.params.userId == store.user.id ? 'myjournal' : 'journal'
 
   axios
     .get(
-      `${import.meta.env.VITE_APP_API_URL}sadhanas/${action}/${
-        route.params.userId
-      }/${route.params.week}.json`,
+      `${import.meta.env.VITE_APP_API_URL}sadhanas/${action}/${route.params.userId}/${route.params.week}.json`,
       store.tokenHeader
     )
     .then(res => {
@@ -46,18 +43,21 @@
       <section>
         <h4>
           <span>Japa</span>
-          <span>0-7</span>
-          <span>7-14</span>
-          <span>14-20</span>
-          <span>20-24</span>
+          <span>M</span>
+          <span>7</span>
+          <span>14</span>
+          <span>20</span>
+          <span>20+</span>
         </h4>
         <p>
           <span>{{
+            (getDateData(date)?.japaBeforeMangala || 0) +
             (getDateData(date)?.japaEarly || 0) +
             (getDateData(date)?.japaMorning || 0) +
             (getDateData(date)?.japaAfternoon || 0) +
             (getDateData(date)?.japaNight || 0)
           }}</span>
+          <span> {{ getDateData(date)?.japaBeforeMangala || '-' }}</span>
           <span> {{ getDateData(date)?.japaEarly || '-' }}</span>
           <span> {{ getDateData(date)?.japaMorning || '-' }}</span>
           <span> {{ getDateData(date)?.japaAfternoon || '-' }}</span>
@@ -68,7 +68,7 @@
         <h4>
           <span>M</span>
           <span>J</span>
-          <span>K</span>
+          <span>GP</span>
           <span>L</span>
           <span>GA</span>
         </h4>
@@ -127,7 +127,7 @@
   h4,
   p {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 1em;
     padding: 0.25em;
   }
