@@ -66,6 +66,7 @@
       </section>
       <section>
         <h4>
+          <span></span>
           <span>M</span>
           <span>J</span>
           <span>GP</span>
@@ -73,6 +74,7 @@
           <span>GA</span>
         </h4>
         <p>
+          <span></span>
           <span> {{ getDateData(date)?.mangala ? '✔' : '-' }}</span>
           <span>{{ getDateData(date)?.japa ? '✔' : '-' }}</span>
           <span>{{ getDateData(date)?.kirtana ? '✔' : '-' }}</span>
