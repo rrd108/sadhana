@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -33,9 +34,10 @@ class Badge extends Entity
         'name' => true,
         'description' => true,
         'icon' => true,
-        'field' => true,
-        'base' => true,
-        'goal' => true,
+        'field' => false,
+        'base' => false,
+        'goal' => false,
+        'level' => true,
         'users' => true,
     ];
 }
