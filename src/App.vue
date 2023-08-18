@@ -28,15 +28,13 @@
   .app {
     min-height: 100vh;
     background-color: var(--dark-purple);
-    background-image: linear-gradient(
-      135deg,
-      var(--dark-purple),
-      var(--medium-purple)
-    );
+    background-image: linear-gradient(135deg, var(--dark-purple), var(--medium-purple));
   }
 
   main {
     min-height: 80vh;
+    max-width: 42em;
+    margin: 0 auto;
     padding: 10vh 1em;
   }
 

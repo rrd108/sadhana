@@ -12,12 +12,12 @@
 </script>
 
 <template>
-  <div>
+  <main>
     <Login v-if="!store.user.id && !['Register', 'ForgotPass', 'PassReset'].includes(route.name?.toString() || '')" />
     <Register v-if="route.name == 'Register'" />
     <ForgotPass v-if="route.name == 'ForgotPass'" />
     <PassReset v-if="route.name == 'PassReset'" />
-  </div>
+  </main>
 </template>
 
 <style scoped></style>
