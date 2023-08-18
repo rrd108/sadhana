@@ -38,9 +38,6 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        additionalManifestEntries: [{ url: 'index.html', revision: null }],
-      },
     }),
   ],
 })
