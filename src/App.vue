@@ -2,25 +2,21 @@
   import { useStore } from './store'
   import AppHeader from '@/components/AppHeader.vue'
   import AppFooter from '@/components/AppFooter.vue'
-  import Welcome from '@/components/Welcome.vue'
 
   const store = useStore()
 </script>
 
 <template>
   <div class="app">
-    <Welcome v-if="!store.user.id" />
-    <div v-if="store.user.id">
-      <AppHeader />
-      <main>
-        <router-view v-slot="{ Component }">
-          <transition name="fade-slide" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </main>
-      <AppFooter />
-    </div>
+    <AppHeader v-if="store.user.id" />
+    <main>
+      <router-view v-slot="{ Component }">
+        <transition name="fade-slide" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
+    <AppFooter v-if="store.user.id" />
   </div>
 </template>
 

@@ -5,13 +5,9 @@
 
 <template>
   <small>
-    <router-link to="/" v-if="route.path != '/'">Belépés</router-link>
-    <router-link to="/register" v-if="route.path != '/register'">
-      Regisztráció
-    </router-link>
-    <router-link to="/forgot-pass" v-if="route.path != '/forgot-pass'">
-      Elfelejtett jelszó
-    </router-link>
+    <router-link to="/" v-if="route.path != '/login'">Belépés</router-link>
+    <router-link to="/register" v-if="route.path != '/register'"> Regisztráció </router-link>
+    <router-link to="/forgot-pass" v-if="route.path != '/forgot-pass'"> Elfelejtett jelszó </router-link>
   </small>
 </template>
 

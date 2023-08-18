@@ -24,17 +24,14 @@
 
 <template>
   <section>
-    <LoginForm
-      button="Jelszó emlékeztető"
-      :showPass="false"
-      @formSubmit="forgotpass"
-    />
+    <LoginForm button="Jelszó emlékeztető" :showPass="false" @formSubmit="forgotpass" />
     <LoginFooter />
   </section>
 </template>
 
 <style scoped>
   section {
+    margin-top: -10vh;
     text-align: center;
   }
 </style>
