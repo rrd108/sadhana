@@ -14,6 +14,7 @@ return [
         'gauraarati' => 10,
         'reading' => 0.25,
         'study' => 0.5,
+        'listening' => 0.2,
         'murtiseva' => 0.25,
         'gayatri' => 1,
     ]

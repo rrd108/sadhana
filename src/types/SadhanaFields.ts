@@ -11,6 +11,7 @@ interface SadhanaFields {
   gauraarati: number
   reading: number
   study: number
+  listening: number
   murtiseva: number
   gayatri: number
 }

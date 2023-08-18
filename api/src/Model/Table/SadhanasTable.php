@@ -110,6 +110,9 @@ class SadhanasTable extends Table
             ->notEmptyString('study');
 
         $validator
+            ->notEmptyString('listening');
+
+        $validator
             ->notEmptyString('murtiseva');
 
         $validator

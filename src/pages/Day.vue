@@ -22,6 +22,7 @@
     gauraarati: 0,
     reading: 0,
     study: 0,
+    listening: 0,
     murtiseva: 0,
     gayatri: 0,
   } as SadhanaFields
@@ -45,6 +46,7 @@
     gauraarati: false,
     reading: 0,
     study: 0,
+    listening: 0,
     murtiseva: 0,
     gayatri: 0,
   }
@@ -88,6 +90,7 @@
       Number(bhakti.value.gauraarati) * sadhanaConfig.gauraarati +
       Number(bhakti.value.reading) * sadhanaConfig.reading +
       Number(bhakti.value.study) * sadhanaConfig.study +
+      Number(bhakti.value.listening) * sadhanaConfig.listening +
       Number(bhakti.value.murtiseva) * sadhanaConfig.murtiseva +
       Number(bhakti.value.gayatri) * sadhanaConfig.gayatri
   )
@@ -207,17 +210,22 @@
     </div>
     <hr />
 
-    <div class="rows">
-      <h2>Olvasás (perc)</h2>
+    <div class="rows third">
+      <h2 class="title">Brahminikus tevékenységek</h2>
+
+      <p>Olvasás (perc)</p>
       <input type="number" v-model="bhakti.reading" />
 
-      <h2>Tanulás (perc)</h2>
+      <p>Tanulás (perc)</p>
       <input type="number" v-model="bhakti.study" />
 
-      <h2>Murti-seva (perc)</h2>
+      <p>Lecke hallgatás (perc)</p>
+      <input type="number" v-model="bhakti.listening" />
+
+      <p>Murti-seva (perc)</p>
       <input type="number" v-model="bhakti.murtiseva" @blur="checkMax" />
 
-      <h2>Gayatri</h2>
+      <p>Gayatri</p>
       <input type="number" v-model="bhakti.gayatri" />
     </div>
   </section>
@@ -237,6 +245,9 @@
   }
   .four {
     grid-template-columns: 3fr 2fr 3fr 2fr;
+  }
+  .third {
+    grid-template-columns: 2fr 1fr;
   }
   .title {
     grid-column: 1 / -1;
