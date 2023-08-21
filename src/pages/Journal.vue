@@ -84,19 +84,19 @@
       </section>
       <section>
         <h4>
-          <span></span>
+          <span>MS</span>
           <span>Olv</span>
           <span>Tan</span>
           <span>LH</span>
-          <span>MS</span>
+          <span>E</span>
           <span>GY</span>
         </h4>
         <p>
-          <span></span>
+          <span> {{ getDateData(date)?.murtiseva || '-' }}</span>
           <span> {{ getDateData(date)?.reading || '-' }}</span>
           <span>{{ getDateData(date)?.study || '-' }}</span>
           <span> {{ getDateData(date)?.listening || '-' }}</span>
-          <span> {{ getDateData(date)?.murtiseva || '-' }}</span>
+          <span> {{ getDateData(date)?.other || '-' }}</span>
           <span> {{ getDateData(date)?.gayatri || '-' }}</span>
         </p>
       </section>

@@ -113,6 +113,9 @@ class SadhanasTable extends Table
             ->notEmptyString('listening');
 
         $validator
+            ->notEmptyString('other');
+
+        $validator
             ->notEmptyString('murtiseva');
 
         $validator
@@ -151,7 +154,7 @@ class SadhanasTable extends Table
         }
 
         if ($options['elements'] == 'all') {
-            $fields = 'japaBeforeMangala * ' . $sadhanaData['japaBeforeMangala'] . ' + japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight'] . ' + mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati'] . ' + reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + listening * ' . $sadhanaData['listening'] . ' + murtiseva * ' . $sadhanaData['murtiseva'] . ' + gayatri * ' . $sadhanaData['gayatri'];
+            $fields = 'japaBeforeMangala * ' . $sadhanaData['japaBeforeMangala'] . ' + japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight'] . ' + mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati'] . ' + reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + listening * ' . $sadhanaData['listening'] . ' + other * ' . $sadhanaData['other'] . ' + murtiseva * ' . $sadhanaData['murtiseva'] . ' + gayatri * ' . $sadhanaData['gayatri'];
         }
 
         return $query->select([

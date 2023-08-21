@@ -57,6 +57,7 @@ class Sadhana extends Entity
         'reading' => true,
         'study' => true,
         'listening' => true,
+        'other' => true,
         'murtiseva' => true,
         'gayatri' => true,
         'user' => true,

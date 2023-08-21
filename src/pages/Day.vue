@@ -23,6 +23,7 @@
     reading: 0,
     study: 0,
     listening: 0,
+    other: 0,
     murtiseva: 0,
     gayatri: 0,
   } as SadhanaFields
@@ -47,6 +48,7 @@
     reading: 0,
     study: 0,
     listening: 0,
+    other: 0,
     murtiseva: 0,
     gayatri: 0,
   }
@@ -91,6 +93,7 @@
       Number(bhakti.value.reading) * sadhanaConfig.reading +
       Number(bhakti.value.study) * sadhanaConfig.study +
       Number(bhakti.value.listening) * sadhanaConfig.listening +
+      Number(bhakti.value.other) * sadhanaConfig.other +
       Number(bhakti.value.murtiseva) * sadhanaConfig.murtiseva +
       Number(bhakti.value.gayatri) * sadhanaConfig.gayatri
   )
@@ -213,6 +216,9 @@
     <div class="rows third">
       <h2 class="title">Brahminikus tevékenységek</h2>
 
+      <p>Murti-seva (perc)</p>
+      <input type="number" v-model="bhakti.murtiseva" @blur="checkMax" />
+
       <p>Olvasás (perc)</p>
       <input type="number" v-model="bhakti.reading" />
 
@@ -222,8 +228,8 @@
       <p>Lecke hallgatás (perc)</p>
       <input type="number" v-model="bhakti.listening" />
 
-      <p>Murti-seva (perc)</p>
-      <input type="number" v-model="bhakti.murtiseva" @blur="checkMax" />
+      <p>Egyéb (perc)</p>
+      <input type="number" v-model="bhakti.other" />
 
       <p>Gayatri</p>
       <input type="number" v-model="bhakti.gayatri" />

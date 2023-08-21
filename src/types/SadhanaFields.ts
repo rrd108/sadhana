@@ -12,6 +12,7 @@ interface SadhanaFields {
   reading: number
   study: number
   listening: number
+  other: number
   murtiseva: number
   gayatri: number
 }

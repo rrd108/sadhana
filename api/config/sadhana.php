@@ -15,6 +15,7 @@ return [
         'reading' => 0.25,
         'study' => 0.5,
         'listening' => 0.2,
+        'other' => 0.25,
         'murtiseva' => 0.25,
         'gayatri' => 1,
     ]
