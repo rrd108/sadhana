@@ -15,9 +15,11 @@
     .catch(err => console.error(err))
 
   const addCounsellor = () => {
+    console.log(counsellor.value)
     const selected = users.value.find(
-      user => user.name == counsellor.value || user.email.split('@')[0] == counsellor.value
+      user => (user.name.trim() == counsellor.value.trim()) || (user.email.split('@')[0] == counsellor.value)
     )?.id
+    console.log(selected)
     if (selected) {
         let counsellorCounsulee = {}
           counsellorCounsulee = {counsellor_id: selected}
