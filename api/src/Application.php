@@ -146,6 +146,7 @@ class Application extends BaseApplication implements AuthorizationServiceProvide
         // Load more plugins here
         if (Configure::read('debug')) {
             $this->addPlugin('Cake/Repl');
+            $this->addPlugin('CakephpFixtureFactories');
         }
     }
 
