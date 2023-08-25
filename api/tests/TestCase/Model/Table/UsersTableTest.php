@@ -44,7 +44,7 @@ class UsersTableTest extends TestCase
         parent::tearDown();
     }
 
-    public function testGetTopBadges()
+    public function testFindTopBadges()
     {
         $user = UserFactory::make()->withBadges([
             ['name' => 'badge-1', 'level' => 1],
@@ -53,13 +53,13 @@ class UsersTableTest extends TestCase
             ['name' => 'badge-2', 'level' => 4],
         ])->persist();
 
-        $user = $this->UsersTable->getTopBadges($user->id);
-        $badges = collection($user->badges)->map(function ($badge) {
-            return ['name' => $badge->name, 'level' => $badge->level];
+        $user = $this->UsersTable->find('topBadges', ['userId' => $user->id]);
+        $badges = collection($user->first()->badges)->map(function ($badge) {
+            return ['name' => $badge->name, 'maxLevel' => $badge->maxLevel];
         })->toArray();
         $this->assertEquals([
-            ['name' => 'badge-1', 'level' => 2],
-            ['name' => 'badge-2', 'level' => 4],
+            ['name' => 'badge-2', 'maxLevel' => 4],
+            ['name' => 'badge-1', 'maxLevel' => 2],
         ], $badges);
     }
 }

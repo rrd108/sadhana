@@ -156,8 +156,11 @@ class UsersTable extends Table
         return $query->select(['id']);
     }
 
-    public function getTopBadges(string $userId)
+    public function findTopBadges(Query $query, array $options)
     {
-        return 0;
+        $user = $query->contain(['Badges' => function ($q) {
+            return $q->select(['name', 'maxLevel' => $q->func()->max('level')])->group(['name']);
+        }]);
+        return $user;
     }
 }
