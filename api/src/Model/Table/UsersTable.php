@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -153,5 +154,10 @@ class UsersTable extends Table
     public function findOnlyIds(Query $query, array $options)
     {
         return $query->select(['id']);
+    }
+
+    public function getTopBadges(string $userId)
+    {
+        return 0;
     }
 }
