@@ -11,8 +11,7 @@ export const useStore = defineStore('sadhana', {
   state: (): State => ({
     user: {} as User,
     get notAcceptedBadges() {
-      return this.user?.badges?.filter(badge => !badge._joinData.accepted)
-        .length
+      return this.user?.badges?.filter(badge => !badge.accepted).length
     },
     get tokenHeader() {
       return { headers: { Token: this.user.token } }
