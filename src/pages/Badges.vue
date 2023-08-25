@@ -13,6 +13,9 @@
   const selectedBadge = ref({ id: 0 } as Badge)
   const lookDetails = (badge: Badge) => {
     selectedBadge.value = badge
+
+    console.log('TODO get history')
+
     if (!badge.accepted) {
       axios
         .patch(`${import.meta.env.VITE_APP_API_URL}badges-users/${badge.id}.json`, { accepted: true }, store.tokenHeader)
@@ -40,8 +43,8 @@
         @click="lookDetails(badge)"
       >
         <h2>{{ badge.name }}</h2>
-        <img :src="getImagePath(badge.icon)" />
         <h3 v-if="badge.level">{{ badge.level }}. szint</h3>
+        <img :src="getImagePath(badge.icon)" />
         <small>{{ badge.gained }}</small>
       </li>
     </ul>
@@ -61,6 +64,9 @@
 <style scoped>
   h1 {
     margin-bottom: 1em;
+  }
+  h2 {
+    margin-bottom: 0.5em;
   }
   ul {
     list-style: none;
@@ -109,7 +115,7 @@
     background-color: var(--dark-purple);
     border-radius: 50%;
     padding: 0.25em;
-    margin-bottom: 0.5em;
+    margin: 0.5em 0;
   }
   p {
     color: var(--dark-purple);
