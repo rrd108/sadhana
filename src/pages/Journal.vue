@@ -75,11 +75,11 @@
         </h4>
         <p>
           <span></span>
-          <span> {{ getDateData(date)?.mangala ? '✔' : '-' }}</span>
+          <span> {{ getDateData(date)?.mangala ? '✔' : getDateData(date)?.homeMangala ? '☗' : '-' }}</span>
           <span>{{ getDateData(date)?.japa ? '✔' : '-' }}</span>
-          <span>{{ getDateData(date)?.kirtana ? '✔' : '-' }}</span>
+          <span>{{ getDateData(date)?.kirtana ? '✔' : getDateData(date)?.homeGuruPuja ? '☗' : '-' }}</span>
           <span>{{ getDateData(date)?.class ? '✔' : '-' }}</span>
-          <span>{{ getDateData(date)?.gauraarati ? '✔' : '-' }}</span>
+          <span>{{ getDateData(date)?.gauraarati ? '✔' : getDateData(date)?.homeGauraArati ? '☗' : '-' }}</span>
         </p>
       </section>
       <section>

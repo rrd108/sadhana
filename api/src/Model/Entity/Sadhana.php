@@ -60,6 +60,9 @@ class Sadhana extends Entity
         'other' => true,
         'murtiseva' => true,
         'gayatri' => true,
+        'homeMangala' => true,
+        'homeGuruPuja' => true,
+        'homeGauraArati' => true,
         'user' => true,
     ];
 }

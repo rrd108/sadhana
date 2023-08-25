@@ -26,6 +26,9 @@
     other: 0,
     murtiseva: 0,
     gayatri: 0,
+    homeMangala: 0,
+    homeGuruPuja: 0,
+    homeGauraArati: 0,
   } as SadhanaFields
   axios
     .get(`${import.meta.env.VITE_APP_API_URL}sadhanas/getConfig.json`, store.tokenHeader)
@@ -51,6 +54,9 @@
     other: 0,
     murtiseva: 0,
     gayatri: 0,
+    homeMangala: false,
+    homeGuruPuja: false,
+    homeGauraArati: false,
   }
   const bhakti = ref(emptyBhakti)
 
@@ -95,7 +101,10 @@
       Number(bhakti.value.listening) * sadhanaConfig.listening +
       Number(bhakti.value.other) * sadhanaConfig.other +
       Number(bhakti.value.murtiseva) * sadhanaConfig.murtiseva +
-      Number(bhakti.value.gayatri) * sadhanaConfig.gayatri
+      Number(bhakti.value.gayatri) * sadhanaConfig.gayatri +
+      Number(bhakti.value.homeMangala) * sadhanaConfig.homeMangala +
+      Number(bhakti.value.homeGuruPuja) * sadhanaConfig.homeGuruPuja +
+      Number(bhakti.value.homeGauraArati) * sadhanaConfig.homeGauraArati
   )
 
   const pointsChanged = ref(false)
@@ -156,13 +165,13 @@
 
 <template>
   <section>
-    <div class="rows center">
+    <header class="rows center">
       <h1>{{ points }}</h1>
       <div>
         <label for="date">Dátum</label>
         <input type="date" v-model="date" @change="getSadhana" class="wide" />
       </div>
-    </div>
+    </header>
 
     <div class="rows">
       <h2>Japa</h2>
@@ -213,6 +222,24 @@
     </div>
     <hr />
 
+    <div class="rows">
+      <h2 class="title">Otthon</h2>
+
+      <div class="radio">
+        <input type="checkbox" id="homeMangala" v-model="bhakti.homeMangala" />
+        <label for="homeMangala">Mangala-arati</label>
+      </div>
+      <div class="radio">
+        <input type="checkbox" id="homeGuruPuja" v-model="bhakti.homeGuruPuja" />
+        <label for="homeGuruPuja">Guru-puja</label>
+      </div>
+      <div class="radio">
+        <input type="checkbox" id="homeGauraArati" v-model="bhakti.homeGauraArati" />
+        <label for="homeGauraArati">Gaura-arati</label>
+      </div>
+    </div>
+    <hr />
+
     <div class="rows third">
       <h2 class="title">Brahminikus tevékenységek</h2>
 
@@ -242,6 +269,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-bottom: 1em;
   }
   .rows {
     display: grid;

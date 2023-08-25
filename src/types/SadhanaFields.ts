@@ -15,6 +15,9 @@ interface SadhanaFields {
   other: number
   murtiseva: number
   gayatri: number
+  homeMangala: number
+  homeGuruPuja: number
+  homeGauraArati: number
 }
 
 export default SadhanaFields

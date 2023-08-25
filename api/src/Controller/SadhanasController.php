@@ -89,8 +89,10 @@ class SadhanasController extends AppController
         $sadhanas->select([
             'date',
             'japa'  => $sadhanas->func()->sum('japaBeforeMangala * ' . $sadhanaData['japaBeforeMangala'] . ' + japaEarly * ' . $sadhanaData['japaEarly'] . ' + japaMorning * ' . $sadhanaData['japaMorning'] . ' + japaAfternoon * ' . $sadhanaData['japaAfternoon'] . '+ japaNight * ' . $sadhanaData['japaNight']),
+
             'templeProgram'  => $sadhanas->func()->sum('mangala * ' . $sadhanaData['mangala'] . ' + japa * ' . $sadhanaData['japa'] . ' + kirtana * ' . $sadhanaData['kirtana'] . ' + class * ' . $sadhanaData['class'] . ' + gauraarati * ' . $sadhanaData['gauraarati']),
-            'brahmana'  => $sadhanas->func()->sum('reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + listening * ' . $sadhanaData['listening'] . ' + other * ' . $sadhanaData['other'] . ' + murtiseva * ' . $sadhanaData['murtiseva'] . ' + gayatri * ' . $sadhanaData['gayatri']),
+
+            'brahmana'  => $sadhanas->func()->sum('reading * ' . $sadhanaData['reading'] . ' + study * ' . $sadhanaData['study'] . ' + listening * ' . $sadhanaData['listening'] . ' + other * ' . $sadhanaData['other'] . ' + murtiseva * ' . $sadhanaData['murtiseva'] . ' + gayatri * ' . $sadhanaData['gayatri'] . ' + homeMangala * ' . $sadhanaData['homeMangala'] . ' + homeGuruPuja * ' . $sadhanaData['homeGuruPuja'] . ' + homeGauraArati * ' . $sadhanaData['homeGauraArati']),
         ])
             ->where([
                 'user_id' => $this->Authentication->getIdentity()->id,
