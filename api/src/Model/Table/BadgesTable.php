@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\BadgesUser;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -96,26 +97,36 @@ class BadgesTable extends Table
         return $validator;
     }
 
-    public function findTopBadges(Query $query, array $options)
+    public function getTopBadges(string $userId)
     {
         // TODO a hacky solution
-        // when it used as an association finder the user id is already added to the query
-        // $query contains the user's all badges
-
-        $_query = $query->cleanCopy();
 
         // get top level badge names and levels what the user has
-        $_topBadges = $_query->select(['Badges.name', 'maxLevel' => $query->func()->max('Badges.level')])->group(['Badges.name']);
+        $topBadgesQuery = $this->find();
+        $_topBadges = $topBadgesQuery->select([
+            'Badges.name',
+            'maxLevel' => $topBadgesQuery->func()->max('Badges.level'),
+        ])
+            ->innerJoinWith('Users', function ($q) use ($userId) {
+                return $q->where(['Users.id' => $userId]);
+            })
+            ->group(['Badges.name']);
 
         $topBadges = [];
         foreach ($_topBadges as $topBadge) {
-            $__query = $query->cleanCopy();
-            $badge = $__query->select(['Badges.id'])->where(['Badges.name' => $topBadge->name, 'Badges.level' => $topBadge->maxLevel]);
+            $badge = $this->find()->select(['Badges.id'])->where(['Badges.name' => $topBadge->name, 'Badges.level' => $topBadge->maxLevel]);
             $topBadges[] = $badge->first()->id;
         }
 
+        $query = $this->find();
         if (count($topBadges)) {
-            $query->where(['Badges.id IN' => $topBadges]);
+            $query->select(['gained' => 'BadgesUsers.created'])
+                ->enableAutoFields(true)
+                ->where(['Badges.id IN' => $topBadges])
+                ->innerJoinWith('Users', function ($q) use ($userId) {
+                    return $q->where(['Users.id' => $userId]);
+                })
+                ->order(['gained' => 'DESC']);
         }
         return $query;
     }

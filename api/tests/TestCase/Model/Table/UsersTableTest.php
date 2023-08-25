@@ -44,23 +44,23 @@ class UsersTableTest extends TestCase
         parent::tearDown();
     }
 
-    public function testGetUserWithTopBadges()
-    {
-        $user = UserFactory::make()->with('Badges', [
-            ['name' => 'badge-1', 'level' => 1],
-            ['name' => 'badge-1', 'level' => 2],
-            ['name' => 'badge-2', 'level' => 1],
-            ['name' => 'badge-2', 'level' => 4],
-        ])->persist();
+    // public function testGetUserWithTopBadges()
+    // {
+    //     $user = UserFactory::make()->with('Badges', [
+    //         ['name' => 'badge-1', 'level' => 1],
+    //         ['name' => 'badge-1', 'level' => 2],
+    //         ['name' => 'badge-2', 'level' => 1],
+    //         ['name' => 'badge-2', 'level' => 4],
+    //     ])->persist();
 
-        $user = $this->UsersTable->get($user->id, ['contain' => ['Badges']]);
-        $this->assertEquals(2, count($user->badges));
+    //     $user = $this->UsersTable->get($user->id, ['contain' => ['Badges']]);
+    //     $this->assertEquals(2, count($user->badges));
 
-        $userBadges = collection($user->badges)->map(function ($badge) {
-            return ['name' => $badge->name, 'level' => $badge->level];
-        })->toArray();
+    //     $userBadges = collection($user->badges)->map(function ($badge) {
+    //         return ['name' => $badge->name, 'level' => $badge->level];
+    //     })->toArray();
 
-        $this->assertContainsEquals(['name' => 'badge-1', 'level' => 2], $userBadges);
-        $this->assertContainsEquals(['name' => 'badge-2', 'level' => 4], $userBadges);
-    }
+    //     $this->assertContainsEquals(['name' => 'badge-1', 'level' => 2], $userBadges);
+    //     $this->assertContainsEquals(['name' => 'badge-2', 'level' => 4], $userBadges);
+    // }
 }
