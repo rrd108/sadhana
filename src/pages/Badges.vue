@@ -8,26 +8,20 @@
   const store = useStore()
   const toast = useToast()
 
-  const getImagePath = computed(
-    () => (icon: string) =>
-      new URL(`/src/assets/${icon}.png`, import.meta.url).toString()
-  )
+  const getImagePath = computed(() => (icon: string) => new URL(`/src/assets/${icon}.png`, import.meta.url).toString())
 
   const selectedBadge = ref({ id: 0 } as Badge)
   const lookDetails = (badge: Badge) => {
     selectedBadge.value = badge
-    if (!badge._joinData.accepted) {
+
+    console.log('TODO get history')
+
+    if (!badge.accepted) {
       axios
-        .patch(
-          `${import.meta.env.VITE_APP_API_URL}badges-users/${
-            badge._joinData.id
-          }.json`,
-          { accepted: true },
-          store.tokenHeader
-        )
+        .patch(`${import.meta.env.VITE_APP_API_URL}badges-users/${badge.id}.json`, { accepted: true }, store.tokenHeader)
         .then(res => {
           toast.success('Jelvény elfogadva')
-          badge._joinData.accepted = true
+          badge.accepted = true
         })
         .catch(err => toast.error('Mentési hiba'))
     }
@@ -45,13 +39,13 @@
       <li
         v-for="badge in store.user.badges"
         class="center"
-        :class="{ accepted: badge._joinData.accepted }"
+        :class="{ accepted: badge.accepted }"
         @click="lookDetails(badge)"
       >
         <h2>{{ badge.name }}</h2>
-        <img :src="getImagePath(badge.icon)" />
         <h3 v-if="badge.level">{{ badge.level }}. szint</h3>
-        <h3 v-if="!badge.level">{{ badge._joinData.created }}</h3>
+        <img :src="getImagePath(badge.icon)" />
+        <small>{{ badge.gained }}</small>
       </li>
     </ul>
 
@@ -60,9 +54,9 @@
       <h2>{{ selectedBadge.name }}</h2>
       <img :src="getImagePath(selectedBadge.icon)" />
       <h3 v-if="selectedBadge.level">{{ selectedBadge.level }}. szint</h3>
-      <h3 v-if="!selectedBadge.level">{{ selectedBadge._joinData.created }}</h3>
+      <h3 v-if="!selectedBadge.level">{{ selectedBadge.gained }}</h3>
       <p>{{ selectedBadge.description }}</p>
-      <small>{{ selectedBadge._joinData.created }}</small>
+      <small>{{ selectedBadge.gained }}</small>
     </dialog>
   </section>
 </template>
@@ -70,6 +64,9 @@
 <style scoped>
   h1 {
     margin-bottom: 1em;
+  }
+  h2 {
+    margin-bottom: 0.5em;
   }
   ul {
     list-style: none;
@@ -107,6 +104,9 @@
   li.accepted {
     filter: none;
   }
+  li small {
+    font-size: 0.75em;
+  }
   h3 {
     font-size: 0.8rem;
   }
@@ -115,7 +115,7 @@
     background-color: var(--dark-purple);
     border-radius: 50%;
     padding: 0.25em;
-    margin-bottom: 0.5em;
+    margin: 0.5em 0;
   }
   p {
     color: var(--dark-purple);

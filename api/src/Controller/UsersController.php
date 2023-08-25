@@ -40,7 +40,9 @@ class UsersController extends AppController
         $user->forgotPass = null;
         $user = $this->Users->save($user);
 
-        $user = $this->Users->get($user->id, ['contain' => ['Badges', 'Counsellors', 'Counsulees']]);
+        $user = $this->Users->get($user->id, ['contain' => ['Counsellors', 'Counsulees']]);
+
+        $user->badges = $this->Users->Badges->getTopBadges($user->id);
 
         $user->counsulees = collection($user->counsulees)->map(function ($counsulee) {
             unset($counsulee->_joinData);

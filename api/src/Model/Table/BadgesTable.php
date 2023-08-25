@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\BadgesUser;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -93,5 +95,39 @@ class BadgesTable extends Table
             ->notEmptyString('goal');
 
         return $validator;
+    }
+
+    public function getTopBadges(string $userId)
+    {
+        // TODO a hacky solution
+
+        // get top level badge names and levels what the user has
+        $topBadgesQuery = $this->find();
+        $_topBadges = $topBadgesQuery->select([
+            'Badges.name',
+            'maxLevel' => $topBadgesQuery->func()->max('Badges.level'),
+        ])
+            ->innerJoinWith('Users', function ($q) use ($userId) {
+                return $q->where(['Users.id' => $userId]);
+            })
+            ->group(['Badges.name']);
+
+        $topBadges = [];
+        foreach ($_topBadges as $topBadge) {
+            $badge = $this->find()->select(['Badges.id'])->where(['Badges.name' => $topBadge->name, 'Badges.level' => $topBadge->maxLevel]);
+            $topBadges[] = $badge->first()->id;
+        }
+
+        $query = $this->find();
+        if (count($topBadges)) {
+            $query->select(['gained' => 'BadgesUsers.created', 'accepted' => 'BadgesUsers.accepted'])
+                ->enableAutoFields(true)
+                ->where(['Badges.id IN' => $topBadges])
+                ->innerJoinWith('Users', function ($q) use ($userId) {
+                    return $q->where(['Users.id' => $userId]);
+                })
+                ->order(['gained' => 'DESC']);
+        }
+        return $query;
     }
 }

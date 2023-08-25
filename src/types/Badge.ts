@@ -4,11 +4,8 @@ interface Badge {
   name: string
   level: number
   description: string
-  _joinData: {
-    id: number
-    created: string
-    accepted: boolean
-  }
+  gained: string
+  accepted: boolean
 }
 
 export default Badge
