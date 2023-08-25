@@ -46,9 +46,20 @@ class UsersTableTest extends TestCase
 
     public function testGetTopBadges()
     {
-        $user = UserFactory::make()->withBadges(3)->persist();
+        $user = UserFactory::make()->withBadges([
+            ['name' => 'badge-1', 'level' => 1],
+            ['name' => 'badge-1', 'level' => 2],
+            ['name' => 'badge-2', 'level' => 1],
+            ['name' => 'badge-2', 'level' => 4],
+        ])->persist();
 
-        $this->UsersTable->getTopBadges($user->id);
-        $this->assertEquals(3, $this->UsersTable->find()->first()->badges[0]->id);
+        $user = $this->UsersTable->getTopBadges($user->id);
+        $badges = collection($user->badges)->map(function ($badge) {
+            return ['name' => $badge->name, 'level' => $badge->level];
+        })->toArray();
+        $this->assertEquals([
+            ['name' => 'badge-1', 'level' => 2],
+            ['name' => 'badge-2', 'level' => 4],
+        ], $badges);
     }
 }
