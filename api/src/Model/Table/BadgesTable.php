@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -93,5 +94,29 @@ class BadgesTable extends Table
             ->notEmptyString('goal');
 
         return $validator;
+    }
+
+    public function findTopBadges(Query $query, array $options)
+    {
+        // TODO a hacky solution
+        // when it used as an association finder the user id is already added to the query
+        // $query contains the user's all badges
+
+        $_query = $query->cleanCopy();
+
+        // get top level badge names and levels what the user has
+        $_topBadges = $_query->select(['Badges.name', 'maxLevel' => $query->func()->max('Badges.level')])->group(['Badges.name']);
+
+        $topBadges = [];
+        foreach ($_topBadges as $topBadge) {
+            $__query = $query->cleanCopy();
+            $badge = $__query->select(['Badges.id'])->where(['Badges.name' => $topBadge->name, 'Badges.level' => $topBadge->maxLevel]);
+            $topBadges[] = $badge->first()->id;
+        }
+
+        if (count($topBadges)) {
+            $query->where(['Badges.id IN' => $topBadges]);
+        }
+        return $query;
     }
 }

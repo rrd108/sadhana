@@ -52,7 +52,8 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'badge_id',
             'joinTable' => 'badges_users',
-            'sort' => ['BadgesUsers.created' => 'DESC'],
+            //'sort' => ['BadgesUsers.created' => 'DESC'],
+            'finder' => 'topBadges'
         ]);
 
         $this->belongsToMany('Counsulees', [
@@ -154,13 +155,5 @@ class UsersTable extends Table
     public function findOnlyIds(Query $query, array $options)
     {
         return $query->select(['id']);
-    }
-
-    public function findTopBadges(Query $query, array $options)
-    {
-        $user = $query->contain(['Badges' => function ($q) {
-            return $q->select(['name', 'maxLevel' => $q->func()->max('level')])->group(['name']);
-        }]);
-        return $user;
     }
 }
