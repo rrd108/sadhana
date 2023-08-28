@@ -109,7 +109,7 @@ class BadgeDistributorCommand extends Command
                 ];
                 $badgeUser = $this->badgesUsersTable->newEntity($data);
                 if ($this->badgesUsersTable->save($badgeUser)) {
-                    $this->logger('<ok>Badge ' . $badge->name . ' ' . $badge->level . ' given to ' . $gainedBy->first()->user . '.</ok>');
+                    $this->logger('<ok>Badge ' . $badge->name . ' ' . $badge->level . ' given to ' . $gainedBy->first()->userName . '.</ok>');
                 }
             }
         }
