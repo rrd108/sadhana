@@ -18,7 +18,11 @@
 
     if (!badge.accepted) {
       axios
-        .patch(`${import.meta.env.VITE_APP_API_URL}badges-users/${badge.id}.json`, { accepted: true }, store.tokenHeader)
+        .patch(
+          `${import.meta.env.VITE_APP_API_URL}badges-users/${badge.badgesUsersId}.json`,
+          { accepted: true },
+          store.tokenHeader
+        )
         .then(res => {
           toast.success('Jelvény elfogadva')
           badge.accepted = true

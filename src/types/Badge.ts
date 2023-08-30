@@ -6,6 +6,7 @@ interface Badge {
   description: string
   gained: string
   accepted: boolean
+  badgesUsersId?: number
 }
 
 export default Badge

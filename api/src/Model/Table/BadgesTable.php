@@ -120,7 +120,11 @@ class BadgesTable extends Table
 
         $query = $this->find();
         if (count($topBadges)) {
-            $query->select(['gained' => 'BadgesUsers.created', 'accepted' => 'BadgesUsers.accepted'])
+            $query->select([
+                'badgesUsersId' => 'BadgesUsers.id',
+                'gained' => 'BadgesUsers.created',
+                'accepted' => 'BadgesUsers.accepted'
+            ])
                 ->enableAutoFields(true)
                 ->where(['Badges.id IN' => $topBadges])
                 ->innerJoinWith('Users', function ($q) use ($userId) {
