@@ -74,7 +74,6 @@
   <fieldset>
     <input
       id="counsellor"
-      type="email"
       list="users"
       placeholder="Felhasználó"
       v-model="counsellor"
