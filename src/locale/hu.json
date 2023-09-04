@@ -7,6 +7,7 @@
     "forgotPassword": "Elfelejtett jelszó "
   },
   "button": {
-    "login": "Belép"
+    "login": "Belép",
+    "resetPassword": "jelszó emlékeztető"
   }
 }

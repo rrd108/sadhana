@@ -24,7 +24,7 @@
 
 <template>
   <section>
-    <LoginForm button="Jelszó emlékeztető" :showPass="false" @formSubmit="forgotpass" />
+    <LoginForm :button="$t('button.resetPassword')" :showPass="false" @formSubmit="forgotpass" />
     <LoginFooter />
   </section>
 </template>
