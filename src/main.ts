@@ -7,6 +7,7 @@ import router from './router'
 import Toast, { PluginOptions } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
+import { createI18n } from 'vue-i18n'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -31,6 +32,8 @@ library.add(
   faShieldHeart
 )
 
+const i18n = createI18n({})
+
 const pinia = createPinia()
 
 createApp(App)
@@ -38,4 +41,5 @@ createApp(App)
   .use(router)
   .use(pinia)
   .use(Toast)
+  .use(i18n)
   .mount('#app')
