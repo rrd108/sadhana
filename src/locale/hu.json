@@ -1,0 +1,12 @@
+{
+  "account": {
+    "email": "E-mail",
+    "password": "Password",
+    "passwordConfirm": "Password újra",
+    "register": "Regisztráció",
+    "forgotPassword": "Elfelejtett jelszó "
+  },
+  "button": {
+    "login": "Belép"
+  }
+}

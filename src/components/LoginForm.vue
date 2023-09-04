@@ -1,8 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-
   const props = defineProps({
-    button: { type: String, required: true },
     showPass: { type: Boolean, default: true },
     passConfirm: { type: Boolean, default: false },
   })
@@ -22,16 +20,16 @@
 <template>
   <img alt="Sadhana" src="@/assets/logo.png" />
   <form @submit.prevent="login">
-    <label for="email" v-if="!passConfirm">Email</label>
+    <label for="email" v-if="!passConfirm">{{ $t('account.email') }}</label>
     <input type="email" v-if="!passConfirm" v-model="email" />
 
-    <label for="password" v-if="showPass">Password</label>
+    <label for="password" v-if="showPass">{{ $t('account.password') }}</label>
     <input type="password" v-if="showPass" v-model="pass" />
 
-    <label for="pass_confirm" v-if="passConfirm">Password újra</label>
+    <label for="pass_confirm" v-if="passconfirm">{{ $t('account.passwordConfirm') }}</label>
     <input type="password" v-if="passConfirm" v-model="pass_confirm" />
 
-    <input type="submit" :value="button" />
+    <input type="submit" :value="$t('button.login')" />
   </form>
 </template>
 

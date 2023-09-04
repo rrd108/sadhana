@@ -2,6 +2,7 @@
   import { useStore } from './store'
   import AppHeader from '@/components/AppHeader.vue'
   import AppFooter from '@/components/AppFooter.vue'
+  import LocaleChanger from '@/components/LocaleChanger.vue'
 
   const store = useStore()
 </script>
@@ -9,6 +10,7 @@
 <template>
   <div class="app">
     <AppHeader v-if="store.user.id" />
+    <LocaleChanger/>
     <main>
       <router-view v-slot="{ Component }">
         <transition name="fade-slide" mode="out-in">
@@ -32,6 +34,12 @@
     max-width: 42em;
     margin: 0 auto;
     padding: 10vh 1em;
+  }
+
+  .locale-changer {
+    float: right;
+    padding-top: 10px;
+    padding-right: 10px;
   }
 
   .fade-slide-enter-from,

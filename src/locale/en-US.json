@@ -1,0 +1,12 @@
+{
+  "account": {
+    "email": "E-mail",
+    "password": "Password",
+    "passwordConfirm": "Repeat password",
+    "register": "Register",
+    "forgotPassword": "Forgot Password"
+  },
+  "button": {
+    "login": "Log in"
+  }
+}

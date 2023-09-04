@@ -26,7 +26,7 @@
 
 <template>
   <section>
-    <LoginForm button="Belép" @formSubmit="login" />
+    <LoginForm @formSubmit="login" />
     <LoginFooter />
   </section>
 </template>

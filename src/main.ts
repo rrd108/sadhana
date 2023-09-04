@@ -8,6 +8,9 @@ import Toast, { PluginOptions } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
 import { createI18n } from 'vue-i18n'
+import hu from './locale/hu.json'
+import enUS from './locale/en-US.json'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -32,7 +35,13 @@ library.add(
   faShieldHeart
 )
 
-const i18n = createI18n({})
+const i18n = createI18n({
+	locale: 'hu', //default to hunarian locale
+	messages: {
+          'hu': hu,
+          'en-US': enUS
+	}
+})
 
 const pinia = createPinia()
 
