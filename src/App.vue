@@ -37,9 +37,9 @@
   }
 
   .locale-changer {
-    float: right;
-    padding-top: 10px;
-    padding-right: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 
   .fade-slide-enter-from,
