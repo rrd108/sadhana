@@ -26,7 +26,7 @@
 
 <template>
   <section>
-    <LoginForm @formSubmit="login" />
+    <LoginForm :button="$t('button.login')" @formSubmit="login" />
     <LoginFooter />
   </section>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   const props = defineProps({
+    button: { type: String, required: true },
     showPass: { type: Boolean, default: true },
     passConfirm: { type: Boolean, default: false },
   })
@@ -29,7 +30,7 @@
     <label for="pass_confirm" v-if="passConfirm">{{ $t('account.passwordConfirm') }}</label>
     <input type="password" v-if="passConfirm" v-model="pass_confirm" />
 
-    <input type="submit" :value="$t('button.login')" />
+    <input type="submit" :value="button" />
   </form>
 </template>
 
