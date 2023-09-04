@@ -26,7 +26,7 @@
     <label for="password" v-if="showPass">{{ $t('account.password') }}</label>
     <input type="password" v-if="showPass" v-model="pass" />
 
-    <label for="pass_confirm" v-if="passconfirm">{{ $t('account.passwordConfirm') }}</label>
+    <label for="pass_confirm" v-if="passConfirm">{{ $t('account.passwordConfirm') }}</label>
     <input type="password" v-if="passConfirm" v-model="pass_confirm" />
 
     <input type="submit" :value="$t('button.login')" />
