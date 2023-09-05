@@ -38,7 +38,7 @@
 
 <template>
   <section>
-    <h1>Jelvények</h1>
+    <h1>{{$t('badge.badges')}}</h1>
     <ul>
       <li
         v-for="badge in store.user.badges"
@@ -46,7 +46,7 @@
         :class="{ accepted: badge.accepted }"
         @click="lookDetails(badge)"
       >
-        <h2>{{ badge.name }}</h2>
+        <h2>{{ $t('badge.'+badge.icon+'.name') }}</h2>
         <h3 v-if="badge.level">{{ badge.level }}. szint</h3>
         <img :src="getImagePath(badge.icon)" />
         <small>{{ badge.gained }}</small>
@@ -55,11 +55,11 @@
 
     <div id="overlay" v-if="selectedBadge.id"></div>
     <dialog v-if="selectedBadge.id" class="center" @click="hide">
-      <h2>{{ selectedBadge.name }}</h2>
+      <h2>{{ $t('badge.'+selectedBadge.icon+'.name') }}</h2>
       <img :src="getImagePath(selectedBadge.icon)" />
       <h3 v-if="selectedBadge.level">{{ selectedBadge.level }}. szint</h3>
       <h3 v-if="!selectedBadge.level">{{ selectedBadge.gained }}</h3>
-      <p>{{ selectedBadge.description }}</p>
+      <p>{{ selectedBadge.goal+' '+$t('badge.'+selectedBadge.icon+'.description')}}</p>
       <small>{{ selectedBadge.gained }}</small>
     </dialog>
   </section>

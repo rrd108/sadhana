@@ -1,4 +1,6 @@
 {
+  "home": "Home",
+  "date": "Date",
   "account": {
     "email": "E-mail",
     "password": "Password",
@@ -9,5 +11,30 @@
   "button": {
     "login": "Log in",
     "resetPassword": "Reset password"
+  },
+  "japa":{
+    "beforeMangala": "Before 4:30",
+    "afternoon": "Before 20:00",
+    "early": "Before 7:00",
+    "night": "After 20:00",
+    "morning": "Before 14:00"
+  },
+  "temple":{
+    "program": "Temple program",
+    "mangala": "Mangala-arati",
+    "japa": "Japa",
+    "kirtana": "Guru-puja kirtana",
+    "lecture": "Lecture",
+    "gauraarati": "Gaura-arati",
+    "gurupuja": "Guru-puja"
+  },
+  "bramin":{
+    "activities": "Braminical activities",
+    "murtiseva": "Murti-seva (minutes)",
+    "reading": "Reading (minutes)",
+    "study": "Study (minutes)",
+    "listening": "Audio lecture (minutes)",
+    "other": "Other (minutes)",
+    "gayatri": "Gayatri"
   }
 }

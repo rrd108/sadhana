@@ -223,7 +223,7 @@
     <hr />
 
     <div class="rows">
-      <h2 class="title">Otthon</h2>
+      <h2 class="title">{{$t('home')}}</h2>
 
       <div class="radio">
         <input type="checkbox" id="homeMangala" v-model="bhakti.homeMangala" />
@@ -241,9 +241,9 @@
     <hr />
 
     <div class="rows third">
-      <h2 class="title">{{$t('bramin.activies')}}</h2>
+      <h2 class="title">{{$t('bramin.activities')}}</h2>
 
-      <p>{{$t('bramin.activies')}}</p>
+      <p>{{$t('bramin.murtiseva')}}</p>
       <input type="number" v-model="bhakti.murtiseva" @blur="checkMax" />
 
       <p>{{$t('bramin.reading')}}</p>

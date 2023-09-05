@@ -1,4 +1,6 @@
 {
+  "date": "Dátum",
+  "home": "Otthon",
   "account": {
     "email": "E-mail",
     "password": "Password",
@@ -10,7 +12,6 @@
     "login": "Belép",
     "resetPassword": "jelszó emlékeztető"
   },
-  "date": "Dátum",
   "japa":{
     "beforeMangala": "4:30 előtt",
     "afternoon": "20 óra előtt",
@@ -28,7 +29,7 @@
     "gurupuja": "Guru-puja"
   },
   "bramin":{
-    "activies": "Brahminikus tevékenységek",
+    "activities": "Brahminikus tevékenységek",
     "murtiseva": "Murti-seva (perc)",
     "reading": "Olvasás (perc)",
     "study": "Tanulás (perc)",
@@ -36,10 +37,47 @@
     "other": "Egyéb (perc)",
     "gayatri": "Gayatri"
   },
-  "badges":{
-    "sriname":{
-      "name": "",
-      "description": ""
+  "badge":{
+    "badges": "Jelvények",
+    "sri_nama":{
+      "name": "Sri Nama",
+      "description": "* kört japáztál amióta elkezdted használni a sadhana programot!"
+    },
+    "mercy_collector":{
+      "name": "Kegy Kollektor",
+      "description": "Az elmúlt héten te gyűjtötted össze a legtöbb sadhana pontot"
+    },
+    "atma_bandhu":{
+      "name": "Atma Bandhu",
+      "description": "* kört japáztál amióta elkezdted használni a sadhana programot!"
+    },
+    "hamsa":{
+      "name": "Hamsa",
+      "description": "* pontot értél el a brahminikus tevékenységek végzésével"
+    },
+    "sadhaka":{
+      "name": "Sadhaka",
+      "description": "* pontot értél el a sadhanád gyakorlásával"
+    },
+    "japa_ninja":{
+      "name": "Japa Ninja",
+      "description": "* pontot szereztél a kora reggeli japázással"
+    },
+    "mangala_master":{
+      "name": "Mangala Mester",
+      "description": "* alkalommal voltál Mangala-aratin"
+    },
+    "sastri":{
+      "name": "Sastri",
+      "description": "* pontot szereztél leckén való részvétellel"
+    },
+    "pandit":{
+      "name": "Páralan Pandit",
+      "description": "* percet olvastál"
+    },
+    "pujari":{
+      "name": "Pöpec Pujari",
+      "description": "* percet töltöttél Murti szolgálattal"
     }
   }
 }
