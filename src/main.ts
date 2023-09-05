@@ -36,7 +36,8 @@ library.add(
 )
 
 const i18n = createI18n({
-	locale: 'hu', //default to hunarian locale
+        locale: (localStorage.getItem('sadhana.locale') ||'hu'), //default to hunarian locale
+        fallbackLocale: 'hu',
 	messages: {
           'hu': hu,
           'en-US': enUS
