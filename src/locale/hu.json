@@ -9,5 +9,37 @@
   "button": {
     "login": "Belép",
     "resetPassword": "jelszó emlékeztető"
+  },
+  "date": "Dátum",
+  "japa":{
+    "beforeMangala": "4:30 előtt",
+    "afternoon": "20 óra előtt",
+    "early": "7 óra előtt",
+    "night": "20 óra után",
+    "morning": "14 óra előtt"
+  },
+  "temple":{
+    "program": "Templomi programok",
+    "mangala": "Mangala-arati",
+    "japa": "Japa",
+    "kirtana": "Guru-puja kirtana",
+    "lecture": "Lecke",
+    "gauraarati": "Gaura-arati",
+    "gurupuja": "Guru-puja"
+  },
+  "bramin":{
+    "activies": "Brahminikus tevékenységek",
+    "murtiseva": "Murti-seva (perc)",
+    "reading": "Olvasás (perc)",
+    "study": "Tanulás (perc)",
+    "listening": "Lecke hallgatás (perc)",
+    "other": "Egyéb (perc)",
+    "gayatri": "Gayatri"
+  },
+  "badges":{
+    "sriname":{
+      "name": "",
+      "description": ""
+    }
   }
 }

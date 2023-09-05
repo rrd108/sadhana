@@ -168,56 +168,56 @@
     <header class="rows center">
       <h1>{{ points }}</h1>
       <div>
-        <label for="date">Dátum</label>
+        <label for="date">{{$t('date')}}</label>
         <input type="date" v-model="date" @change="getSadhana" class="wide" />
       </div>
     </header>
 
     <div class="rows">
-      <h2>Japa</h2>
+      <h2>{{$t('temple.japa')}}</h2>
       <h2 class="center">{{ totalJapa }}</h2>
     </div>
 
     <div class="rows four">
-      <p>4:30 előtt</p>
+      <p>{{$t('japa.beforeMangala')}}</p>
       <input type="number" v-model="bhakti.japaBeforeMangala" />
 
-      <p>20 óra előtt</p>
+      <p>{{$t('japa.afternoon')}}</p>
       <input type="number" v-model="bhakti.japaAfternoon" />
 
-      <p>7 óra előtt</p>
+      <p>{{$t('japa.early')}}</p>
       <input type="number" v-model="bhakti.japaEarly" />
 
-      <p>20 óra után</p>
+      <p>{{$t('japa.night')}}</p>
       <input type="number" v-model="bhakti.japaNight" />
 
-      <p>14 óra előtt</p>
+      <p>{{$t('japa.morning')}}</p>
       <input type="number" v-model="bhakti.japaMorning" />
     </div>
     <hr />
 
     <div class="rows">
-      <h2 class="title">Templomi programok</h2>
+      <h2 class="title">{{$t('temple.program')}}</h2>
 
       <div class="radio">
         <input type="checkbox" id="mangala" v-model="bhakti.mangala" />
-        <label for="mangala">Mangala-arati</label>
+        <label for="mangala">{{$t('temple.mangala')}}</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="japa" v-model="bhakti.japa" />
-        <label for="japa">Japa</label>
+        <label for="japa">{{$t('temple.japa')}}</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="kirtana" v-model="bhakti.kirtana" />
-        <label for="kirtana">Guru-puja kirtana</label>
+        <label for="kirtana">{{$t('temple.kirtana')}}</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="class" v-model="bhakti.class" />
-        <label for="class">Lecke</label>
+        <label for="class">{{$t('temple.lecture')}}</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="gauraarati" v-model="bhakti.gauraarati" />
-        <label for="gauraarati">Gaura-arati</label>
+        <label for="gauraarati">{{$t('temple.gauraarati')}}</label>
       </div>
     </div>
     <hr />
@@ -227,38 +227,38 @@
 
       <div class="radio">
         <input type="checkbox" id="homeMangala" v-model="bhakti.homeMangala" />
-        <label for="homeMangala">Mangala-arati</label>
+        <label for="homeMangala">{{$t('temple.mangala')}}</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="homeGuruPuja" v-model="bhakti.homeGuruPuja" />
-        <label for="homeGuruPuja">Guru-puja</label>
+        <label for="homeGuruPuja">{{$t('temple.gurupuja')}}</label>
       </div>
       <div class="radio">
         <input type="checkbox" id="homeGauraArati" v-model="bhakti.homeGauraArati" />
-        <label for="homeGauraArati">Gaura-arati</label>
+        <label for="homeGauraArati">{{$t('temple.gauraarati')}}</label>
       </div>
     </div>
     <hr />
 
     <div class="rows third">
-      <h2 class="title">Brahminikus tevékenységek</h2>
+      <h2 class="title">{{$t('bramin.activies')}}</h2>
 
-      <p>Murti-seva (perc)</p>
+      <p>{{$t('bramin.activies')}}</p>
       <input type="number" v-model="bhakti.murtiseva" @blur="checkMax" />
 
-      <p>Olvasás (perc)</p>
+      <p>{{$t('bramin.reading')}}</p>
       <input type="number" v-model="bhakti.reading" />
 
-      <p>Tanulás (perc)</p>
+      <p>{{$t('bramin.study')}}</p>
       <input type="number" v-model="bhakti.study" />
 
-      <p>Lecke hallgatás (perc)</p>
+      <p>{{$t('bramin.listening')}}</p>
       <input type="number" v-model="bhakti.listening" />
 
-      <p>Egyéb (perc)</p>
+      <p>{{$t('bramin.other')}}</p>
       <input type="number" v-model="bhakti.other" />
 
-      <p>Gayatri</p>
+      <p>{{$t('bramin.gayatri')}}</p>
       <input type="number" v-model="bhakti.gayatri" />
     </div>
   </section>
