@@ -4,6 +4,9 @@
   import { useStore } from '../store'
   import { useToast } from 'vue-toastification'
   import Badge from '../types/Badge'
+  import { useI18n } from "vue-i18n";
+
+  const { t } = useI18n({ useScope: "global" });
   const store = useStore()
   const toast = useToast()
 
@@ -23,10 +26,10 @@
           store.tokenHeader
         )
         .then(res => {
-          toast.success('Jelvény elfogadva')
+          toast.success(t('badge.accepted'))
           badge.accepted = true
         })
-        .catch(err => toast.error('Mentési hiba'))
+        .catch(err => toast.error(t('badge.save_error')))
     }
   }
 

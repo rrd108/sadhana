@@ -39,6 +39,8 @@
   },
   "badge":{
     "badges": "Jelvények",
+    "accepted":"Jelvény elfogadva",
+    "save_error":"Mentési hiba",
     "sri_nama":{
       "name": "Sri Nama",
       "description": "* kört japáztál amióta elkezdted használni a sadhana programot!"
