@@ -4,7 +4,6 @@
   import { useStore } from '../store'
   import { useToast } from 'vue-toastification'
   import Badge from '../types/Badge'
-
   const store = useStore()
   const toast = useToast()
 
@@ -59,7 +58,7 @@
       <img :src="getImagePath(selectedBadge.icon)" />
       <h3 v-if="selectedBadge.level">{{ selectedBadge.level }}. szint</h3>
       <h3 v-if="!selectedBadge.level">{{ selectedBadge.gained }}</h3>
-      <p>{{ selectedBadge.goal+' '+$t('badge.'+selectedBadge.icon+'.description')}}</p>
+      <p>{{$t('badge.'+selectedBadge.icon+'.description').replace('*',selectedBadge.goal)}}</p>
       <small>{{ selectedBadge.gained }}</small>
     </dialog>
   </section>
