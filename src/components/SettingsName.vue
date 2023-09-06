@@ -15,19 +15,16 @@
 </script>
 
 <template>
-  <h2>Név</h2>
-  <p class="info" v-if="!store.user.name">Hiányzik a neved, kérlek add meg!</p>
-  <p>
-    Ezzel a névvel kerülsz fel a listákra és a Śrīla Śivarāma Swāmi Mahārāja
-    számára szóló listára.
-  </p>
+  <h2>{{$t('settings.name')}}</h2>
+  <p class="info" v-if="!store.user.name">{{$t('settings.name_missing')}}</p>
+  <p>{{$t('settings.name_info')}}</p>
   <label>
-    Neved:
+    {{$t('settings.name_label')}}:
     <input
       type="text"
       v-model="store.user.name"
       @blur="saveName"
-      placeholder="Neved"
+      :placeholder="$t('settings.name_label')"
     />
   </label>
 </template>

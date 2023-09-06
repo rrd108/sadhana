@@ -52,16 +52,12 @@
 </script>
 
 <template>
-  <h2>Hozzáférések</h2>
-  <p>
-    Havonta fog kapni egy összesítőt a sadhana adatokról Śrīla Śivarāma Swāmi Mahārāja, Rādhā Kṛṣṇa Dāsa és Śrīpati Dāsa.</p>
-    <p>
-    Ha szeretnéd, hogy a tanácsadód, barátod láthassa a sadhanád részleteit,
-    akkor azt itt engedélyezheted. E nélkül mindneki más csak a pontszámaidat látja.
-  </p>
-  
-  <p v-if="!store.user.counsellors?.length">Jelenleg rajtad kívűl senkinek sincs hozzáférése.</p>
-  <p v-if="store.user.counsellors?.length">Jelenleg rajtad kívűl ők férnek még hozzá a részletekhez:
+  <h2>{{$t('settings.access.title')}}</h2>
+  <p>{{$t('settings.access.desc_who')}}</p>
+  <p>{{$t('settings.access.desc_allow')}}</p>
+
+  <p v-if="!store.user.counsellors?.length">{{$t('settings.access.current_no')}}</p>
+  <p v-if="store.user.counsellors?.length">{{$t('settings.access.current')}}
     <ul>
         <li v-for="counsellor in store.user.counsellors">
            <button @click="removeCounsellor(counsellor)"><font-awesome-icon icon="circle-minus" /></button>
@@ -70,12 +66,12 @@
     </ul>
 </p>
 
-  <label for="counsellor">Lássa még a részleteket:</label>
+<label for="counsellor">{{$t('settings.access.share')}}</label>
   <fieldset>
     <input
       id="counsellor"
       list="users"
-      placeholder="Felhasználó"
+      :placeholder="$t('settings.access.user')"
       v-model="counsellor"
     />
     <datalist id="users">

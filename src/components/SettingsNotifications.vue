@@ -5,8 +5,10 @@
   import { initializeApp } from 'firebase/app'
   import { getMessaging, getToken } from 'firebase/messaging'
   import { useToast } from 'vue-toastification'
+  import { useI18n } from 'vue-i18n'
 
   const toast = useToast()
+  const { t } = useI18n()
 
   const firebaseConfig = {
     apiKey: import.meta.env.VITE_APP_FIREBASE_APIKEY,
@@ -60,7 +62,7 @@
                 store.tokenHeader
               )
               .then(res => {
-                toast.success('Beállítás mentve')
+                toast.success(t('settings.saved'))
                 store.user.firebaseUserToken = res.data.user.firebaseUserToken
               })
               .catch(err => toast.error(err))
@@ -71,7 +73,7 @@
         })
         .catch(err => {
           toast.warning(
-            'An error occurred while retrieving token. ' + err.message
+            t('settings.notification.token_err') + err.message
           )
         })
     }
@@ -107,18 +109,18 @@
             navigator.serviceWorker.ready
               .then(registration =>
                 registration.showNotification('Sadhana', {
-                  body: 'Az értesítések engedélyezve!',
+                  body: t('settings.notification.enabled'),
                   icon: 'favicon-32x32.png',
                 })
               )
               .catch(err => {
-                toast.error('Unable to get permission to notify.', err)
+                toast.error(t('settings.notification.error'), err)
               })
           }
           if (!window.matchMedia('(display-mode: standalone)').matches) {
             // Browser mode
             new Notification('Sadhana', {
-              body: 'Az értesítések engedélyezve!',
+              body: t('settings.notification.enabled'),
               icon: 'favicon-32x32.png',
             })
           }
@@ -126,7 +128,7 @@
         }
       })
       .catch(err => {
-        toast.error('Unable to get permission to notify.', err)
+        toast.error(t('settings.notification.error'), err)
       })
 
     getFirebaseToken()
@@ -143,9 +145,9 @@
 </script>
 
 <template>
-  <h2>Emlékeztető</h2>
+  <h2>{{$t('settings.notification.title')}}</h2>
   <div>
-    <label for="notification">Emlékeztető</label>
+    <label for="notification">{{$t('settings.notification.title')}}</label>
     <input
       id="notification"
       type="checkbox"
@@ -155,25 +157,16 @@
     />
   </div>
   <div v-show="notificationPermission">
-    <label for="time">Időpont</label>
+    <label for="time">{{$t('settings.notification.time')}}</label>
     <select v-model="time" @change="saveNotificationTime">
       <option v-for="i in 12" :key="i" :value="i + 8">{{ i + 8 }}</option>
     </select>
-    óra
+    {{$t('settings.notification.time_suffix')}}
   </div>
-  <p v-if="isDenied" class="info">
-    Korábban letiltottad az értesítéseket. Engedélyezdned kell a
-    <strong>böngészőben</strong>, hogy megkapd az értesítéseket.
-  </p>
+  <p v-if="isDenied" class="info">{{$t('settings.notification.denied')}}</p>
   <div>
-    <p v-if="!notificationPermission">
-      Ha kipipálod akkor a böngésző rá fog kérdezni, hogy engedélyezed-e az
-      értesítéseket, ahol az <strong>"engedélyezést"</strong> kell választani.
-    </p>
-    <p>
-      Ha bekapcsolod, akkor az alkalmazás a kiválasztott időpontban küld egy
-      üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.
-    </p>
+    <p v-if="!notificationPermission">{{$t('settings.notification.permission')}}</p>
+    <p>{{$t('settings.notification.info')}}</p>
   </div>
 </template>
 

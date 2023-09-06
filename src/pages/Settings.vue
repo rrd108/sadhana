@@ -7,7 +7,7 @@
 
 <template>
   <section>
-    <h1>Beállítások</h1>
+    <h1>{{$t('settings.title')}}</h1>
     <SettingsName />
     <hr />
     <SettingsNotifications />

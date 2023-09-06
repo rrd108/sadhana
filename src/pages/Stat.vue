@@ -4,9 +4,9 @@
   import { useStore } from '../store'
   import { GChart } from 'vue-google-charts'
   import { today, todayWeekNumber } from '../composables/getDateData'
-
+  import { useI18n } from 'vue-i18n'
   const store = useStore()
-
+  const { t } = useI18n()
   const emptyData = ['Date', 'Points']
   const sadhanaData = ref({
     japa: [[...emptyData]],
@@ -61,10 +61,10 @@
     legend: 'none',
     dataLabels: true,
     hAxis: {
-      title: 'Nap',
+      title: t('stat.day'),
     },
     vAxis: {
-      title: 'Pontszám',
+      title: t('stat.score'),
     },
   }
 
@@ -142,7 +142,7 @@
   <section>
     <h1><input type="week" v-model="week" @change="getStat" /></h1>
     <div class="title">
-      <h2>Japa</h2>
+      <h2>{{$t('temple.japa')}}</h2>
       <h3>
         {{
           Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
@@ -166,7 +166,7 @@
     <GChart type="AreaChart" :data="sadhanaData.japa" :options="options" />
 
     <div class="title">
-      <h2>Templomi program</h2>
+      <h2>{{$t('temple.program')}}</h2>
       <h3>
         {{
           Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
@@ -194,7 +194,7 @@
     />
 
     <div class="title">
-      <h2>Brahmana</h2>
+      <h2>{{$t('bramin.activities')}}</h2>
       <h3>
         {{
           Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
