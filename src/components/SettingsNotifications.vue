@@ -163,9 +163,9 @@
     </select>
     {{$t('settings.notification.time_suffix')}}
   </div>
-  <p v-if="isDenied" class="info">{{$t('settings.notification.denied')}}</p>
+  <p v-if="isDenied" class="info" v-html="$t('settings.notification.denied').replace(/\*(\S[^\*]+\S)\*/g, '<strong>$1</strong>')"></p>
   <div>
-    <p v-if="!notificationPermission">{{$t('settings.notification.permission')}}</p>
+    <p v-if="!notificationPermission" v-html="$t('settings.notification.permission').replace(/\*(\S[^\*]+\S)\*/g, '<strong>$1</strong>')"></p>
     <p>{{$t('settings.notification.info')}}</p>
   </div>
 </template>
