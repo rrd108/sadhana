@@ -3,6 +3,7 @@
   import SettingsName from '../components/SettingsName.vue'
   import SettingsAccess from '../components/SettingsAccess.vue'
   import SettingsInfo from '../components/SettingsInfo.vue'
+  import SettingsLocale from '../components/SettingsLocale.vue'
 </script>
 
 <template>
@@ -13,6 +14,8 @@
     <SettingsNotifications />
     <hr />
     <SettingsAccess />
+    <hr />
+    <settingsLocale />
     <hr />
     <SettingsInfo />
   </section>
