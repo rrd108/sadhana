@@ -7,9 +7,7 @@ import router from './router'
 import Toast, { PluginOptions } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
-import { createI18n } from 'vue-i18n'
-import hu from './locale/hu.json'
-import enUS from './locale/en-US.json'
+import { setupI18n } from './i18n'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -35,14 +33,10 @@ library.add(
   faShieldHeart
 )
 
-const i18n = createI18n({
+const i18n = setupI18n({
         legacy: false, // you must set `false`, to use Composition API
         locale: (localStorage.getItem('sadhana.locale') ||'hu'), //default to hunarian locale
         fallbackLocale: 'hu',
-	messages: {
-          'hu': hu,
-          'en-US': enUS
-	}
 })
 
 const pinia = createPinia()
