@@ -44,7 +44,6 @@ export async function loadLocaleMessages(i18n, locale) {
 export function findLocale() {
   // Check local storage
   if (SUPPORT_LOCALES.indexOf(localStorage.getItem("sadhana.locale")) > -1) {
-    console.log("localStorage");
     return localStorage.getItem("sadhana.locale");
   }
   // check browser language prefrence
