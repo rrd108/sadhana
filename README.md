@@ -16,3 +16,6 @@ api/bin/cake BadgeDistributor -lt day   # on every morning 3:12
 ```
 yarn dev
 ```
+
+## Flag source
+https://www.svgrepo.com/collection/decathlon-payment-vectors
