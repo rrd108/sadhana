@@ -14,8 +14,6 @@
 
     // set i18n language
     setI18nLanguage(i18n, eventLocale)
-
-    localStorage.setItem('sadhana.locale',eventLocale)
   }
 
 </script>
