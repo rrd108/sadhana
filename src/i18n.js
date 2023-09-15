@@ -41,7 +41,15 @@ export async function loadLocaleMessages(i18n, locale) {
   return nextTick();
 }
 
-export function findLocale() {
+export function findLocale(locale) {
+  // Check param
+  if (SUPPORT_LOCALES.indexOf(locale) > -1 ) {
+    return locale
+  }
+  // if param is thruthy but not suported return -1
+  if (locale) {
+    return -1
+  }
   // Check local storage
   if (SUPPORT_LOCALES.indexOf(localStorage.getItem("sadhana.locale")) > -1) {
     return localStorage.getItem("sadhana.locale");
@@ -54,4 +62,12 @@ export function findLocale() {
   }
   // Default
   return "hu";
+}
+
+// locale is optional, if not passed best guess is made
+export function setLocale(locale) {
+  var useLocale = findLocale(locale)//Determine what locale to use
+  if (useLocale == -1){ return -1 }//locale not supported
+  loadLocaleMessages(i18n,useLocale)//First load the locale
+  setI18nLanguage(i18n,useLocale)// Then change the locale
 }
