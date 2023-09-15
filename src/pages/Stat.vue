@@ -5,7 +5,6 @@ import { useStore } from "../store";
 import { GChart } from "vue-google-charts";
 import { today, todayWeekNumber } from "../composables/getDateData";
 import { useI18n } from "vue-i18n";
-import WeekView from "@/components/WeekView.vue";
 
 const store = useStore();
 const { t } = useI18n();
