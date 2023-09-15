@@ -15,6 +15,7 @@ div {
   grid-template-columns: auto auto;
   justify-content: center;
   grid-gap: 3em;
+  margin-top: 120px;
 }
 
 img {

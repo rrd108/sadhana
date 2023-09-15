@@ -12,7 +12,7 @@
 
 <style scoped>
   header {
-    position: fixed;
+    position: sticky;
     top: 0;
     height: 10vh;
     width: 100vw;

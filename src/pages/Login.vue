@@ -35,7 +35,6 @@
 
 <style scoped>
   section {
-    margin-top: -10vh;
     text-align: center;
   }
 </style>

@@ -31,7 +31,8 @@
     min-height: 80vh;
     max-width: 42em;
     margin: 0 auto;
-    padding: 10vh 1em;
+    padding-left: 1em;
+    padding-right: 1em;
   }
 
   .locale-changer {

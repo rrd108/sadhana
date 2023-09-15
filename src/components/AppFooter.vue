@@ -32,7 +32,7 @@
 
 <style scoped>
   footer {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     width: 100vw;
     height: 10vh;
