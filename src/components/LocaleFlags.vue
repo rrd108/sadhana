@@ -3,29 +3,28 @@ import { setLocale } from "../i18n";
 </script>
 
 <template>
-  <div>
-    <figure>
-    <img @click="setLocale('en-US')" src="flag-us.svg" />
+  <small>
+    <figure @click="setLocale('en-US')">
+    <img src="flag-us.svg" />
     <figcaption>English</figcaption>
     </figure>
-    <figure>
-    <img @click="setLocale('hu')" src="flag-hu.svg" />
-    <figcaption>Magyarul</figcaption>
+    <figure @click="setLocale('hu')">
+    <img src="flag-hu.svg" />
+    <figcaption>Magyar</figcaption>
     </figure>
-
-  </div>
+  </small>
 </template>
 
 <style scoped>
-div {
+small {
   display: grid;
   grid-template-columns: auto auto;
   justify-content: center;
-  grid-gap: 3em;
+  grid-gap: 0.5em;
   margin-top: 120px;
 }
 
 img {
-  width: 3em;
+  width: 2em;
 }
 </style>
