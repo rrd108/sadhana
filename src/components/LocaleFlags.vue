@@ -4,8 +4,15 @@ import { setLocale } from "../i18n";
 
 <template>
   <div>
+    <figure>
     <img @click="setLocale('en-US')" src="flag-us.svg" />
+    <figcaption>English</figcaption>
+    </figure>
+    <figure>
     <img @click="setLocale('hu')" src="flag-hu.svg" />
+    <figcaption>Magyarul</figcaption>
+    </figure>
+
   </div>
 </template>
 
