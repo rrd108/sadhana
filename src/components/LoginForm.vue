@@ -36,12 +36,11 @@
 
 <style scoped>
   img {
-    transform: translateY(2.25em);
+    transform: translateY(7.25em);
     position: relative;
     z-index: 1;
   }
   form {
-    transform: translateY(-5em);
     padding: 2em;
     padding-top: 5em;
     background-color: #fff;

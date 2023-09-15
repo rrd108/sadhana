@@ -13,8 +13,9 @@
 
 <style scoped>
   small {
+    margin-top: 3em;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
   }
   small a {
     color: #fff;
