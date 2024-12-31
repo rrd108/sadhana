@@ -34,8 +34,7 @@ library.add(
 );
 
 const i18n = setupI18n({
-  legacy: false, // you must set `false`, to use Composition API
-  fallbackLocale: ["hu", "en-US"],
+  locale: 'hu'
 });
 
 const pinia = createPinia();

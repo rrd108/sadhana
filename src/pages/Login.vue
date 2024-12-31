@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import LoginForm from '@/components/LoginForm.vue'
   import LoginFooter from '@/components/LoginFooter.vue'
-  import LocaleFlags from '@/components/LocaleFlags.vue'
+  //import LocaleFlags from '@/components/LocaleFlags.vue'
   import axios from 'axios'
   import { useStore } from '../store'
   import { useToast } from 'vue-toastification'
@@ -28,7 +28,7 @@
 <template>
   <section>
     <LoginForm :button="$t('button.login')" @formSubmit="login" />
-    <LocaleFlags />
+    <!-- <LocaleFlags /> -->
     <LoginFooter />
   </section>
 </template>

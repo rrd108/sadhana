@@ -135,5 +135,25 @@ if [ $PREV_STEP -eq 1 ];then
 fi
 
 if [ $PREV_STEP -eq 1 ];then
+	echo $'\n' "Purge CloudFlare Cache" $'\n'
+	source .env.development
+	curl_result=$(curl --request POST \
+	    --url https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache \
+	    --header 'Content-Type: application/json' \
+	    --header "Authorization: Bearer $CF_TOKEN" \
+		--data '{"files": ["https://sadhana.1108.cc/*"]}' \
+		-s)
+
+	if [[ $(jq -r '.success' <<< "$curl_result") == "true" ]]; then
+		echo -e $'\n' "${GREEN} \u2714 CF cache purged ${NC}" $'\n'
+	else
+		echo -e $'\n' "${RED} \u2a2f CF cache purge failed ${NC}" $'\n'
+		error_message=$(jq -r '.errors[0].message' <<< "$curl_result")
+		echo "Error purging cache: $error_message"
+		PREV_STEP=0
+	fi
+fi
+
+if [ $PREV_STEP -eq 1 ];then
 	echo -e $'\n' "${GREEN} \u2714 All is fine ${NC}" $'\n'
 fi

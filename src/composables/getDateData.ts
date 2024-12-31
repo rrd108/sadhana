@@ -8,18 +8,17 @@ export const todayDayNumber = Math.floor(
 
 const getWeeks = () => {
   const weeks: string[][] = []
-  for (let i = 0; i < 52; i++) {
+  // Get last Thursday of the year to determine if we need 53 weeks
+  const lastDay = new Date(year, 11, 31)
+  const lastThursday = lastDay.getDate() - lastDay.getDay() + 4
+  const weeksInYear = lastThursday > 28 ? 53 : 52
+
+  for (let i = 0; i < weeksInYear; i++) {
+    const weekStart = new Date(firstMonday.getTime() + i * 7 * 24 * 60 * 60 * 1000)
+    const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000)
     weeks.push([
-      new Date(firstMonday.getTime() + i * 7 * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .substring(0, 10),
-      new Date(
-        firstMonday.getTime() +
-          i * 7 * 24 * 60 * 60 * 1000 +
-          6 * 24 * 60 * 60 * 1000
-      )
-        .toISOString()
-        .substring(0, 10),
+      weekStart.toISOString().substring(0, 10),
+      weekEnd.toISOString().substring(0, 10)
     ])
   }
   return weeks
@@ -27,12 +26,26 @@ const getWeeks = () => {
 
 export const weeks = getWeeks()
 
-export const todayWeekNumber =
-  weeks.findIndex(
+export const todayWeekNumber = (() => {
+  const date = today
+  // If we're in the first week of the new year but the week started in previous year
+  if (date.getFullYear() > year && date.getMonth() === 0 && date.getDate() <= 7) {
+    const lastWeek = weeks[weeks.length - 1]
+    if (date.toISOString().substring(0, 10) <= lastWeek[1]) {
+      return weeks.length
+    }
+    return 1
+  }
+  // If we're in the last week of the year but that week ends in next year
+  if (date.getFullYear() < year && date.getMonth() === 11 && date.getDate() >= 29) {
+    return 1
+  }
+  return weeks.findIndex(
     w =>
-      today.toISOString().substring(0, 10) >= w[0] &&
-      today.toISOString().substring(0, 10) <= w[1]
+      date.toISOString().substring(0, 10) >= w[0] &&
+      date.toISOString().substring(0, 10) <= w[1]
   ) + 1
+})()
 
 export const toISO = (date: string) => {
   date = date.replace(/\D/g, '')

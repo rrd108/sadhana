@@ -7,6 +7,7 @@ interface Badge {
   gained: string
   accepted: boolean
   badgesUsersId?: number
+  goal: string
 }
 
 export default Badge
