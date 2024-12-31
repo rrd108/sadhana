@@ -97,7 +97,7 @@ fi
 if [ $PREV_STEP -eq 1 ];then
 	echo $'\n' "Run composer install on server/api" $'\n'
 	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "chmod 775 -R ${SSH_PATH}api/"
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "cd ${SSH_PATH}api/ && /usr/bin/php8.1 /usr/local/bin/composer install --no-dev --no-interaction --optimize-autoloader"
+	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "cd ${SSH_PATH}api/ && /usr/bin/php8.2 /usr/local/bin/composer install --no-dev --no-interaction --optimize-autoloader"
 
 	echo $'\n' "Set permissions" $'\n'
 	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "find ${SSH_PATH}api/ -type f -exec chmod 644 {} \;"
@@ -114,7 +114,7 @@ fi
 
 if [ $PREV_STEP -eq 1 ];then
 	echo -e $'\n' "Run migrations" $'\n'
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "export PHP=/usr/bin/php8.1 && cd ${SSH_PATH}api/ && bin/cake migrations migrate"
+	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "export PHP=/usr/bin/php8.2 && cd ${SSH_PATH}api/ && bin/cake migrations migrate"
 	if [ $? -eq 0 ]; then
 		echo -e $'\n' "${GREEN} \u2714 migrations were successfull ${NC}" $'\n'
 	else
@@ -125,7 +125,7 @@ fi
 
 if [ $PREV_STEP -eq 1 ];then
 	echo -e $'\n' "Clear all cache" $'\n'
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "export PHP=/usr/bin/php8.1 && cd ${SSH_PATH}api/ && bin/cake cache clear_all"
+	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "export PHP=/usr/bin/php8.2 && cd ${SSH_PATH}api/ && bin/cake cache clear_all"
 	if [ $? -eq 0 ]; then
 		echo -e $'\n' "${GREEN} \u2714 Cache cleared ${NC}" $'\n'
 	else
