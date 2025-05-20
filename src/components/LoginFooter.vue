@@ -13,7 +13,7 @@
 
 <style scoped>
   small {
-    margin-top: 3em;
+    margin-top: 12em;
     display: flex;
     justify-content: space-around;
   }
