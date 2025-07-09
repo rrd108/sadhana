@@ -4,9 +4,9 @@
   import { useStore } from '../store'
   import { useToast } from 'vue-toastification'
   import Badge from '../types/Badge'
-  import { useI18n } from "vue-i18n";
+  import { useI18n } from 'vue-i18n'
 
-  const { t } = useI18n({ useScope: "global" });
+  const { t } = useI18n({ useScope: 'global' })
   const store = useStore()
   const toast = useToast()
 
@@ -20,11 +20,7 @@
 
     if (!badge.accepted) {
       axios
-        .patch(
-          `${import.meta.env.VITE_APP_API_URL}badges-users/${badge.badgesUsersId}.json`,
-          { accepted: true },
-          store.tokenHeader
-        )
+        .patch(`${import.meta.env.VITE_APP_API_URL}badges-users/${badge.badgesUsersId}.json`, { accepted: true }, store.tokenHeader)
         .then(res => {
           toast.success(t('badge.accepted'))
           badge.accepted = true
@@ -40,15 +36,10 @@
 
 <template>
   <section>
-    <h1>{{$t('badge.badges')}}</h1>
+    <h1>{{ store.user.badges.length }} {{ $t('badge.badges') }}</h1>
     <ul>
-      <li
-        v-for="badge in store.user.badges"
-        class="center"
-        :class="{ accepted: badge.accepted }"
-        @click="lookDetails(badge)"
-      >
-        <h2>{{ $t('badge.'+badge.icon+'.name') }}</h2>
+      <li v-for="badge in store.user.badges" class="center" :class="{ accepted: badge.accepted }" @click="lookDetails(badge)">
+        <h2>{{ $t('badge.' + badge.icon + '.name') }}</h2>
         <h3 v-if="badge.level">{{ badge.level }}. szint</h3>
         <img :src="getImagePath(badge.icon)" />
         <small>{{ badge.gained }}</small>
@@ -57,11 +48,11 @@
 
     <div id="overlay" v-if="selectedBadge.id"></div>
     <dialog v-if="selectedBadge.id" class="center" @click="hide">
-      <h2>{{ $t('badge.'+selectedBadge.icon+'.name') }}</h2>
+      <h2>{{ $t('badge.' + selectedBadge.icon + '.name') }}</h2>
       <img :src="getImagePath(selectedBadge.icon)" />
       <h3 v-if="selectedBadge.level">{{ selectedBadge.level }}. szint</h3>
       <h3 v-if="!selectedBadge.level">{{ selectedBadge.gained }}</h3>
-      <p>{{$t('badge.'+selectedBadge.icon+'.description').replace('*',selectedBadge.goal)}}</p>
+      <p>{{ $t('badge.' + selectedBadge.icon + '.description').replace('*', selectedBadge.goal) }}</p>
       <small>{{ selectedBadge.gained }}</small>
     </dialog>
   </section>
@@ -77,8 +68,12 @@
   ul {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1em;
+
+    @media (orientation: landscape) {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
   dialog {
     position: fixed;

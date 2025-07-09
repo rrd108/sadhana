@@ -12,14 +12,14 @@
     "login": "Belép",
     "resetPassword": "jelszó emlékeztető"
   },
-  "japa":{
+  "japa": {
     "beforeMangala": "4:30 előtt",
     "afternoon": "20 óra előtt",
     "early": "7 óra előtt",
     "night": "20 óra után",
     "morning": "14 óra előtt"
   },
-  "temple":{
+  "temple": {
     "program": "Templomi programok",
     "mangala": "Mangala-arati",
     "japa": "Japa",
@@ -28,7 +28,7 @@
     "gauraarati": "Gaura-arati",
     "gurupuja": "Guru-puja"
   },
-  "bramin":{
+  "bramin": {
     "activities": "Brahminikus tevékenységek",
     "murtiseva": "Murti-seva (perc)",
     "reading": "Olvasás (perc)",
@@ -37,72 +37,76 @@
     "other": "Egyéb (perc)",
     "gayatri": "Gayatri"
   },
-  "stat":{
+  "stat": {
     "day": "Nap",
     "score": "Pontszám"
   },
-  "badge":{
-    "badges": "Jelvények",
-    "accepted":"Jelvény elfogadva",
-    "save_error":"Mentési hiba",
-    "sri_nama":{
+  "badge": {
+    "badges": "Jelvény",
+    "accepted": "Jelvény elfogadva",
+    "save_error": "Mentési hiba",
+    "sri_nama": {
       "name": "Sri Nama",
       "description": "* kört japáztál amióta elkezdted használni a sadhana programot!"
     },
-    "mercy_collector":{
+    "mercy_collector": {
       "name": "Kegy Kollektor",
       "description": "Az elmúlt héten te gyűjtötted össze a legtöbb sadhana pontot"
     },
-    "atma_bandhu":{
+    "atma_bandhu": {
       "name": "Atma Bandhu",
-      "description": "* kört japáztál amióta elkezdted használni a sadhana programot!"
+      "description": "* pontot értél el a templomi programokon való részvétellel"
     },
-    "hamsa":{
+    "atma_priya": {
+      "name": "Atma Priya",
+      "description": "* pontot értél el az otthoni sadhanáddal"
+    },
+    "hamsa": {
       "name": "Hamsa",
       "description": "* pontot értél el a brahminikus tevékenységek végzésével"
     },
-    "sadhaka":{
+    "sadhaka": {
       "name": "Sadhaka",
       "description": "* pontot értél el a sadhanád gyakorlásával"
     },
-    "japa_ninja":{
+    "japa_ninja": {
       "name": "Japa Ninja",
       "description": "* pontot szereztél a kora reggeli japázással"
     },
-    "mangala_master":{
+    "mangala_master": {
       "name": "Mangala Mester",
       "description": "* alkalommal voltál Mangala-aratin"
     },
-    "sastri":{
+    "sastri": {
       "name": "Sastri",
       "description": "* pontot szereztél leckén való részvétellel"
     },
-    "pandit":{
+    "pandit": {
       "name": "Páralan Pandit",
       "description": "* percet olvastál"
     },
-    "pujari":{
+    "pujari": {
       "name": "Pöpec Pujari",
       "description": "* percet töltöttél Murti szolgálattal"
     }
   },
-  "settings":{
+  "settings": {
     "title": "Beállítások",
     "saved": "Beállítás mentve",
-    "name":"Név",
-    "name_missing":"Hiányzik a neved, kérlek add meg!",
+    "name": "Név",
+    "name_missing": "Hiányzik a neved, kérlek add meg!",
     "name_info": "Ezzel a névvel kerülsz fel a listákra és a Śrīla Śivarāma Swāmi Mahārāja számára szóló listára.",
-    "name_label":"Neved",
+    "name_label": "Neved",
     "info": "Információk",
     "murtiseva": "Murti-seva",
     "study": "Tanulás",
     "other": "Egyéb",
     "locale_info": "Nyelv:",
-    "tpl_program_info":"A templomi programok kipiálhatóak, ha azon a programon részt vettél. Ha egy programon nem voltál ott teljesen elejétől a végéig, hanem csak egy részén, akkor rád bízzuk, hogy eldöntsd, hogy jelölöd-e vagy sem.",
+    "tpl_program_info": "A templomi programok kipiálhatóak, ha azon a programon részt vettél. Ha egy programon nem voltál ott teljesen elejétől a végéig, hanem csak egy részén, akkor rád bízzuk, hogy eldöntsd, hogy jelölöd-e vagy sem.",
     "home_info": "Ide tudod beírni ha otthon (utazás közben, vagy msáhol) elénekelted, függetlenül attól, hogy az mikor történt.",
-    "murtiseva_info":"Ide tartozik a Radhe-Syamanak szolgálati időn kívűl végzett minden szolgálat, illetve az otthoni pavilonoknál való tisztítás és imádat.",
-    "study_info":"A tanulás azt jelenti, hogy pl verseket memorizálsz, vagy pl a szentírásokat úgy tanulmányozod, hogy jegyzetelsz, vagy pl egy konkrét téma után kutatsz többféle könyvben.",
-    "other_info":"Ide tudod beírni ha bementél egy darshanra, esti bhajanra a templomban vagy valaki házában, stb.",
+    "murtiseva_info": "Ide tartozik a Radhe-Syamanak szolgálati időn kívűl végzett minden szolgálat, illetve az otthoni pavilonoknál való tisztítás és imádat.",
+    "study_info": "A tanulás azt jelenti, hogy pl verseket memorizálsz, vagy pl a szentírásokat úgy tanulmányozod, hogy jegyzetelsz, vagy pl egy konkrét téma után kutatsz többféle könyvben.",
+    "other_info": "Ide tudod beírni ha bementél egy darshanra, esti bhajanra a templomban vagy valaki házában, stb.",
     "access": {
       "title": "Hozzáférések",
       "desc_who": "Havonta fog kapni egy összesítőt a sadhana adatokról Śrīla Śivarāma Swāmi Mahārāja, Rādhā Kṛṣṇa Dāsa és Śrīpati Dāsa",
@@ -112,13 +116,13 @@
       "share": "Lássa még a részleteket:",
       "user": "Felhasználó"
     },
-    "notification":{
-      "title":"Emlékeztető",
-      "time":"Időpont",
-      "time_suffix":"óra",
-      "denied":"Korábban letiltottad az értesítéseket. Engedélyezdned kell a *böngészőben*, hogy megkapd az értesítéseket.",
-      "permission":"Ha kipipálod akkor a böngésző rá fog kérdezni, hogy engedélyezed-e az értesítéseket, ahol az *'engedélyezést'* kell választani.",
-      "info":"Ha bekapcsolod, akkor az alkalmazás a kiválasztott időpontban küld egy üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.",
+    "notification": {
+      "title": "Emlékeztető",
+      "time": "Időpont",
+      "time_suffix": "óra",
+      "denied": "Korábban letiltottad az értesítéseket. Engedélyezdned kell a *böngészőben*, hogy megkapd az értesítéseket.",
+      "permission": "Ha kipipálod akkor a böngésző rá fog kérdezni, hogy engedélyezed-e az értesítéseket, ahol az *'engedélyezést'* kell választani.",
+      "info": "Ha bekapcsolod, akkor az alkalmazás a kiválasztott időpontban küld egy üzenetet a telefonra, ha aznap nem töltötted ki a sadhana adatokat.",
       "token_err": "hiba történt a token lekérése közben.",
       "error": "Nem kaphat engedélyt az értesítésre.",
       "enabled": "Az értesítések engedélyezve!"
