@@ -6,8 +6,14 @@
   import { useStore } from '../store'
   import { onBeforeRouteLeave } from 'vue-router'
   import SadhanaFields from '../types/SadhanaFields'
+  import { useFirebaseToken } from '../composables/useFirebaseToken'
 
   const store = useStore()
+  const { refreshFirebaseToken } = useFirebaseToken()
+
+  if (store.user.id) {
+    refreshFirebaseToken()
+  }
 
   let sadhanaConfig = {
     japaBeforeMangala: 0,

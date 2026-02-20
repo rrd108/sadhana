@@ -64,11 +64,24 @@ message = messaging.MulticastMessage(
 
 # Send the message to all registration tokens
 batch_response = messaging.send_multicast(message)
+failed_tokens = []
 for idx, response in enumerate(batch_response.responses):
     if response.exception:
         print(f"Message {idx} failed with error: {response.exception}")
+        # Check if it's an invalid/expired token error
+        if response.exception.code in ['INVALID_ARGUMENT', 'NOT_FOUND', 'UNREGISTERED']:
+            failed_tokens.append(registration_tokens[idx])
     else:
         print(f"Message {idx} successfully sent with message ID: {response.message_id}")
+
+# Remove invalid/expired tokens from database
+if failed_tokens:
+    print(f"Removing {len(failed_tokens)} invalid/expired tokens...")
+    placeholders = ', '.join(['%s'] * len(failed_tokens))
+    delete_query = f"UPDATE users SET firebaseUserToken = NULL WHERE firebaseUserToken IN ({placeholders})"
+    cursor.execute(delete_query, failed_tokens)
+    cnx.commit()
+    print(f"Removed invalid tokens: {failed_tokens}")
 
 # Close the cursor and connection
 cursor.close()

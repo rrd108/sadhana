@@ -6,14 +6,8 @@ RED='\e[1;41m'
 GREEN='\e[1;42m'
 NC='\033[0m' # No Color
 
-SSH_USER=$1
-SSH_HOST=$2
+SSH_ALIAS="sadhana_1108"
 SSH_PATH='../../web/'
-
-if ! echo "$SSH_USER" | grep -q "dhan"; then
-	echo -e "${RED}The SSH_USER seems to be different then the required${NC}"
-    exit 1
-fi
 
 PREV_STEP=1
 
@@ -60,8 +54,7 @@ if [ $PREV_STEP -eq 1 ];then
 		rsync --progress -azh \
 			--delete --exclude='api/' --exclude='error/' --exclude='stats/' --exclude='.htaccess' --exclude='favicon.ico' --exclude='robots.txt' --exclude='standard_index.html' \
 			./dist/ \
-			-e "ssh -i /home/rrd/.ssh/id_ed25519" \
-			$SSH_USER@$SSH_HOST:$SSH_PATH
+		$SSH_ALIAS:$SSH_PATH
 
 		if [ $? -eq 0 ]; then
 			echo -e $'\n' "${GREEN} \u2714 dist folder uploaded ${NC}" $'\n'
@@ -83,8 +76,7 @@ if [ $PREV_STEP -eq 1 ];then
 		--exclude='vendor/' \
 		--exclude='python/deploy.sh' \
 		./api/ \
-		-e "ssh -i /home/rrd/.ssh/id_ed25519" \
-		$SSH_USER@$SSH_HOST:$SSH_PATH"api/"
+		$SSH_ALIAS:$SSH_PATH"api/"
 
 	if [ $? -eq 0 ]; then
 		echo -e $'\n' "${GREEN} \u2714 api folder uploaded ${NC}" $'\n'
@@ -96,13 +88,13 @@ fi
 
 if [ $PREV_STEP -eq 1 ];then
 	echo $'\n' "Run composer install on server/api" $'\n'
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "chmod 775 -R ${SSH_PATH}api/"
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "cd ${SSH_PATH}api/ && /usr/bin/php8.2 /usr/local/bin/composer install --no-dev --no-interaction --optimize-autoloader"
+	ssh -t $SSH_ALIAS "chmod 775 -R ${SSH_PATH}api/"
+	ssh -t $SSH_ALIAS "cd ${SSH_PATH}api/ && /usr/bin/php8.2 /usr/local/bin/composer install --no-dev --no-interaction --optimize-autoloader"
 
 	echo $'\n' "Set permissions" $'\n'
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "find ${SSH_PATH}api/ -type f -exec chmod 644 {} \;"
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "find ${SSH_PATH}api/ -type d -exec chmod 755 {} \;"
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "chmod +x ${SSH_PATH}api/bin/cake"
+	ssh -t $SSH_ALIAS "find ${SSH_PATH}api/ -type f -exec chmod 644 {} \;"
+	ssh -t $SSH_ALIAS "find ${SSH_PATH}api/ -type d -exec chmod 755 {} \;"
+	ssh -t $SSH_ALIAS "chmod +x ${SSH_PATH}api/bin/cake"
 
 	if [ $? -eq 0 ]; then
 		echo -e $'\n' "${GREEN} \u2714 composer install was successfull ${NC}" $'\n'
@@ -114,7 +106,7 @@ fi
 
 if [ $PREV_STEP -eq 1 ];then
 	echo -e $'\n' "Run migrations" $'\n'
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "export PHP=/usr/bin/php8.2 && cd ${SSH_PATH}api/ && bin/cake migrations migrate"
+	ssh -t $SSH_ALIAS "export PHP=/usr/bin/php8.2 && cd ${SSH_PATH}api/ && bin/cake migrations migrate"
 	if [ $? -eq 0 ]; then
 		echo -e $'\n' "${GREEN} \u2714 migrations were successfull ${NC}" $'\n'
 	else
@@ -125,7 +117,7 @@ fi
 
 if [ $PREV_STEP -eq 1 ];then
 	echo -e $'\n' "Clear all cache" $'\n'
-	ssh -i /home/rrd/.ssh/id_ed25519 -t $SSH_USER@$SSH_HOST "export PHP=/usr/bin/php8.2 && cd ${SSH_PATH}api/ && bin/cake cache clear_all"
+	ssh -t $SSH_ALIAS "export PHP=/usr/bin/php8.2 && cd ${SSH_PATH}api/ && bin/cake cache clear_all"
 	if [ $? -eq 0 ]; then
 		echo -e $'\n' "${GREEN} \u2714 Cache cleared ${NC}" $'\n'
 	else
