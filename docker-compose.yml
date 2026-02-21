@@ -1,0 +1,33 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sadhana_php
+    volumes:
+      - ./api:/var/www
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=sadhana
+      - DB_PASSWORD=sadhana
+      - DB_NAME=sadhana
+    ports:
+      - "8080:80"
+
+  db:
+    image: mysql:8.0
+    container_name: sadhana_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sadhana
+      MYSQL_USER: sadhana
+      MYSQL_PASSWORD: sadhana
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+volumes:
+  mysql_data:
