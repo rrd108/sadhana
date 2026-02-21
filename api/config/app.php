@@ -385,6 +385,14 @@ return [
             'scopes' => ['badgeDistribution'],
             'levels' => [],
         ],
+        'reminders' => [
+            'className' => FileLog::class,
+            'path' => LOGS,
+            'file' => 'reminders-' . date('ymd'),
+            'url' => env('LOG_DEBUG_URL', null),
+            'scopes' => ['reminders'],
+            'levels' => [],
+        ],
     ],
 
     /*
