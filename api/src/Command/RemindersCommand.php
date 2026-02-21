@@ -30,6 +30,7 @@ class RemindersCommand extends Command
         $this->sadhanasTable = $this->fetchTable('Sadhanas');
 
         $io->out('Starting reminder check...');
+        $io->out('Debug: Current hour: ' . (int)(new FrozenTime())->format('G'));
 
         $tokens = $this->getTokensForReminders();
 
@@ -40,6 +41,7 @@ class RemindersCommand extends Command
         }
 
         $io->out('Found ' . count($tokens) . ' tokens to send notifications');
+        $io->out('Debug: Tokens: ' . implode(', ', array_map(fn($t) => substr($t, 0, 20) . '...', $tokens)));
 
         $this->sendNotifications($tokens);
     }
@@ -50,12 +52,15 @@ class RemindersCommand extends Command
         $targetHour = ($currentHour + 1) % 24;
         $today = (new FrozenTime())->format('Y-m-d');
 
+        $this->io->out("Debug: Looking for users with notificationTime = $targetHour");
+        $this->io->out("Debug: Excluding users who have sadhana for today ($today)");
+
         $excludeSubquery = $this->sadhanasTable->find()
             ->select(['user_id'])
             ->where(['date' => $today]);
 
         $users = $this->usersTable->find()
-            ->select(['firebaseUserToken'])
+            ->select(['id', 'firebaseUserToken', 'notificationTime'])
             ->where([
                 'firebaseUserToken IS NOT NULL',
                 'notificationTime IS NOT NULL',
@@ -65,11 +70,19 @@ class RemindersCommand extends Command
                 return $q->notIn('Users.id', $excludeSubquery);
             });
 
+        $this->io->out('Debug: SQL: ' . $users->sql());
+
         $tokens = [];
+        $debugUsers = [];
         foreach ($users as $user) {
             if (!empty($user->firebaseUserToken)) {
                 $tokens[] = $user->firebaseUserToken;
+                $debugUsers[] = "user_id={$user->id}, notificationTime={$user->notificationTime}";
             }
+        }
+
+        if (!empty($debugUsers)) {
+            $this->io->out('Debug: Matching users: ' . implode('; ', $debugUsers));
         }
 
         return $tokens;
@@ -85,8 +98,11 @@ class RemindersCommand extends Command
             return;
         }
 
+        $this->io->out('Debug: Firebase config loaded from: ' . $configPath);
+
         $factory = (new Factory())->withServiceAccount($configPath);
         $messaging = $factory->createMessaging();
+        $this->io->out('Debug: Firebase messaging initialized');
 
         $currentTime = (new FrozenTime())->format('Y-m-d H:i:s');
         $title = '😱 Sadhana emlékető';
@@ -95,6 +111,8 @@ class RemindersCommand extends Command
         $message = CloudMessage::new()
             ->withNotification(['title' => $title, 'body' => $body])
             ->withData(['click_action' => 'FLUTTER_NOTIFICATION_CLICK']);
+
+        $this->io->out('Debug: Sending multicast to ' . count($tokens) . ' tokens...');
 
         $report = $messaging->sendMulticast($message, $tokens);
 
