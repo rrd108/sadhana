@@ -63,10 +63,10 @@ message = messaging.MulticastMessage(
 )
 
 # Send the message to all registration tokens
-batch_response = messaging.send_multicast(message)
+batch_response = messaging.send_each_for_multicast(message)
 failed_tokens = []
 for idx, response in enumerate(batch_response.responses):
-    if response.exception:
+    if not response.success:
         print(f"Message {idx} failed with error: {response.exception}")
         # Check if it's an invalid/expired token error
         if response.exception.code in ['INVALID_ARGUMENT', 'NOT_FOUND', 'UNREGISTERED']:
