@@ -9,6 +9,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging;
@@ -22,15 +23,38 @@ class RemindersCommand extends Command
     protected $usersTable;
     protected $sadhanasTable;
     protected $io;
+    protected $log = false;
+
+    private function logger(string $message): void
+    {
+        if ($this->log) {
+            Log::debug($message, 'reminders');
+        }
+        $this->io->out($message);
+    }
+
+    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    {
+        $parser = parent::buildOptionParser($parser);
+
+        $parser->addOption('log', [
+            'short' => 'l',
+            'help' => 'write log file',
+            'boolean' => true,
+        ]);
+
+        return $parser;
+    }
 
     public function execute(Arguments $args, ConsoleIo $io)
     {
+        $this->log = $args->getOption('log');
         $this->io = $io;
         $this->usersTable = $this->fetchTable('Users');
         $this->sadhanasTable = $this->fetchTable('Sadhanas');
 
         $io->out('Starting reminder check...');
-        $io->out('Debug: Current hour: ' . (int)(new FrozenTime())->format('G'));
+        $this->logger('Debug: Current hour: ' . (int)(new FrozenTime())->format('G'));
 
         $tokens = $this->getTokensForReminders();
 
@@ -41,7 +65,7 @@ class RemindersCommand extends Command
         }
 
         $io->out('Found ' . count($tokens) . ' tokens to send notifications');
-        $io->out('Debug: Tokens: ' . implode(', ', array_map(fn($t) => substr($t, 0, 20) . '...', $tokens)));
+        $this->logger('Debug: Tokens: ' . implode(', ', array_map(fn($t) => substr($t, 0, 20) . '...', $tokens)));
 
         $this->sendNotifications($tokens);
     }
@@ -52,8 +76,8 @@ class RemindersCommand extends Command
         $targetHour = ($currentHour + 1) % 24;
         $today = (new FrozenTime())->format('Y-m-d');
 
-        $this->io->out("Debug: Looking for users with notificationTime = $targetHour");
-        $this->io->out("Debug: Excluding users who have sadhana for today ($today)");
+        $this->logger("Debug: Looking for users with notificationTime = $targetHour");
+        $this->logger("Debug: Excluding users who have sadhana for today ($today)");
 
         $excludeSubquery = $this->sadhanasTable->find()
             ->select(['user_id'])
@@ -70,7 +94,7 @@ class RemindersCommand extends Command
                 return $q->notIn('Users.id', $excludeSubquery);
             });
 
-        $this->io->out('Debug: SQL: ' . $users->sql());
+        $this->logger('Debug: SQL: ' . $users->sql());
 
         $tokens = [];
         $debugUsers = [];
@@ -82,7 +106,7 @@ class RemindersCommand extends Command
         }
 
         if (!empty($debugUsers)) {
-            $this->io->out('Debug: Matching users: ' . implode('; ', $debugUsers));
+            $this->logger('Debug: Matching users: ' . implode('; ', $debugUsers));
         }
 
         return $tokens;
@@ -98,11 +122,11 @@ class RemindersCommand extends Command
             return;
         }
 
-        $this->io->out('Debug: Firebase config loaded from: ' . $configPath);
+        $this->logger('Debug: Firebase config loaded from: ' . $configPath);
 
         $factory = (new Factory())->withServiceAccount($configPath);
         $messaging = $factory->createMessaging();
-        $this->io->out('Debug: Firebase messaging initialized');
+        $this->logger('Debug: Firebase messaging initialized');
 
         $currentTime = (new FrozenTime())->format('Y-m-d H:i:s');
         $title = '😱 Sadhana emlékető';
@@ -112,7 +136,7 @@ class RemindersCommand extends Command
             ->withNotification(['title' => $title, 'body' => $body])
             ->withData(['click_action' => 'FLUTTER_NOTIFICATION_CLICK']);
 
-        $this->io->out('Debug: Sending multicast to ' . count($tokens) . ' tokens...');
+        $this->logger('Debug: Sending multicast to ' . count($tokens) . ' tokens...');
 
         $report = $messaging->sendMulticast($message, $tokens);
 
